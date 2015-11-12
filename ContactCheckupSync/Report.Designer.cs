@@ -1,6 +1,6 @@
 ﻿namespace _ContactCheckupSync
 {
-    partial class SyncToMobile
+    partial class Report
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tbSyncToMobile = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSyncToMobile = new System.Windows.Forms.Label();
+            this.tbReport = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDefault = new System.Windows.Forms.Label();
             this.tbSyncToMobileSearch = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.dtDOEFrom = new System.Windows.Forms.DateTimePicker();
@@ -37,51 +37,50 @@
             this.dtDOETo = new System.Windows.Forms.DateTimePicker();
             this.ddlCompany = new System.Windows.Forms.ComboBox();
             this.btSearch = new System.Windows.Forms.Button();
-            this.btSync = new System.Windows.Forms.Button();
-            this.gvSyncToMobile = new System.Windows.Forms.DataGridView();
+            this.btExport = new System.Windows.Forms.Button();
+            this.gvDefault = new System.Windows.Forms.DataGridView();
             this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
-            this.backgroundWorkerSyncToMobile = new System.ComponentModel.BackgroundWorker();
-            this.tbSyncToMobile.SuspendLayout();
+            this.tbReport.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).BeginInit();
             this.SuspendLayout();
             // 
-            // tbSyncToMobile
+            // tbReport
             // 
-            this.tbSyncToMobile.AutoSize = true;
-            this.tbSyncToMobile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tbSyncToMobile.ColumnCount = 1;
-            this.tbSyncToMobile.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbSyncToMobile.Controls.Add(this.lblSyncToMobile, 0, 1);
-            this.tbSyncToMobile.Controls.Add(this.tbSyncToMobileSearch, 0, 0);
-            this.tbSyncToMobile.Controls.Add(this.gvSyncToMobile, 0, 3);
-            this.tbSyncToMobile.Controls.Add(this.pbSyncToMobile, 0, 2);
-            this.tbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSyncToMobile.Location = new System.Drawing.Point(0, 0);
-            this.tbSyncToMobile.Margin = new System.Windows.Forms.Padding(0);
-            this.tbSyncToMobile.Name = "tbSyncToMobile";
-            this.tbSyncToMobile.RowCount = 4;
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbSyncToMobile.Size = new System.Drawing.Size(746, 402);
-            this.tbSyncToMobile.TabIndex = 1;
+            this.tbReport.AutoSize = true;
+            this.tbReport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tbReport.ColumnCount = 1;
+            this.tbReport.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbReport.Controls.Add(this.lblDefault, 0, 1);
+            this.tbReport.Controls.Add(this.tbSyncToMobileSearch, 0, 0);
+            this.tbReport.Controls.Add(this.gvDefault, 0, 3);
+            this.tbReport.Controls.Add(this.pbSyncToMobile, 0, 2);
+            this.tbReport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbReport.Location = new System.Drawing.Point(0, 0);
+            this.tbReport.Margin = new System.Windows.Forms.Padding(0);
+            this.tbReport.Name = "tbReport";
+            this.tbReport.RowCount = 4;
+            this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbReport.Size = new System.Drawing.Size(707, 424);
+            this.tbReport.TabIndex = 2;
             // 
-            // lblSyncToMobile
+            // lblDefault
             // 
-            this.lblSyncToMobile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lblDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSyncToMobile.AutoSize = true;
-            this.lblSyncToMobile.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.lblSyncToMobile.Location = new System.Drawing.Point(3, 29);
-            this.lblSyncToMobile.Name = "lblSyncToMobile";
-            this.lblSyncToMobile.Padding = new System.Windows.Forms.Padding(5);
-            this.lblSyncToMobile.Size = new System.Drawing.Size(740, 23);
-            this.lblSyncToMobile.TabIndex = 2;
-            this.lblSyncToMobile.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
-            this.lblSyncToMobile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDefault.AutoSize = true;
+            this.lblDefault.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblDefault.Location = new System.Drawing.Point(3, 29);
+            this.lblDefault.Name = "lblDefault";
+            this.lblDefault.Padding = new System.Windows.Forms.Padding(5);
+            this.lblDefault.Size = new System.Drawing.Size(701, 23);
+            this.lblDefault.TabIndex = 2;
+            this.lblDefault.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
+            this.lblDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbSyncToMobileSearch
             // 
@@ -101,14 +100,14 @@
             this.tbSyncToMobileSearch.Controls.Add(this.dtDOETo, 3, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.ddlCompany, 4, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.btSearch, 5, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btSync, 6, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.btExport, 6, 0);
             this.tbSyncToMobileSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbSyncToMobileSearch.Location = new System.Drawing.Point(0, 0);
             this.tbSyncToMobileSearch.Margin = new System.Windows.Forms.Padding(0);
             this.tbSyncToMobileSearch.Name = "tbSyncToMobileSearch";
             this.tbSyncToMobileSearch.RowCount = 1;
             this.tbSyncToMobileSearch.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobileSearch.Size = new System.Drawing.Size(746, 29);
+            this.tbSyncToMobileSearch.Size = new System.Drawing.Size(707, 29);
             this.tbSyncToMobileSearch.TabIndex = 0;
             // 
             // label1
@@ -162,14 +161,13 @@
             this.ddlCompany.FormattingEnabled = true;
             this.ddlCompany.Location = new System.Drawing.Point(333, 3);
             this.ddlCompany.Name = "ddlCompany";
-            this.ddlCompany.Size = new System.Drawing.Size(248, 21);
+            this.ddlCompany.Size = new System.Drawing.Size(209, 21);
             this.ddlCompany.TabIndex = 2;
             // 
             // btSearch
             // 
             this.btSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btSearch.AutoSize = true;
-            this.btSearch.Location = new System.Drawing.Point(587, 3);
+            this.btSearch.Location = new System.Drawing.Point(548, 3);
             this.btSearch.Name = "btSearch";
             this.btSearch.Size = new System.Drawing.Size(75, 23);
             this.btSearch.TabIndex = 3;
@@ -177,63 +175,57 @@
             this.btSearch.UseVisualStyleBackColor = true;
             this.btSearch.Click += new System.EventHandler(this.btSearch_Click);
             // 
-            // btSync
+            // btExport
             // 
-            this.btSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btSync.AutoSize = true;
-            this.btSync.Enabled = false;
-            this.btSync.Location = new System.Drawing.Point(668, 3);
-            this.btSync.Name = "btSync";
-            this.btSync.Size = new System.Drawing.Size(75, 23);
-            this.btSync.TabIndex = 4;
-            this.btSync.Text = "Sync";
-            this.btSync.UseVisualStyleBackColor = true;
-            this.btSync.Click += new System.EventHandler(this.btSync_Click);
+            this.btExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btExport.Enabled = false;
+            this.btExport.Location = new System.Drawing.Point(629, 3);
+            this.btExport.Name = "btExport";
+            this.btExport.Size = new System.Drawing.Size(75, 23);
+            this.btExport.TabIndex = 4;
+            this.btExport.Text = "Export";
+            this.btExport.UseVisualStyleBackColor = true;
+            this.btExport.Click += new System.EventHandler(this.btExport_Click);
             // 
-            // gvSyncToMobile
+            // gvDefault
             // 
-            this.gvSyncToMobile.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.gvSyncToMobile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.gvSyncToMobile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvSyncToMobile.GridColor = System.Drawing.Color.Silver;
-            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 81);
-            this.gvSyncToMobile.MultiSelect = false;
-            this.gvSyncToMobile.Name = "gvSyncToMobile";
-            this.gvSyncToMobile.ShowEditingIcon = false;
-            this.gvSyncToMobile.Size = new System.Drawing.Size(740, 318);
-            this.gvSyncToMobile.TabIndex = 1;
+            this.gvDefault.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.gvDefault.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.gvDefault.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.gvDefault.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvDefault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvDefault.GridColor = System.Drawing.Color.Silver;
+            this.gvDefault.Location = new System.Drawing.Point(3, 81);
+            this.gvDefault.MultiSelect = false;
+            this.gvDefault.Name = "gvDefault";
+            this.gvDefault.ShowEditingIcon = false;
+            this.gvDefault.Size = new System.Drawing.Size(701, 340);
+            this.gvDefault.TabIndex = 1;
             // 
             // pbSyncToMobile
             // 
             this.pbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbSyncToMobile.Location = new System.Drawing.Point(3, 55);
             this.pbSyncToMobile.Name = "pbSyncToMobile";
-            this.pbSyncToMobile.Size = new System.Drawing.Size(740, 20);
+            this.pbSyncToMobile.Size = new System.Drawing.Size(701, 20);
             this.pbSyncToMobile.TabIndex = 3;
             this.pbSyncToMobile.Visible = false;
             // 
-            // backgroundWorkerSyncToMobile
-            // 
-            this.backgroundWorkerSyncToMobile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerSyncToMobile_DoWork);
-            // 
-            // SyncToMobile
+            // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(746, 402);
-            this.Controls.Add(this.tbSyncToMobile);
-            this.Name = "SyncToMobile";
-            this.Text = "SyncToMobile";
-            this.Load += new System.EventHandler(this.SyncToMobile_Load);
-            this.tbSyncToMobile.ResumeLayout(false);
-            this.tbSyncToMobile.PerformLayout();
+            this.ClientSize = new System.Drawing.Size(707, 424);
+            this.Controls.Add(this.tbReport);
+            this.Name = "Report";
+            this.Text = "Report";
+            this.tbReport.ResumeLayout(false);
+            this.tbReport.PerformLayout();
             this.tbSyncToMobileSearch.ResumeLayout(false);
             this.tbSyncToMobileSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,8 +233,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tbSyncToMobile;
-        private System.Windows.Forms.Label lblSyncToMobile;
+        private System.Windows.Forms.TableLayoutPanel tbReport;
+        private System.Windows.Forms.Label lblDefault;
         private System.Windows.Forms.TableLayoutPanel tbSyncToMobileSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dtDOEFrom;
@@ -250,9 +242,8 @@
         private System.Windows.Forms.DateTimePicker dtDOETo;
         private System.Windows.Forms.ComboBox ddlCompany;
         private System.Windows.Forms.Button btSearch;
-        private System.Windows.Forms.Button btSync;
-        private System.Windows.Forms.DataGridView gvSyncToMobile;
+        private System.Windows.Forms.Button btExport;
+        private System.Windows.Forms.DataGridView gvDefault;
         private System.Windows.Forms.ProgressBar pbSyncToMobile;
-        private System.ComponentModel.BackgroundWorker backgroundWorkerSyncToMobile;
     }
 }

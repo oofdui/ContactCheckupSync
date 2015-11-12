@@ -193,6 +193,13 @@ namespace _ContactCheckupSync
         }
         #endregion
         #region Function
+        public void DisposeAllButThis()
+        {
+            foreach (Form frm in this.MdiChildren)
+            {
+                frm.Close();
+            }
+        }
         private Color getColorSoft(Color color, double amount)
         {
             byte r = (byte)((color.R) + (amount * 3));
@@ -257,9 +264,7 @@ namespace _ContactCheckupSync
         private void setSyncToMobile()
         {
             setMenuActive("mnSyncToMobile");
-            var syncToMobile = new SyncToMobile();
-            syncToMobile.MdiParent = this;
-            syncToMobile.Show();
+            DisposeAllButThis();
 
             var childForm = new SyncToMobile();
             childForm.MdiParent = this;
@@ -267,7 +272,6 @@ namespace _ContactCheckupSync
             childForm.Text = "SyncToMobile";
             childForm.WindowState = FormWindowState.Maximized;
             childForm.FormBorderStyle = FormBorderStyle.None;
-            //childForm.Padding = new Padding(10);
             childForm.Show();
         }
         #endregion
@@ -275,6 +279,15 @@ namespace _ContactCheckupSync
         private void setReport()
         {
             setMenuActive("mnReport");
+            DisposeAllButThis();
+
+            var childForm = new Report();
+            childForm.MdiParent = this;
+            childForm.Parent = this.pnDefault;
+            childForm.Text = "Report";
+            childForm.WindowState = FormWindowState.Maximized;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Show();
         }
         #endregion
     }

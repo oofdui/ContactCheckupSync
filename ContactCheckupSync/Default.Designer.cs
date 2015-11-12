@@ -417,18 +417,18 @@
             this.tbContent.Name = "tbContent";
             this.tbContent.RowCount = 1;
             this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 347F));
             this.tbContent.Size = new System.Drawing.Size(837, 347);
             this.tbContent.TabIndex = 6;
             // 
             // pnDefault
             // 
             this.pnDefault.AutoSize = true;
+            this.pnDefault.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnDefault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnDefault.Location = new System.Drawing.Point(0, 0);
-            this.pnDefault.Margin = new System.Windows.Forms.Padding(0);
+            this.pnDefault.Location = new System.Drawing.Point(3, 3);
             this.pnDefault.Name = "pnDefault";
-            this.pnDefault.Size = new System.Drawing.Size(837, 347);
+            this.pnDefault.Size = new System.Drawing.Size(831, 341);
             this.pnDefault.TabIndex = 1;
             // 
             // Default

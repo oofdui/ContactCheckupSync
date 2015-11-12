@@ -40,6 +40,7 @@
             this.tbMenu = new System.Windows.Forms.TableLayoutPanel();
             this.mnSyncToMain = new System.Windows.Forms.Button();
             this.mnSyncToMobile = new System.Windows.Forms.Button();
+            this.mnReport = new System.Windows.Forms.Button();
             this.tbFooter = new System.Windows.Forms.TableLayoutPanel();
             this.lblCredit = new System.Windows.Forms.Label();
             this.lblFooter = new System.Windows.Forms.Label();
@@ -50,22 +51,8 @@
             this.btMinimize = new System.Windows.Forms.Button();
             this.btMaximize = new System.Windows.Forms.Button();
             this.tbContent = new System.Windows.Forms.TableLayoutPanel();
-            this.tbSyncToMobile = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSyncToMobile = new System.Windows.Forms.Label();
-            this.tbSyncToMobileSearch = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dtDOEFrom = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtDOETo = new System.Windows.Forms.DateTimePicker();
-            this.ddlCompany = new System.Windows.Forms.ComboBox();
-            this.btSearch = new System.Windows.Forms.Button();
-            this.btSync = new System.Windows.Forms.Button();
-            this.gvSyncToMobile = new System.Windows.Forms.DataGridView();
-            this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
-            this.tbSyncToMain = new System.Windows.Forms.TableLayoutPanel();
+            this.pnDefault = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.backgroundWorkerSyncToMobile = new System.ComponentModel.BackgroundWorker();
-            this.mnReport = new System.Windows.Forms.Button();
             this.tbDefault.SuspendLayout();
             this.tbHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
@@ -74,9 +61,6 @@
             this.tbFooter.SuspendLayout();
             this.tbMenuTop.SuspendLayout();
             this.tbContent.SuspendLayout();
-            this.tbSyncToMobile.SuspendLayout();
-            this.tbSyncToMobileSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).BeginInit();
             this.SuspendLayout();
             // 
             // tbDefault
@@ -102,7 +86,7 @@
             this.tbDefault.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tbDefault.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.tbDefault.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbDefault.Size = new System.Drawing.Size(722, 502);
+            this.tbDefault.Size = new System.Drawing.Size(843, 502);
             this.tbDefault.TabIndex = 4;
             // 
             // tbHeader
@@ -122,7 +106,7 @@
             this.tbHeader.Name = "tbHeader";
             this.tbHeader.RowCount = 1;
             this.tbHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbHeader.Size = new System.Drawing.Size(722, 86);
+            this.tbHeader.Size = new System.Drawing.Size(843, 86);
             this.tbHeader.TabIndex = 1;
             // 
             // lblHeader
@@ -162,7 +146,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btCreateTable, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btClearData, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(641, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(762, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
@@ -211,7 +195,7 @@
             this.tbMenu.Name = "tbMenu";
             this.tbMenu.RowCount = 1;
             this.tbMenu.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbMenu.Size = new System.Drawing.Size(722, 23);
+            this.tbMenu.Size = new System.Drawing.Size(843, 23);
             this.tbMenu.TabIndex = 2;
             // 
             // mnSyncToMain
@@ -252,6 +236,25 @@
             this.mnSyncToMobile.UseVisualStyleBackColor = false;
             this.mnSyncToMobile.Click += new System.EventHandler(this.mnSyncToMobile_Click);
             // 
+            // mnReport
+            // 
+            this.mnReport.AutoSize = true;
+            this.mnReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
+            this.mnReport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mnReport.FlatAppearance.BorderSize = 0;
+            this.mnReport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
+            this.mnReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.mnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnReport.ForeColor = System.Drawing.Color.Black;
+            this.mnReport.Location = new System.Drawing.Point(235, 0);
+            this.mnReport.Margin = new System.Windows.Forms.Padding(0);
+            this.mnReport.Name = "mnReport";
+            this.mnReport.Size = new System.Drawing.Size(85, 23);
+            this.mnReport.TabIndex = 0;
+            this.mnReport.Text = "Report";
+            this.mnReport.UseVisualStyleBackColor = false;
+            this.mnReport.Click += new System.EventHandler(this.mnReport_Click);
+            // 
             // tbFooter
             // 
             this.tbFooter.AutoSize = true;
@@ -268,7 +271,7 @@
             this.tbFooter.Padding = new System.Windows.Forms.Padding(3);
             this.tbFooter.RowCount = 1;
             this.tbFooter.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbFooter.Size = new System.Drawing.Size(722, 19);
+            this.tbFooter.Size = new System.Drawing.Size(843, 19);
             this.tbFooter.TabIndex = 3;
             // 
             // lblCredit
@@ -286,7 +289,7 @@
             this.lblFooter.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblFooter.AutoSize = true;
             this.lblFooter.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.lblFooter.Location = new System.Drawing.Point(669, 3);
+            this.lblFooter.Location = new System.Drawing.Point(790, 3);
             this.lblFooter.Name = "lblFooter";
             this.lblFooter.Size = new System.Drawing.Size(47, 13);
             this.lblFooter.TabIndex = 1;
@@ -299,7 +302,7 @@
             this.pnHR.Location = new System.Drawing.Point(0, 482);
             this.pnHR.Margin = new System.Windows.Forms.Padding(0);
             this.pnHR.Name = "pnHR";
-            this.pnHR.Size = new System.Drawing.Size(722, 1);
+            this.pnHR.Size = new System.Drawing.Size(843, 1);
             this.pnHR.TabIndex = 4;
             // 
             // tbMenuTop
@@ -323,7 +326,7 @@
             this.tbMenuTop.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.tbMenuTop.RowCount = 1;
             this.tbMenuTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbMenuTop.Size = new System.Drawing.Size(722, 20);
+            this.tbMenuTop.Size = new System.Drawing.Size(843, 20);
             this.tbMenuTop.TabIndex = 5;
             this.tbMenuTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tbMenuTop_MouseDown);
             this.tbMenuTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tbMenuTop_MouseMove);
@@ -339,7 +342,7 @@
             this.btClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btClose.Image = ((System.Drawing.Image)(resources.GetObject("btClose.Image")));
-            this.btClose.Location = new System.Drawing.Point(702, 2);
+            this.btClose.Location = new System.Drawing.Point(823, 2);
             this.btClose.Margin = new System.Windows.Forms.Padding(0, 2, 2, 2);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(16, 16);
@@ -377,7 +380,7 @@
             this.btMinimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btMinimize.Image = ((System.Drawing.Image)(resources.GetObject("btMinimize.Image")));
-            this.btMinimize.Location = new System.Drawing.Point(666, 2);
+            this.btMinimize.Location = new System.Drawing.Point(787, 2);
             this.btMinimize.Margin = new System.Windows.Forms.Padding(0, 2, 2, 2);
             this.btMinimize.Name = "btMinimize";
             this.btMinimize.Size = new System.Drawing.Size(16, 16);
@@ -395,7 +398,7 @@
             this.btMaximize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btMaximize.Image = global::_ContactCheckupSync.Properties.Resources.icMaximizeFlat;
-            this.btMaximize.Location = new System.Drawing.Point(684, 2);
+            this.btMaximize.Location = new System.Drawing.Point(805, 2);
             this.btMaximize.Margin = new System.Windows.Forms.Padding(0, 2, 2, 2);
             this.btMaximize.Name = "btMaximize";
             this.btMaximize.Size = new System.Drawing.Size(16, 16);
@@ -408,229 +411,36 @@
             this.tbContent.AutoSize = true;
             this.tbContent.ColumnCount = 1;
             this.tbContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbContent.Controls.Add(this.tbSyncToMobile, 0, 1);
-            this.tbContent.Controls.Add(this.tbSyncToMain, 0, 0);
+            this.tbContent.Controls.Add(this.pnDefault, 0, 0);
             this.tbContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbContent.Location = new System.Drawing.Point(3, 132);
             this.tbContent.Name = "tbContent";
-            this.tbContent.RowCount = 2;
-            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tbContent.RowCount = 1;
+            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tbContent.Size = new System.Drawing.Size(716, 347);
+            this.tbContent.Size = new System.Drawing.Size(837, 347);
             this.tbContent.TabIndex = 6;
             // 
-            // tbSyncToMobile
+            // pnDefault
             // 
-            this.tbSyncToMobile.AutoSize = true;
-            this.tbSyncToMobile.ColumnCount = 1;
-            this.tbSyncToMobile.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobile.Controls.Add(this.lblSyncToMobile, 0, 1);
-            this.tbSyncToMobile.Controls.Add(this.tbSyncToMobileSearch, 0, 0);
-            this.tbSyncToMobile.Controls.Add(this.gvSyncToMobile, 0, 3);
-            this.tbSyncToMobile.Controls.Add(this.pbSyncToMobile, 0, 2);
-            this.tbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSyncToMobile.Location = new System.Drawing.Point(0, 173);
-            this.tbSyncToMobile.Margin = new System.Windows.Forms.Padding(0);
-            this.tbSyncToMobile.Name = "tbSyncToMobile";
-            this.tbSyncToMobile.RowCount = 4;
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobile.Size = new System.Drawing.Size(716, 174);
-            this.tbSyncToMobile.TabIndex = 0;
-            // 
-            // lblSyncToMobile
-            // 
-            this.lblSyncToMobile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSyncToMobile.AutoSize = true;
-            this.lblSyncToMobile.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.lblSyncToMobile.Location = new System.Drawing.Point(3, 29);
-            this.lblSyncToMobile.Name = "lblSyncToMobile";
-            this.lblSyncToMobile.Padding = new System.Windows.Forms.Padding(5);
-            this.lblSyncToMobile.Size = new System.Drawing.Size(710, 23);
-            this.lblSyncToMobile.TabIndex = 2;
-            this.lblSyncToMobile.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
-            this.lblSyncToMobile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tbSyncToMobileSearch
-            // 
-            this.tbSyncToMobileSearch.AutoSize = true;
-            this.tbSyncToMobileSearch.ColumnCount = 7;
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbSyncToMobileSearch.Controls.Add(this.label1, 0, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.dtDOEFrom, 1, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.label2, 2, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.dtDOETo, 3, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.ddlCompany, 4, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btSearch, 5, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btSync, 6, 0);
-            this.tbSyncToMobileSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSyncToMobileSearch.Location = new System.Drawing.Point(0, 0);
-            this.tbSyncToMobileSearch.Margin = new System.Windows.Forms.Padding(0);
-            this.tbSyncToMobileSearch.Name = "tbSyncToMobileSearch";
-            this.tbSyncToMobileSearch.RowCount = 1;
-            this.tbSyncToMobileSearch.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobileSearch.Size = new System.Drawing.Size(716, 29);
-            this.tbSyncToMobileSearch.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 29);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "DOE";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // dtDOEFrom
-            // 
-            this.dtDOEFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.dtDOEFrom.CustomFormat = "dd/MM/yyyy HH:mm";
-            this.dtDOEFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDOEFrom.Location = new System.Drawing.Point(39, 3);
-            this.dtDOEFrom.Name = "dtDOEFrom";
-            this.dtDOEFrom.Size = new System.Drawing.Size(133, 20);
-            this.dtDOEFrom.TabIndex = 1;
-            this.dtDOEFrom.ValueChanged += new System.EventHandler(this.dtDOEFrom_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(178, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(10, 29);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "-";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // dtDOETo
-            // 
-            this.dtDOETo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.dtDOETo.CustomFormat = "dd/MM/yyyy HH:mm";
-            this.dtDOETo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtDOETo.Location = new System.Drawing.Point(194, 3);
-            this.dtDOETo.Name = "dtDOETo";
-            this.dtDOETo.Size = new System.Drawing.Size(133, 20);
-            this.dtDOETo.TabIndex = 1;
-            this.dtDOETo.ValueChanged += new System.EventHandler(this.dtDOETo_ValueChanged);
-            // 
-            // ddlCompany
-            // 
-            this.ddlCompany.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ddlCompany.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlCompany.FormattingEnabled = true;
-            this.ddlCompany.Location = new System.Drawing.Point(333, 3);
-            this.ddlCompany.Name = "ddlCompany";
-            this.ddlCompany.Size = new System.Drawing.Size(218, 21);
-            this.ddlCompany.TabIndex = 2;
-            this.ddlCompany.Click += new System.EventHandler(this.ddlCompany_Click);
-            // 
-            // btSearch
-            // 
-            this.btSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btSearch.Location = new System.Drawing.Point(557, 3);
-            this.btSearch.Name = "btSearch";
-            this.btSearch.Size = new System.Drawing.Size(75, 23);
-            this.btSearch.TabIndex = 3;
-            this.btSearch.Text = "Search";
-            this.btSearch.UseVisualStyleBackColor = true;
-            this.btSearch.Click += new System.EventHandler(this.btSearch_Click);
-            // 
-            // btSync
-            // 
-            this.btSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btSync.Enabled = false;
-            this.btSync.Location = new System.Drawing.Point(638, 3);
-            this.btSync.Name = "btSync";
-            this.btSync.Size = new System.Drawing.Size(75, 23);
-            this.btSync.TabIndex = 4;
-            this.btSync.Text = "Sync";
-            this.btSync.UseVisualStyleBackColor = true;
-            this.btSync.Click += new System.EventHandler(this.btSync_Click);
-            // 
-            // gvSyncToMobile
-            // 
-            this.gvSyncToMobile.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.gvSyncToMobile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.gvSyncToMobile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvSyncToMobile.GridColor = System.Drawing.Color.Silver;
-            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 81);
-            this.gvSyncToMobile.MultiSelect = false;
-            this.gvSyncToMobile.Name = "gvSyncToMobile";
-            this.gvSyncToMobile.ShowEditingIcon = false;
-            this.gvSyncToMobile.Size = new System.Drawing.Size(710, 150);
-            this.gvSyncToMobile.TabIndex = 1;
-            // 
-            // pbSyncToMobile
-            // 
-            this.pbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbSyncToMobile.Location = new System.Drawing.Point(3, 55);
-            this.pbSyncToMobile.Name = "pbSyncToMobile";
-            this.pbSyncToMobile.Size = new System.Drawing.Size(710, 20);
-            this.pbSyncToMobile.TabIndex = 3;
-            this.pbSyncToMobile.Visible = false;
-            // 
-            // tbSyncToMain
-            // 
-            this.tbSyncToMain.AutoSize = true;
-            this.tbSyncToMain.ColumnCount = 1;
-            this.tbSyncToMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbSyncToMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSyncToMain.Location = new System.Drawing.Point(0, 0);
-            this.tbSyncToMain.Margin = new System.Windows.Forms.Padding(0);
-            this.tbSyncToMain.Name = "tbSyncToMain";
-            this.tbSyncToMain.RowCount = 2;
-            this.tbSyncToMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbSyncToMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbSyncToMain.Size = new System.Drawing.Size(716, 173);
-            this.tbSyncToMain.TabIndex = 1;
-            // 
-            // backgroundWorkerSyncToMobile
-            // 
-            this.backgroundWorkerSyncToMobile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerSyncToMobile_DoWork);
-            // 
-            // mnReport
-            // 
-            this.mnReport.AutoSize = true;
-            this.mnReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
-            this.mnReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mnReport.FlatAppearance.BorderSize = 0;
-            this.mnReport.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
-            this.mnReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.mnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mnReport.ForeColor = System.Drawing.Color.Black;
-            this.mnReport.Location = new System.Drawing.Point(235, 0);
-            this.mnReport.Margin = new System.Windows.Forms.Padding(0);
-            this.mnReport.Name = "mnReport";
-            this.mnReport.Size = new System.Drawing.Size(85, 23);
-            this.mnReport.TabIndex = 0;
-            this.mnReport.Text = "Report";
-            this.mnReport.UseVisualStyleBackColor = false;
-            this.mnReport.Click += new System.EventHandler(this.mnReport_Click);
+            this.pnDefault.AutoSize = true;
+            this.pnDefault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnDefault.Location = new System.Drawing.Point(0, 0);
+            this.pnDefault.Margin = new System.Windows.Forms.Padding(0);
+            this.pnDefault.Name = "pnDefault";
+            this.pnDefault.Size = new System.Drawing.Size(837, 347);
+            this.pnDefault.TabIndex = 1;
             // 
             // Default
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.ClientSize = new System.Drawing.Size(724, 504);
+            this.ClientSize = new System.Drawing.Size(845, 504);
             this.Controls.Add(this.tbDefault);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.IsMdiContainer = true;
             this.Name = "Default";
             this.Padding = new System.Windows.Forms.Padding(1);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -649,11 +459,6 @@
             this.tbMenuTop.ResumeLayout(false);
             this.tbContent.ResumeLayout(false);
             this.tbContent.PerformLayout();
-            this.tbSyncToMobile.ResumeLayout(false);
-            this.tbSyncToMobile.PerformLayout();
-            this.tbSyncToMobileSearch.ResumeLayout(false);
-            this.tbSyncToMobileSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -679,23 +484,10 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pbDefault;
         private System.Windows.Forms.TableLayoutPanel tbContent;
-        private System.Windows.Forms.TableLayoutPanel tbSyncToMobile;
-        private System.Windows.Forms.TableLayoutPanel tbSyncToMain;
-        private System.Windows.Forms.TableLayoutPanel tbSyncToMobileSearch;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtDOEFrom;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dtDOETo;
-        private System.Windows.Forms.ComboBox ddlCompany;
-        private System.Windows.Forms.Button btSearch;
-        private System.Windows.Forms.Button btSync;
-        private System.Windows.Forms.DataGridView gvSyncToMobile;
-        private System.Windows.Forms.Label lblSyncToMobile;
-        private System.ComponentModel.BackgroundWorker backgroundWorkerSyncToMobile;
-        private System.Windows.Forms.ProgressBar pbSyncToMobile;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btCreateTable;
         private System.Windows.Forms.Button btClearData;
         private System.Windows.Forms.Button mnReport;
+        private System.Windows.Forms.Panel pnDefault;
     }
 }

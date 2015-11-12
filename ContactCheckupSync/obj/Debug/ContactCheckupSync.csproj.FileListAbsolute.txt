@@ -16,3 +16,4 @@ C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\Contact
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\obj\Debug\ContactCheckupSync.csprojResolveAssemblyReference.cache
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\bin\Debug\ContactCheckupSync.exe.config
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\bin\Debug\MySql.Data.dll
+C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\obj\Debug\_ContactCheckupSync.SyncToMobile.resources

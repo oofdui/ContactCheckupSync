@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.Collections.Generic;
 using System.Collections;
+using System.Windows.Forms;
 
 /// <summary>
 /// Summary description for clsTempData
@@ -19,6 +20,22 @@ public class clsTempData
 		// TODO: Add constructor logic here
 		//
 	}
+    public string getDropDownListValue(ComboBox ddlName, String columnName)
+    {
+        #region Variable
+        var result = "";
+        #endregion
+        #region Procedure
+        try
+        {
+            var drv = (DataRowView)ddlName.SelectedItem;
+            var dr = drv.Row;
+            result = dr[columnName].ToString();
+        }
+        catch (Exception) { }
+        #endregion
+        return result;
+    }
     public DataTable getPatient(DateTime DOEFrom,DateTime DOETo,string CompanyName)
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");

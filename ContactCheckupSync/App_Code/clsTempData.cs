@@ -324,7 +324,13 @@ public class clsTempData
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=6 LIMIT 0,1) AcceptDateBlood,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=7 LIMIT 0,1) AcceptDateUrine,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=8 LIMIT 0,1) AcceptDateStool,");
-        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=6 LIMIT 0,1) AcceptDateHeavyMetal ");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=9 LIMIT 0,1) AcceptDateHeavyMetal,");
+        strSQL.Append("((SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND (WFID=6 OR WFID=7 OR WFID=8 OR WFID=9))-(SELECT COUNT(LabEpisode) FROM patientlab WHERE LabEpisode=P.LabEpisode AND (WFID=6 OR WFID=7 OR WFID=8 OR WFID=9))) CountLabPending,");
+        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1) RegisterDate,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 6) CountChecklistBlood,");
+strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 7) CountChecklistUrine,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 8) CountChecklistStool,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 9) CountChecklistHeavyMetal ");
 
         strSQL.Append("FROM ");
         strSQL.Append("Patient P ");
@@ -368,9 +374,99 @@ public class clsTempData
         }
         else
         {
+            result.Append(Environment.NewLine + Environment.NewLine);
+            result.Append("## รายชื่อที่ไม่มี Checklist ##");
+            result.Append(Environment.NewLine);
             result.Append("- ไม่พบข้อมูล -");
         }
         #endregion
         return result.ToString();
+    }
+    public string getPatientCountAll(DateTime dtDOEFrom,DateTime dtDOETo,string Company)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var result = "";
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        strSQL.Append("SELECT COUNT(PatientGUID) FROM patient WHERE (DOE BETWEEN '" + dtDOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + dtDOETo.ToString("yyyy-MM-dd HH:mm") + "') AND Company='"+Company+"'");
+        result = clsSQL.Return(strSQL.ToString());
+        #endregion
+        return result;
+    }
+    public string getPatientCountPending(DateTime dtDOEFrom, DateTime dtDOETo, string Company)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var result = "";
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        strSQL.Append("SELECT ");
+        strSQL.Append("COUNT(P.PatientGUID)CountNotRegister ");
+        strSQL.Append("FROM ");
+        strSQL.Append("patient P ");
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + dtDOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + dtDOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        strSQL.Append("AND P.Company = '" + Company + "' ");
+        strSQL.Append("AND(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND patientchecklist.RegDate IS NULL) > 0;");
+        result = clsSQL.Return(strSQL.ToString());
+        #endregion
+        return result;
+    }
+    public DataTable getPatientChecklistCountByProStatus(DateTime dtDOEFrom, DateTime dtDOETo, string Company,string RegisterDate)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var result = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("P.HN,");
+        strSQL.Append("P.Forename,");
+        strSQL.Append("P.Surname,");
+        strSQL.Append("P.PatientGUID,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND DATE(patientchecklist.RegDate)='"+ RegisterDate + "')CountChecklistAll,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND DATE(patientchecklist.RegDate)='" + RegisterDate + "' AND ProStatus=3)CountChecklistComplete,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND DATE(patientchecklist.RegDate)='" + RegisterDate + "' AND ProStatus=2)CountChecklistDocumentPending,");
+        strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND DATE(patientchecklist.RegDate)='" + RegisterDate + "' AND ProStatus=4)CountChecklistCancel ");
+        strSQL.Append("FROM patient P ");
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + dtDOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + dtDOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        strSQL.Append("AND P.Company = '"+Company+"';");
+        #endregion
+        result = clsSQL.Bind(strSQL.ToString());
+        #endregion
+        return result;
+    }
+    public DataTable getPatientChecklistGroupByRegisterDate(DateTime dtDOEFrom, DateTime dtDOETo, string Company)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var result = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("DATE(RegDate)RegisterDate ");
+        strSQL.Append("FROM patientchecklist PL ");
+        strSQL.Append("INNER JOIN patient P ON PL.PatientGUID = P.PatientGUID ");
+        strSQL.Append("WHERE PL.WFID = 1 AND NOT PL.RegDate IS NULL ");
+        strSQL.Append("AND(P.DOE BETWEEN '"+ dtDOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '"+dtDOETo.ToString("yyyy-MM-dd HH:mm")+"') ");
+        strSQL.Append("AND P.Company = '"+Company+"' ");
+        strSQL.Append("GROUP BY DATE(RegDate) ");
+        strSQL.Append("ORDER BY DATE(RegDate);");
+        #endregion
+        result = clsSQL.Bind(strSQL.ToString());
+        #endregion
+        return result;
     }
 }

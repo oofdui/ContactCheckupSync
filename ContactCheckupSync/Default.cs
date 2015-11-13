@@ -20,6 +20,7 @@ namespace _ContactCheckupSync
         }
         private void Default_Load(object sender, EventArgs e)
         {
+            setUsageLog();
             setDefault();
         }
         private void mnToMain_Click(object sender, EventArgs e)
@@ -103,6 +104,27 @@ namespace _ContactCheckupSync
                 MessageBox.Show("ไม่สามารถเชื่อมต่อฐานข้อมูล Mobile ได้", "Database Connection Fail", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             #endregion
+        }
+        private void setUsageLog()
+        {
+            if (System.Configuration.ConfigurationManager.AppSettings["enableUsageLog"].Trim().ToLower() == "true")
+            {
+                try
+                {
+                    wsCenter.ServiceSoapClient wsCenter = new wsCenter.ServiceSoapClient();
+                    wsCenter.InsertLogApplicationBySite(
+                        clsGlobal.ApplicationName,
+                        clsGlobal.ApplicationVersion(),
+                        System.Configuration.ConfigurationManager.AppSettings["site"],
+                        clsGlobal.WindowsLogon(),
+                        clsGlobal.IPAddress(),
+                        clsGlobal.ComputerName());
+                }
+                catch(Exception ex)
+                {
+
+                }
+            }
         }
         #region Default
         private void setDefault()
@@ -258,6 +280,16 @@ namespace _ContactCheckupSync
         private void setSyncToMain()
         {
             setMenuActive("mnSyncToMain");
+
+            DisposeAllButThis();
+
+            var childForm = new SyncToMain();
+            childForm.MdiParent = this;
+            childForm.Parent = this.pnDefault;
+            childForm.Text = "SyncToMain";
+            childForm.WindowState = FormWindowState.Maximized;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Show();
         }
         #endregion
         #region SyncToMobile

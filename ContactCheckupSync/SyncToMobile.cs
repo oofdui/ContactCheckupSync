@@ -239,6 +239,13 @@ namespace _ContactCheckupSync
                     btSync.Enabled = true;
                 }));
             }
+            if (pbSyncToMobile.InvokeRequired)
+            {
+                pbSyncToMobile.Invoke(new MethodInvoker(delegate
+                {
+                    pbSyncToMobile.Visible = false;
+                }));
+            }
         }
         public bool setPatientToMobile(DataTable dt, out int countSuccess, out int countFail, out int countExist, out int countChecklistSuccess, out int countChecklistFail, out int countChecklistExist, out string outMessage)
         {
@@ -405,8 +412,8 @@ namespace _ContactCheckupSync
                             {"WFID",dt.Rows[i]["WFID"].ToString() },
                             {"WFSequen",dt.Rows[i]["WFSequen"].ToString() },
                             {"ProStatus",dt.Rows[i]["ProStatus"].ToString() },
-                            {"RegDate","'"+DateTime.Parse(dt.Rows[i]["RegDate"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'" },
-                            {"ModifyDate","'"+DateTime.Parse(dt.Rows[i]["ModifyDate"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'" },
+                            {"RegDate","NULL" },
+                            {"ModifyDate","NULL" },
                             {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
                             {"MWhen","NOW()" },
                             {"MUser","'"+clsGlobal.WindowsLogon()+"'" },

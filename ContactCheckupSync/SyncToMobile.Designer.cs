@@ -74,11 +74,13 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSyncToMobile.AutoSize = true;
-            this.lblSyncToMobile.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblSyncToMobile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(201)))), ((int)(((byte)(14)))));
+            this.lblSyncToMobile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.lblSyncToMobile.ForeColor = System.Drawing.Color.Black;
             this.lblSyncToMobile.Location = new System.Drawing.Point(3, 29);
             this.lblSyncToMobile.Name = "lblSyncToMobile";
             this.lblSyncToMobile.Padding = new System.Windows.Forms.Padding(5);
-            this.lblSyncToMobile.Size = new System.Drawing.Size(740, 23);
+            this.lblSyncToMobile.Size = new System.Drawing.Size(740, 27);
             this.lblSyncToMobile.TabIndex = 2;
             this.lblSyncToMobile.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
             this.lblSyncToMobile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -197,17 +199,17 @@
             this.gvSyncToMobile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvSyncToMobile.GridColor = System.Drawing.Color.Silver;
-            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 81);
+            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 85);
             this.gvSyncToMobile.MultiSelect = false;
             this.gvSyncToMobile.Name = "gvSyncToMobile";
             this.gvSyncToMobile.ShowEditingIcon = false;
-            this.gvSyncToMobile.Size = new System.Drawing.Size(740, 318);
+            this.gvSyncToMobile.Size = new System.Drawing.Size(740, 314);
             this.gvSyncToMobile.TabIndex = 1;
             // 
             // pbSyncToMobile
             // 
             this.pbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbSyncToMobile.Location = new System.Drawing.Point(3, 55);
+            this.pbSyncToMobile.Location = new System.Drawing.Point(3, 59);
             this.pbSyncToMobile.Name = "pbSyncToMobile";
             this.pbSyncToMobile.Size = new System.Drawing.Size(740, 20);
             this.pbSyncToMobile.TabIndex = 3;

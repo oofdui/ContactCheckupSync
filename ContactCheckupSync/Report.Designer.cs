@@ -39,7 +39,8 @@
             this.btSearch = new System.Windows.Forms.Button();
             this.btExport = new System.Windows.Forms.Button();
             this.gvDefault = new System.Windows.Forms.DataGridView();
-            this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
+            this.pbDefault = new System.Windows.Forms.ProgressBar();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tbReport.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).BeginInit();
@@ -54,7 +55,7 @@
             this.tbReport.Controls.Add(this.lblDefault, 0, 1);
             this.tbReport.Controls.Add(this.tbSyncToMobileSearch, 0, 0);
             this.tbReport.Controls.Add(this.gvDefault, 0, 3);
-            this.tbReport.Controls.Add(this.pbSyncToMobile, 0, 2);
+            this.tbReport.Controls.Add(this.pbDefault, 0, 2);
             this.tbReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbReport.Location = new System.Drawing.Point(0, 0);
             this.tbReport.Margin = new System.Windows.Forms.Padding(0);
@@ -73,11 +74,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDefault.AutoSize = true;
-            this.lblDefault.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lblDefault.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(201)))), ((int)(((byte)(14)))));
+            this.lblDefault.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.lblDefault.Location = new System.Drawing.Point(3, 29);
             this.lblDefault.Name = "lblDefault";
             this.lblDefault.Padding = new System.Windows.Forms.Padding(5);
-            this.lblDefault.Size = new System.Drawing.Size(701, 23);
+            this.lblDefault.Size = new System.Drawing.Size(701, 27);
             this.lblDefault.TabIndex = 2;
             this.lblDefault.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
             this.lblDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -195,21 +197,25 @@
             this.gvDefault.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvDefault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvDefault.GridColor = System.Drawing.Color.Silver;
-            this.gvDefault.Location = new System.Drawing.Point(3, 81);
+            this.gvDefault.Location = new System.Drawing.Point(3, 85);
             this.gvDefault.MultiSelect = false;
             this.gvDefault.Name = "gvDefault";
             this.gvDefault.ShowEditingIcon = false;
-            this.gvDefault.Size = new System.Drawing.Size(701, 340);
+            this.gvDefault.Size = new System.Drawing.Size(701, 336);
             this.gvDefault.TabIndex = 1;
             // 
-            // pbSyncToMobile
+            // pbDefault
             // 
-            this.pbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbSyncToMobile.Location = new System.Drawing.Point(3, 55);
-            this.pbSyncToMobile.Name = "pbSyncToMobile";
-            this.pbSyncToMobile.Size = new System.Drawing.Size(701, 20);
-            this.pbSyncToMobile.TabIndex = 3;
-            this.pbSyncToMobile.Visible = false;
+            this.pbDefault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbDefault.Location = new System.Drawing.Point(3, 59);
+            this.pbDefault.Name = "pbDefault";
+            this.pbDefault.Size = new System.Drawing.Size(701, 20);
+            this.pbDefault.TabIndex = 3;
+            this.pbDefault.Visible = false;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // Report
             // 
@@ -244,6 +250,7 @@
         private System.Windows.Forms.Button btSearch;
         private System.Windows.Forms.Button btExport;
         private System.Windows.Forms.DataGridView gvDefault;
-        private System.Windows.Forms.ProgressBar pbSyncToMobile;
+        private System.Windows.Forms.ProgressBar pbDefault;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

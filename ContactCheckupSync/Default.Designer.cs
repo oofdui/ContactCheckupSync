@@ -44,15 +44,14 @@
             this.tbFooter = new System.Windows.Forms.TableLayoutPanel();
             this.lblCredit = new System.Windows.Forms.Label();
             this.lblFooter = new System.Windows.Forms.Label();
-            this.pnHR = new System.Windows.Forms.Panel();
             this.tbMenuTop = new System.Windows.Forms.TableLayoutPanel();
             this.btClose = new System.Windows.Forms.Button();
             this.btMove = new System.Windows.Forms.Button();
             this.btMinimize = new System.Windows.Forms.Button();
             this.btMaximize = new System.Windows.Forms.Button();
-            this.tbContent = new System.Windows.Forms.TableLayoutPanel();
-            this.pnDefault = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pnHR = new System.Windows.Forms.Panel();
+            this.pnDefault = new System.Windows.Forms.Panel();
             this.tbDefault.SuspendLayout();
             this.tbHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
@@ -60,7 +59,6 @@
             this.tbMenu.SuspendLayout();
             this.tbFooter.SuspendLayout();
             this.tbMenuTop.SuspendLayout();
-            this.tbContent.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbDefault
@@ -74,7 +72,7 @@
             this.tbDefault.Controls.Add(this.tbFooter, 0, 5);
             this.tbDefault.Controls.Add(this.pnHR, 0, 4);
             this.tbDefault.Controls.Add(this.tbMenuTop, 0, 0);
-            this.tbDefault.Controls.Add(this.tbContent, 0, 3);
+            this.tbDefault.Controls.Add(this.pnDefault, 0, 3);
             this.tbDefault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbDefault.Location = new System.Drawing.Point(1, 1);
             this.tbDefault.Margin = new System.Windows.Forms.Padding(0);
@@ -295,16 +293,6 @@
             this.lblFooter.TabIndex = 1;
             this.lblFooter.Text = "lblFooter";
             // 
-            // pnHR
-            // 
-            this.pnHR.BackColor = System.Drawing.Color.Silver;
-            this.pnHR.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnHR.Location = new System.Drawing.Point(0, 482);
-            this.pnHR.Margin = new System.Windows.Forms.Padding(0);
-            this.pnHR.Name = "pnHR";
-            this.pnHR.Size = new System.Drawing.Size(843, 1);
-            this.pnHR.TabIndex = 4;
-            // 
             // tbMenuTop
             // 
             this.tbMenuTop.AutoSize = true;
@@ -406,30 +394,25 @@
             this.btMaximize.UseVisualStyleBackColor = false;
             this.btMaximize.Click += new System.EventHandler(this.btMaximize_Click);
             // 
-            // tbContent
+            // pnHR
             // 
-            this.tbContent.AutoSize = true;
-            this.tbContent.ColumnCount = 1;
-            this.tbContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbContent.Controls.Add(this.pnDefault, 0, 0);
-            this.tbContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbContent.Location = new System.Drawing.Point(3, 132);
-            this.tbContent.Name = "tbContent";
-            this.tbContent.RowCount = 1;
-            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 347F));
-            this.tbContent.Size = new System.Drawing.Size(837, 347);
-            this.tbContent.TabIndex = 6;
+            this.pnHR.BackColor = System.Drawing.Color.Silver;
+            this.pnHR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnHR.Location = new System.Drawing.Point(0, 482);
+            this.pnHR.Margin = new System.Windows.Forms.Padding(0);
+            this.pnHR.Name = "pnHR";
+            this.pnHR.Size = new System.Drawing.Size(843, 1);
+            this.pnHR.TabIndex = 4;
             // 
             // pnDefault
             // 
-            this.pnDefault.AutoSize = true;
-            this.pnDefault.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnDefault.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnDefault.Location = new System.Drawing.Point(3, 3);
+            this.pnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnDefault.Location = new System.Drawing.Point(3, 132);
             this.pnDefault.Name = "pnDefault";
-            this.pnDefault.Size = new System.Drawing.Size(831, 341);
-            this.pnDefault.TabIndex = 1;
+            this.pnDefault.Size = new System.Drawing.Size(837, 347);
+            this.pnDefault.TabIndex = 6;
             // 
             // Default
             // 
@@ -457,8 +440,6 @@
             this.tbFooter.ResumeLayout(false);
             this.tbFooter.PerformLayout();
             this.tbMenuTop.ResumeLayout(false);
-            this.tbContent.ResumeLayout(false);
-            this.tbContent.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,7 +456,6 @@
         private System.Windows.Forms.TableLayoutPanel tbFooter;
         private System.Windows.Forms.Label lblCredit;
         private System.Windows.Forms.Label lblFooter;
-        private System.Windows.Forms.Panel pnHR;
         private System.Windows.Forms.TableLayoutPanel tbMenuTop;
         private System.Windows.Forms.Button btClose;
         private System.Windows.Forms.Button btMinimize;
@@ -483,11 +463,11 @@
         private System.Windows.Forms.Button btMaximize;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pbDefault;
-        private System.Windows.Forms.TableLayoutPanel tbContent;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button btCreateTable;
         private System.Windows.Forms.Button btClearData;
         private System.Windows.Forms.Button mnReport;
+        private System.Windows.Forms.Panel pnHR;
         private System.Windows.Forms.Panel pnDefault;
     }
 }

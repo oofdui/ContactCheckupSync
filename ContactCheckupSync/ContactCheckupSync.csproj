@@ -89,6 +89,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="SyncToMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SyncToMain.Designer.cs">
+      <DependentUpon>SyncToMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="SyncToMobile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report.resx">
       <DependentUpon>Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyncToMain.resx">
+      <DependentUpon>SyncToMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SyncToMobile.resx">
       <DependentUpon>SyncToMobile.cs</DependentUpon>

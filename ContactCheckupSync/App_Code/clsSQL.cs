@@ -1442,7 +1442,7 @@ public class clsSQL
                         myCmd_MySQL.Dispose();
                         result = true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         result = false;
                     }

@@ -105,13 +105,15 @@ public class clsTempData
         strSQL.Append("P.Line,");
         strSQL.Append("P.Shift,");
         strSQL.Append("P.Location Site,");
+        strSQL.Append("P.Payor,");
+        //strSQL.Append("P.BookCreate,");
         strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("(SELECT Count(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID) CountChecklistAll,");
         strSQL.Append("(SELECT Count(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=3) CountChecklistComplete,");
         strSQL.Append("(SELECT Count(RowID) FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) CountChecklistCancel,");
-        strSQL.Append("(SELECT GROUP_CONCAT(WorkFlow SEPARATOR ',') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus<>3) ProgramPending,");
-        strSQL.Append("(SELECT GROUP_CONCAT(WorkFlow SEPARATOR ',') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) ProgramCancel ");
+        strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus<>3) ProgramPending,");
+        strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) ProgramCancel ");
 
         strSQL.Append("FROM ");
         strSQL.Append("Patient P ");
@@ -343,6 +345,47 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         #endregion
         return dt;
     }
+    public DataTable getLabDetail(DateTime DOEFrom, DateTime DOETo)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var dt = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("P.No OrderNo,");
+        strSQL.Append("P.HN,");
+        strSQL.Append("P.EmployeeID,");
+        strSQL.Append("P.LabEpisode,");
+        strSQL.Append("CONCAT(P.Forename,' ',P.Surname) Name,");
+        strSQL.Append("P.POS Position,");
+        strSQL.Append("P.DEP Department,");
+        strSQL.Append("P.DIVI Division,");
+        strSQL.Append("P.SEC Section,");
+        strSQL.Append("P.Line,");
+        strSQL.Append("P.Shift,");
+        strSQL.Append("P.Location Site,");
+        strSQL.Append("P.Payor,");
+        //strSQL.Append("P.BookCreate,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=6 LIMIT 0,1) Blood,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=7 LIMIT 0,1) Urine,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=8 LIMIT 0,1) Stool,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode=P.LabEpisode AND WFID=9 LIMIT 0,1) HeavyMetal,");
+        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus>=2) RegisterDate ");
+
+        strSQL.Append("FROM ");
+        strSQL.Append("Patient P ");
+
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "');");
+        #endregion
+        dt = clsSQL.Bind(strSQL.ToString());
+        #endregion
+        return dt;
+    }
     public string getPatientNotHadChecklist()
     {
         #region Variable
@@ -464,6 +507,44 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("AND P.Company = '"+Company+"' ");
         strSQL.Append("GROUP BY DATE(RegDate) ");
         strSQL.Append("ORDER BY DATE(RegDate);");
+        #endregion
+        result = clsSQL.Bind(strSQL.ToString());
+        #endregion
+        return result;
+    }
+    public DataTable getPatientChecklistMobile()
+    {
+        #region Variable
+        var result = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("RowID,PatientGUID,HN,WorkFlow,WFID,ProStatus,ProStatusRemark,RegDate,ModifyDate,MWhen,MUser ");
+        strSQL.Append("FROM ");
+        strSQL.Append("patientchecklist;");
+        #endregion
+        result = clsSQL.Bind(strSQL.ToString());
+        #endregion
+        return result;
+    }
+    public DataTable getPatientChecklistMain(string RowID)
+    {
+        #region Variable
+        var result = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbTypeMain, clsGlobal.csMain);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("RowID,PatientUID,WFID,ProStatus,ProStatusRemark,RegDate,ModifyDate ");
+        strSQL.Append("FROM ");
+        strSQL.Append("tblCheckList ");
+        strSQL.Append("WHERE ");
+        strSQL.Append("RowID="+RowID.ToString()+";");
         #endregion
         result = clsSQL.Bind(strSQL.ToString());
         #endregion

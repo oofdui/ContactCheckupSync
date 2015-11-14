@@ -81,16 +81,23 @@ public class clsSQL
                 using (var myConn_SQL = new SqlConnection(csSQL))
                 using (var myDa_SQL = new SqlDataAdapter(QueryFilterByDatabaseType(strSQL), myConn_SQL))
                 {
-                    myDa_SQL.Fill(dt);
-                    myConn_SQL.Dispose();
-                    myDa_SQL.Dispose();
-                    if (dt.Rows.Count > 0 && dt != null)
-                    {
-                        return dt;
+                    if (myConn_SQL.IsConnected())
+                    { 
+                        myDa_SQL.Fill(dt);
+                        myConn_SQL.Dispose();
+                        myDa_SQL.Dispose();
+                        if (dt.Rows.Count > 0 && dt != null)
+                        {
+                            return dt;
+                        }
+                        else
+                        {
+                            dt.Dispose();
+                            return null;
+                        }
                     }
                     else
                     {
-                        dt.Dispose();
                         return null;
                     }
                 }
@@ -123,16 +130,23 @@ public class clsSQL
                 using(var myConn_MySQL = new MySql.Data.MySqlClient.MySqlConnection(csSQL))
                 using (var myDa_MySQL = new MySql.Data.MySqlClient.MySqlDataAdapter(QueryFilterByDatabaseType(strSQL), myConn_MySQL))
                 {
-                    myDa_MySQL.Fill(dt);
-                    myConn_MySQL.Dispose();
-                    myDa_MySQL.Dispose();
-                    if (dt.Rows.Count > 0 && dt != null)
+                    if (myConn_MySQL.IsConnected())
                     {
-                        return dt;
+                        myDa_MySQL.Fill(dt);
+                        myConn_MySQL.Dispose();
+                        myDa_MySQL.Dispose();
+                        if (dt.Rows.Count > 0 && dt != null)
+                        {
+                            return dt;
+                        }
+                        else
+                        {
+                            dt.Dispose();
+                            return null;
+                        }
                     }
                     else
                     {
-                        dt.Dispose();
                         return null;
                     }
                 }
@@ -1494,30 +1508,33 @@ public class clsSQL
             {
                 #region SQLServer
                 var myConn_SQL = new SqlConnection(csSQL);
-                var myCmd_SQL = new SqlCommand(QueryFilterByDatabaseType(strSQL), myConn_SQL);
+                if (myConn_SQL.IsConnected())
+                {
+                    var myCmd_SQL = new SqlCommand(QueryFilterByDatabaseType(strSQL), myConn_SQL);
 
-                for (i = 0; i < arrParameter.Length / arrParameter.Rank; i++)
-                {
-                    myCmd_SQL.Parameters.AddWithValue(arrParameter[i, 0], arrParameter[i, 1]);
-                }
+                    for (i = 0; i < arrParameter.Length / arrParameter.Rank; i++)
+                    {
+                        myCmd_SQL.Parameters.AddWithValue(arrParameter[i, 0], arrParameter[i, 1]);
+                    }
 
-                try
-                {
-                    myConn_SQL.Open();
-                    myCmd_SQL.ExecuteNonQuery();
-                    myConn_SQL.Close();
-                    myCmd_SQL.Dispose();
-                    result = true;
-                }
-                catch (Exception ex)
-                {
-                    outMessage = ex.Message;
-                    result = false;
-                }
-                finally
-                {
-                    myCmd_SQL.Dispose();
-                    myConn_SQL.Close();
+                    try
+                    {
+                        myConn_SQL.Open();
+                        myCmd_SQL.ExecuteNonQuery();
+                        myConn_SQL.Close();
+                        myCmd_SQL.Dispose();
+                        result = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        outMessage = ex.Message;
+                        result = false;
+                    }
+                    finally
+                    {
+                        myCmd_SQL.Dispose();
+                        myConn_SQL.Close();
+                    }
                 }
                 #endregion
             }
@@ -1556,30 +1573,33 @@ public class clsSQL
             {
                 #region MySQL
                 var myConn_MySQL = new MySql.Data.MySqlClient.MySqlConnection(csSQL);
-                var myCmd_MySQL = new MySql.Data.MySqlClient.MySqlCommand(QueryFilterByDatabaseType(strSQL), myConn_MySQL);
+                if (myConn_MySQL.IsConnected())
+                {
+                    var myCmd_MySQL = new MySql.Data.MySqlClient.MySqlCommand(QueryFilterByDatabaseType(strSQL), myConn_MySQL);
 
-                for (i = 0; i < arrParameter.Length / arrParameter.Rank; i++)
-                {
-                    myCmd_MySQL.Parameters.AddWithValue(arrParameter[i, 0], arrParameter[i, 1]);
-                }
+                    for (i = 0; i < arrParameter.Length / arrParameter.Rank; i++)
+                    {
+                        myCmd_MySQL.Parameters.AddWithValue(arrParameter[i, 0], arrParameter[i, 1]);
+                    }
 
-                try
-                {
-                    myConn_MySQL.Open();
-                    myCmd_MySQL.ExecuteNonQuery();
-                    myConn_MySQL.Close();
-                    myCmd_MySQL.Dispose();
-                    result = true;
-                }
-                catch (Exception ex)
-                {
-                    outMessage = ex.Message;
-                    result = false;
-                }
-                finally
-                {
-                    myCmd_MySQL.Dispose();
-                    myConn_MySQL.Close();
+                    try
+                    {
+                        myConn_MySQL.Open();
+                        myCmd_MySQL.ExecuteNonQuery();
+                        myConn_MySQL.Close();
+                        myCmd_MySQL.Dispose();
+                        result = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        outMessage = ex.Message;
+                        result = false;
+                    }
+                    finally
+                    {
+                        myCmd_MySQL.Dispose();
+                        myConn_MySQL.Close();
+                    }
                 }
                 #endregion
             }

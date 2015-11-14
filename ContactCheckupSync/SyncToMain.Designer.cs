@@ -33,13 +33,17 @@
             this.tbCommand = new System.Windows.Forms.TableLayoutPanel();
             this.btStart = new System.Windows.Forms.Button();
             this.btStop = new System.Windows.Forms.Button();
-            this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
+            this.pbDefault = new System.Windows.Forms.ProgressBar();
             this.anLoading = new System.Windows.Forms.PictureBox();
             this.lblDefault = new System.Windows.Forms.Label();
-            this.txtDetail = new System.Windows.Forms.TextBox();
             this.bwDefault = new System.ComponentModel.BackgroundWorker();
             this.tmDefault = new System.Windows.Forms.Timer(this.components);
             this.bwTimer = new System.ComponentModel.BackgroundWorker();
+            this.lvDefault = new System.Windows.Forms.ListView();
+            this.clWhen = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clResult = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clHN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clDetail = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tbDefault.SuspendLayout();
             this.tbCommand.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.anLoading)).BeginInit();
@@ -52,10 +56,10 @@
             this.tbDefault.ColumnCount = 1;
             this.tbDefault.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tbDefault.Controls.Add(this.tbCommand, 0, 0);
-            this.tbDefault.Controls.Add(this.pbSyncToMobile, 0, 4);
+            this.tbDefault.Controls.Add(this.pbDefault, 0, 4);
             this.tbDefault.Controls.Add(this.anLoading, 0, 1);
             this.tbDefault.Controls.Add(this.lblDefault, 0, 2);
-            this.tbDefault.Controls.Add(this.txtDetail, 0, 5);
+            this.tbDefault.Controls.Add(this.lvDefault, 0, 5);
             this.tbDefault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbDefault.Location = new System.Drawing.Point(0, 0);
             this.tbDefault.Margin = new System.Windows.Forms.Padding(0);
@@ -118,14 +122,14 @@
             this.btStop.UseVisualStyleBackColor = true;
             this.btStop.Click += new System.EventHandler(this.btStop_Click);
             // 
-            // pbSyncToMobile
+            // pbDefault
             // 
-            this.pbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbSyncToMobile.Location = new System.Drawing.Point(3, 131);
-            this.pbSyncToMobile.Name = "pbSyncToMobile";
-            this.pbSyncToMobile.Size = new System.Drawing.Size(704, 20);
-            this.pbSyncToMobile.TabIndex = 3;
-            this.pbSyncToMobile.Visible = false;
+            this.pbDefault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbDefault.Location = new System.Drawing.Point(3, 131);
+            this.pbDefault.Name = "pbDefault";
+            this.pbDefault.Size = new System.Drawing.Size(704, 20);
+            this.pbDefault.TabIndex = 3;
+            this.pbDefault.Visible = false;
             // 
             // anLoading
             // 
@@ -152,15 +156,6 @@
             this.lblDefault.Text = "- รอดำเนินการ -";
             this.lblDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtDetail
-            // 
-            this.txtDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDetail.Location = new System.Drawing.Point(3, 157);
-            this.txtDetail.Multiline = true;
-            this.txtDetail.Name = "txtDetail";
-            this.txtDetail.Size = new System.Drawing.Size(704, 257);
-            this.txtDetail.TabIndex = 6;
-            // 
             // bwDefault
             // 
             this.bwDefault.WorkerSupportsCancellation = true;
@@ -176,6 +171,39 @@
             this.bwTimer.WorkerSupportsCancellation = true;
             this.bwTimer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwTimer_DoWork);
             // 
+            // lvDefault
+            // 
+            this.lvDefault.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.clWhen,
+            this.clResult,
+            this.clHN,
+            this.clDetail});
+            this.lvDefault.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvDefault.Location = new System.Drawing.Point(3, 157);
+            this.lvDefault.Name = "lvDefault";
+            this.lvDefault.Size = new System.Drawing.Size(704, 257);
+            this.lvDefault.TabIndex = 6;
+            this.lvDefault.UseCompatibleStateImageBehavior = false;
+            this.lvDefault.View = System.Windows.Forms.View.Details;
+            // 
+            // clWhen
+            // 
+            this.clWhen.Text = "When";
+            // 
+            // clResult
+            // 
+            this.clResult.Text = "Result";
+            this.clResult.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // clHN
+            // 
+            this.clHN.Text = "HN";
+            this.clHN.Width = 100;
+            // 
+            // clDetail
+            // 
+            this.clDetail.Text = "Detail";
+            // 
             // SyncToMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -185,6 +213,7 @@
             this.Controls.Add(this.tbDefault);
             this.Name = "SyncToMain";
             this.Text = "SyncToMain";
+            this.Load += new System.EventHandler(this.SyncToMain_Load);
             this.tbDefault.ResumeLayout(false);
             this.tbDefault.PerformLayout();
             this.tbCommand.ResumeLayout(false);
@@ -201,12 +230,16 @@
         private System.Windows.Forms.TableLayoutPanel tbCommand;
         private System.Windows.Forms.Button btStart;
         private System.Windows.Forms.Button btStop;
-        private System.Windows.Forms.ProgressBar pbSyncToMobile;
+        private System.Windows.Forms.ProgressBar pbDefault;
         private System.Windows.Forms.PictureBox anLoading;
         private System.Windows.Forms.Label lblDefault;
-        private System.Windows.Forms.TextBox txtDetail;
         private System.ComponentModel.BackgroundWorker bwDefault;
         private System.Windows.Forms.Timer tmDefault;
         private System.ComponentModel.BackgroundWorker bwTimer;
+        private System.Windows.Forms.ListView lvDefault;
+        private System.Windows.Forms.ColumnHeader clWhen;
+        private System.Windows.Forms.ColumnHeader clResult;
+        private System.Windows.Forms.ColumnHeader clHN;
+        private System.Windows.Forms.ColumnHeader clDetail;
     }
 }

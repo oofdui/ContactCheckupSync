@@ -41,6 +41,7 @@
             this.gvDefault = new System.Windows.Forms.DataGridView();
             this.pbDefault = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btLabExport = new System.Windows.Forms.Button();
             this.tbReport.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).BeginInit();
@@ -65,7 +66,7 @@
             this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbReport.Size = new System.Drawing.Size(707, 424);
+            this.tbReport.Size = new System.Drawing.Size(826, 424);
             this.tbReport.TabIndex = 2;
             // 
             // lblDefault
@@ -79,7 +80,7 @@
             this.lblDefault.Location = new System.Drawing.Point(3, 29);
             this.lblDefault.Name = "lblDefault";
             this.lblDefault.Padding = new System.Windows.Forms.Padding(5);
-            this.lblDefault.Size = new System.Drawing.Size(701, 27);
+            this.lblDefault.Size = new System.Drawing.Size(820, 27);
             this.lblDefault.TabIndex = 2;
             this.lblDefault.Text = "- โปรดเลือกช่วงวัน และ บริษัทก่อน -";
             this.lblDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -88,12 +89,13 @@
             // 
             this.tbSyncToMobileSearch.AutoSize = true;
             this.tbSyncToMobileSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tbSyncToMobileSearch.ColumnCount = 7;
+            this.tbSyncToMobileSearch.ColumnCount = 8;
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.Controls.Add(this.label1, 0, 0);
@@ -103,13 +105,14 @@
             this.tbSyncToMobileSearch.Controls.Add(this.ddlCompany, 4, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.btSearch, 5, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.btExport, 6, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.btLabExport, 7, 0);
             this.tbSyncToMobileSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbSyncToMobileSearch.Location = new System.Drawing.Point(0, 0);
             this.tbSyncToMobileSearch.Margin = new System.Windows.Forms.Padding(0);
             this.tbSyncToMobileSearch.Name = "tbSyncToMobileSearch";
             this.tbSyncToMobileSearch.RowCount = 1;
             this.tbSyncToMobileSearch.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tbSyncToMobileSearch.Size = new System.Drawing.Size(707, 29);
+            this.tbSyncToMobileSearch.Size = new System.Drawing.Size(826, 29);
             this.tbSyncToMobileSearch.TabIndex = 0;
             // 
             // label1
@@ -163,13 +166,13 @@
             this.ddlCompany.FormattingEnabled = true;
             this.ddlCompany.Location = new System.Drawing.Point(333, 3);
             this.ddlCompany.Name = "ddlCompany";
-            this.ddlCompany.Size = new System.Drawing.Size(209, 21);
+            this.ddlCompany.Size = new System.Drawing.Size(247, 21);
             this.ddlCompany.TabIndex = 2;
             // 
             // btSearch
             // 
             this.btSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.btSearch.Location = new System.Drawing.Point(548, 3);
+            this.btSearch.Location = new System.Drawing.Point(586, 3);
             this.btSearch.Name = "btSearch";
             this.btSearch.Size = new System.Drawing.Size(75, 23);
             this.btSearch.TabIndex = 3;
@@ -181,7 +184,7 @@
             // 
             this.btExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.btExport.Enabled = false;
-            this.btExport.Location = new System.Drawing.Point(629, 3);
+            this.btExport.Location = new System.Drawing.Point(667, 3);
             this.btExport.Name = "btExport";
             this.btExport.Size = new System.Drawing.Size(75, 23);
             this.btExport.TabIndex = 4;
@@ -201,7 +204,7 @@
             this.gvDefault.MultiSelect = false;
             this.gvDefault.Name = "gvDefault";
             this.gvDefault.ShowEditingIcon = false;
-            this.gvDefault.Size = new System.Drawing.Size(701, 336);
+            this.gvDefault.Size = new System.Drawing.Size(820, 336);
             this.gvDefault.TabIndex = 1;
             // 
             // pbDefault
@@ -209,7 +212,7 @@
             this.pbDefault.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbDefault.Location = new System.Drawing.Point(3, 59);
             this.pbDefault.Name = "pbDefault";
-            this.pbDefault.Size = new System.Drawing.Size(701, 20);
+            this.pbDefault.Size = new System.Drawing.Size(820, 20);
             this.pbDefault.TabIndex = 3;
             this.pbDefault.Visible = false;
             // 
@@ -217,16 +220,28 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
+            // btLabExport
+            // 
+            this.btLabExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btLabExport.Location = new System.Drawing.Point(748, 3);
+            this.btLabExport.Name = "btLabExport";
+            this.btLabExport.Size = new System.Drawing.Size(75, 23);
+            this.btLabExport.TabIndex = 4;
+            this.btLabExport.Text = "LabExport";
+            this.btLabExport.UseVisualStyleBackColor = true;
+            this.btLabExport.Click += new System.EventHandler(this.btLabExport_Click);
+            // 
             // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(707, 424);
+            this.ClientSize = new System.Drawing.Size(826, 424);
             this.Controls.Add(this.tbReport);
             this.Name = "Report";
             this.Text = "Report";
+            this.Load += new System.EventHandler(this.Report_Load);
             this.tbReport.ResumeLayout(false);
             this.tbReport.PerformLayout();
             this.tbSyncToMobileSearch.ResumeLayout(false);
@@ -252,5 +267,6 @@
         private System.Windows.Forms.DataGridView gvDefault;
         private System.Windows.Forms.ProgressBar pbDefault;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button btLabExport;
     }
 }

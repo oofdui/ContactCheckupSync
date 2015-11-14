@@ -17,6 +17,16 @@ namespace _ContactCheckupSync
         {
             InitializeComponent();
         }
+        private void Report_Load(object sender, EventArgs e)
+        {
+            var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+            if (!clsSQL.IsConnected())
+            {
+                MessageBox.Show("ไม่สามารถเชื่อมต่อฐานข้อมูล Mobile ได้", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dtDOEFrom.Enabled = false;dtDOETo.Enabled = false;btSearch.Enabled = false;btExport.Enabled = false;ddlCompany.Enabled = false;
+                return;
+            }
+        }
         private void dtDOEFrom_ValueChanged(object sender, EventArgs e)
         {
             setCompany();
@@ -95,6 +105,10 @@ namespace _ContactCheckupSync
         {
             backgroundWorker1.RunWorkerAsync();
         }
+        private void btLabExport_Click(object sender, EventArgs e)
+        {
+            ExportLab();
+        }
         private void setCompany()
         {
             #region Variable
@@ -141,6 +155,7 @@ namespace _ContactCheckupSync
                 {
                     var rows = 1;
                     #region Summary
+                    /*
                     try
                     {
                         ExcelWorksheet worksheetSummary = package.Workbook.Worksheets.Add("Summary");
@@ -367,6 +382,7 @@ namespace _ContactCheckupSync
                     {
                         MessageBox.Show(exDetail.Message, "Summary", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    */
                     #endregion
                     if (pbDefault.InvokeRequired)
                     {
@@ -674,6 +690,86 @@ namespace _ContactCheckupSync
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Export Click", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void ExportLab()
+        {
+            try
+            {
+                var clsTempData = new clsTempData();
+                var FileName = clsGlobal.ExecutePathBuilder() + @"Export\" + "LabAll" + "_" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm") + ".xlsx";
+                var dt = new DataTable();
+                FileInfo newFile = new FileInfo(FileName);
+                if (newFile.Exists)
+                {
+                    newFile.Delete();
+                    newFile = new FileInfo(FileName);
+                }
+                using (ExcelPackage package = new ExcelPackage(newFile))
+                {
+                    var rows = 1;
+                    #region LabDetail
+                    try
+                    {
+                        ExcelWorksheet worksheetLabDetail = package.Workbook.Worksheets.Add("LabAll");
+                        dt = null; rows = 1;
+                        dt = clsTempData.getLabDetail(dtDOEFrom.Value, dtDOETo.Value);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            #region HeaderBuilder
+                            int c;
+                            for (c = 0; c <= dt.Columns.Count - 1; c++)
+                            {
+                                worksheetLabDetail.Cells[rows, c + 1].Value = dt.Columns[c].ColumnName;
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Font.Bold = true;
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Font.Size = 12;
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
+                                worksheetLabDetail.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
+                                worksheetLabDetail.Cells[rows, c + 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                                worksheetLabDetail.Cells[rows, c + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                            }
+                            #endregion
+                            #region RowsBuilder
+                            for (int r = 0; r < dt.Rows.Count; r++)
+                            {
+                                for (c = 0; c < dt.Columns.Count; c++)
+                                {
+                                    worksheetLabDetail.Cells[rows + r + 1, c + 1].Value = dt.Rows[r][c].ToString();
+                                    worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
+                                    worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                }
+                            }
+                            #endregion
+                            #region ResizeColumn
+                            for (c = 0; c < dt.Columns.Count; c++)
+                            {
+                                worksheetLabDetail.Column(c + 1).AutoFit();
+                            }
+                            #endregion
+                        }
+                    }
+                    catch (Exception exDetail)
+                    {
+                        MessageBox.Show(exDetail.Message, "LabDetail", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    #endregion
+                    package.Save();
+                    DialogResult dr = MessageBox.Show("Export Seccessful!" + Environment.NewLine + Environment.NewLine + FileName + Environment.NewLine + Environment.NewLine + "ต้องการดูไฟล์คลิก Yes", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dr == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            System.Diagnostics.Process.Start(Path.GetDirectoryName(FileName));
+                        }
+                        catch (Exception) { }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ExportLab Click", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private string getDropDownListValue(ComboBox ddlName, String columnName)

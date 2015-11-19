@@ -37,69 +37,7 @@ namespace _ContactCheckupSync
         }
         private void btSearch_Click(object sender, EventArgs e)
         {
-            #region Variable
-            var dt = new DataTable();
-            var clsTempData = new clsTempData();
-            #endregion
-            #region Procedure
-            dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                btExport.Enabled = true;
-                lblDefault.Text = "";
-                #region AddColumns
-                dt.Columns.Add("Summary", typeof(string));
-                dt.Columns.Add("Remark", typeof(string));
-                dt.Columns.Add("RemarkCancel", typeof(string));
-                #endregion
-                #region FillData
-                for(int i = 0; i < dt.Rows.Count; i++)
-                {
-                    if (dt.Rows[i]["CountChecklistAll"].ToString()!="0" && dt.Rows[i]["CountChecklistAll"].ToString() == dt.Rows[i]["CountChecklistComplete"].ToString())
-                    {
-                        dt.Rows[i]["Summary"] = "ตรวจแล้ว";
-                        dt.Rows[i]["Remark"] = "ตรวจครบทุกรายการ";
-                    }
-                    else if (dt.Rows[i]["CountChecklistComplete"].ToString()!="0" && dt.Rows[i]["CountChecklistAll"].ToString()!= dt.Rows[i]["CountChecklistComplete"].ToString())
-                    {
-                        dt.Rows[i]["Summary"] = "ตรวจแล้ว-มีค้างตรวจ";
-                        dt.Rows[i]["Remark"] = dt.Rows[i]["ProgramPending"];
-                    }
-                    else if (dt.Rows[i]["CountChecklistComplete"].ToString() == "0" && dt.Rows[i]["CountChecklistAll"].ToString()!="0")
-                    {
-                        dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
-                        dt.Rows[i]["Remark"] = "";
-                    }
-                    else
-                    {
-                        dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
-                        dt.Rows[i]["Remark"] = "";
-                    }
-                    if (dt.Rows[i]["ProgramCancel"].ToString() != "")
-                    {
-                        dt.Rows[i]["RemarkCancel"] = dt.Rows[i]["ProgramCancel"].ToString();
-                    }
-                }
-                dt.AcceptChanges();
-                #endregion
-                #region RemoveColumn
-                string[] columns = { "CountChecklistAll","CountChecklistComplete","CountChecklistCancel","ProgramPending","ProgramCancel"};
-                for (int i = 0; i < columns.Length; i++)
-                {
-                    dt.Columns.Remove(columns[i]);
-                }
-                dt.AcceptChanges();
-                #endregion
-                clsGlobal.dtPatient = dt.Copy();
-                gvDefault.DataSource = dt;
-                lblDefault.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ", dt.Rows.Count.ToString());
-            }
-            else
-            {
-                clsGlobal.dtPatient = null; btExport.Enabled = false;
-                lblDefault.Text = "- ไม่พบข้อมูลที่ต้องการ -";
-            }
-            #endregion
+            wbSearch.RunWorkerAsync();
         }
         private void btExport_Click(object sender, EventArgs e)
         {
@@ -772,6 +710,127 @@ namespace _ContactCheckupSync
                 MessageBox.Show(ex.Message, "ExportLab Click", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void Search()
+        {
+            #region Variable
+            var dt = new DataTable();
+            var clsTempData = new clsTempData();
+            var SyncStatus = "";
+            #endregion
+            #region Procedure
+            dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dt.Columns.Remove("PatientGUID");
+                if (btExport.InvokeRequired)
+                {
+                    btExport.Invoke(new MethodInvoker(delegate
+                    {
+                        btExport.Enabled = true;
+                    }));
+                }
+                if (lblDefault.InvokeRequired)
+                {
+                    lblDefault.Invoke(new MethodInvoker(delegate
+                    {
+                        lblDefault.Text = "";
+                    }));
+                }
+                #region AddColumns
+                dt.Columns.Add("Summary", typeof(string));
+                dt.Columns.Add("Remark", typeof(string));
+                dt.Columns.Add("RemarkCancel", typeof(string));
+                #endregion
+                #region FillData
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (dt.Rows[i]["CountChecklistAll"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() == dt.Rows[i]["CountChecklistComplete"].ToString())
+                    {
+                        dt.Rows[i]["Summary"] = "ตรวจแล้ว";
+                        dt.Rows[i]["Remark"] = "ตรวจครบทุกรายการ";
+                    }
+                    else if (dt.Rows[i]["CountChecklistComplete"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() != dt.Rows[i]["CountChecklistComplete"].ToString())
+                    {
+                        dt.Rows[i]["Summary"] = "ตรวจแล้ว-มีค้างตรวจ";
+                        dt.Rows[i]["Remark"] = dt.Rows[i]["ProgramPending"];
+                    }
+                    else if (dt.Rows[i]["CountChecklistComplete"].ToString() == "0" && dt.Rows[i]["CountChecklistAll"].ToString() != "0")
+                    {
+                        dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
+                        dt.Rows[i]["Remark"] = "";
+                    }
+                    else
+                    {
+                        dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
+                        dt.Rows[i]["Remark"] = "";
+                    }
+                    if (dt.Rows[i]["ProgramCancel"].ToString() != "")
+                    {
+                        dt.Rows[i]["RemarkCancel"] = dt.Rows[i]["ProgramCancel"].ToString();
+                    }
+                }
+                dt.AcceptChanges();
+                #endregion
+                #region RemoveColumn
+                string[] columns = { "CountChecklistAll", "CountChecklistComplete", "CountChecklistCancel", "ProgramPending", "ProgramCancel" };
+                for (int i = 0; i < columns.Length; i++)
+                {
+                    dt.Columns.Remove(columns[i]);
+                }
+                dt.AcceptChanges();
+                #endregion
+                clsGlobal.dtPatient = dt.Copy();
+                clsGlobal.dtPatient.Columns.Remove("SyncWhen");
+                clsGlobal.dtPatient.Columns.Remove("SyncStatus");
+                if (gvDefault.InvokeRequired)
+                {
+                    gvDefault.Invoke(new MethodInvoker(delegate
+                    {
+                        gvDefault.DataSource = dt;
+                        #region HighlightSync
+                        for (int i = 0; i < gvDefault.Rows.Count; i++)
+                        { 
+                            if(gvDefault.Rows[i].Cells["SyncStatus"].Value!= null)
+                            { 
+                                SyncStatus = gvDefault.Rows[i].Cells["SyncStatus"].Value.ToString().Trim();
+                            }
+                            else { SyncStatus = "0"; }
+                            if (SyncStatus == "1")
+                            {
+                                gvDefault.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FFDD68");
+                            }
+                        }
+                        #endregion
+                    }));
+                }
+                if (lblDefault.InvokeRequired)
+                {
+                    lblDefault.Invoke(new MethodInvoker(delegate
+                    {
+                        lblDefault.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ", dt.Rows.Count.ToString());
+                    }));
+                }
+            }
+            else
+            {
+                clsGlobal.dtPatient = null;
+                if (btExport.InvokeRequired)
+                {
+                    btExport.Invoke(new MethodInvoker(delegate
+                    {
+                        btExport.Enabled = false;
+                    }));
+                }
+                if (lblDefault.InvokeRequired)
+                {
+                    lblDefault.Invoke(new MethodInvoker(delegate
+                    {
+                        lblDefault.Text = "- ไม่พบข้อมูลที่ต้องการ -";
+                    }));
+                }
+            }
+            #endregion
+        }
         private string getDropDownListValue(ComboBox ddlName, String columnName)
         {
             #region Variable
@@ -829,6 +888,74 @@ namespace _ContactCheckupSync
                 lblDefault.Invoke(new MethodInvoker(delegate
                 {
                     lblDefault.Text = "สร้างรายงานเสร็จสิ้น";
+                }));
+            }
+        }
+
+        private void wsSearch_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (btSearch.InvokeRequired)
+            {
+                btSearch.Invoke(new MethodInvoker(delegate
+                {
+                    btSearch.Enabled = false;
+                }));
+            }
+            if (btExport.InvokeRequired)
+            {
+                btExport.Invoke(new MethodInvoker(delegate
+                {
+                    btExport.Enabled = false;
+                }));
+            }
+            if (btLabExport.InvokeRequired)
+            {
+                btLabExport.Invoke(new MethodInvoker(delegate
+                {
+                    btLabExport.Enabled = false;
+                }));
+            }
+            if (anWaiting.InvokeRequired)
+            {
+                anWaiting.Invoke(new MethodInvoker(delegate
+                {
+                    anWaiting.Visible = true;
+                }));
+            }
+            if (lblDefault.InvokeRequired)
+            {
+                lblDefault.Invoke(new MethodInvoker(delegate
+                {
+                    lblDefault.Text = "กำลังทำการค้นหา...";
+                }));
+            }
+            Search();
+            if (btSearch.InvokeRequired)
+            {
+                btSearch.Invoke(new MethodInvoker(delegate
+                {
+                    btSearch.Enabled = true;
+                }));
+            }
+            if (anWaiting.InvokeRequired)
+            {
+                anWaiting.Invoke(new MethodInvoker(delegate
+                {
+                    anWaiting.Visible = false;
+                }));
+            }
+            if (btExport.InvokeRequired)
+            {
+                btExport.Invoke(new MethodInvoker(delegate
+                {
+                    btExport.Enabled = true;
+                }));
+            }
+            if (btLabExport.InvokeRequired)
+            {
+                btLabExport.Invoke(new MethodInvoker(delegate
+                {
+                    btLabExport.Enabled = true;
                 }));
             }
         }

@@ -41,9 +41,12 @@
             this.gvSyncToMobile = new System.Windows.Forms.DataGridView();
             this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
             this.backgroundWorkerSyncToMobile = new System.ComponentModel.BackgroundWorker();
+            this.anWaiting = new System.Windows.Forms.PictureBox();
+            this.wbSearch = new System.ComponentModel.BackgroundWorker();
             this.tbSyncToMobile.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anWaiting)).BeginInit();
             this.SuspendLayout();
             // 
             // tbSyncToMobile
@@ -54,17 +57,20 @@
             this.tbSyncToMobile.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tbSyncToMobile.Controls.Add(this.lblSyncToMobile, 0, 1);
             this.tbSyncToMobile.Controls.Add(this.tbSyncToMobileSearch, 0, 0);
-            this.tbSyncToMobile.Controls.Add(this.gvSyncToMobile, 0, 3);
+            this.tbSyncToMobile.Controls.Add(this.gvSyncToMobile, 0, 4);
             this.tbSyncToMobile.Controls.Add(this.pbSyncToMobile, 0, 2);
+            this.tbSyncToMobile.Controls.Add(this.anWaiting, 0, 3);
             this.tbSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbSyncToMobile.Location = new System.Drawing.Point(0, 0);
             this.tbSyncToMobile.Margin = new System.Windows.Forms.Padding(0);
             this.tbSyncToMobile.Name = "tbSyncToMobile";
-            this.tbSyncToMobile.RowCount = 4;
+            this.tbSyncToMobile.RowCount = 5;
+            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbSyncToMobile.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tbSyncToMobile.Size = new System.Drawing.Size(746, 402);
             this.tbSyncToMobile.TabIndex = 1;
             // 
@@ -199,11 +205,11 @@
             this.gvSyncToMobile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvSyncToMobile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvSyncToMobile.GridColor = System.Drawing.Color.Silver;
-            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 85);
+            this.gvSyncToMobile.Location = new System.Drawing.Point(3, 155);
             this.gvSyncToMobile.MultiSelect = false;
             this.gvSyncToMobile.Name = "gvSyncToMobile";
             this.gvSyncToMobile.ShowEditingIcon = false;
-            this.gvSyncToMobile.Size = new System.Drawing.Size(740, 314);
+            this.gvSyncToMobile.Size = new System.Drawing.Size(740, 244);
             this.gvSyncToMobile.TabIndex = 1;
             // 
             // pbSyncToMobile
@@ -218,6 +224,24 @@
             // backgroundWorkerSyncToMobile
             // 
             this.backgroundWorkerSyncToMobile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerSyncToMobile_DoWork);
+            // 
+            // anWaiting
+            // 
+            this.anWaiting.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.anWaiting.Image = global::_ContactCheckupSync.Properties.Resources.anLoading;
+            this.anWaiting.Location = new System.Drawing.Point(3, 85);
+            this.anWaiting.Name = "anWaiting";
+            this.anWaiting.Size = new System.Drawing.Size(740, 64);
+            this.anWaiting.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.anWaiting.TabIndex = 4;
+            this.anWaiting.TabStop = false;
+            this.anWaiting.Visible = false;
+            // 
+            // wbSearch
+            // 
+            this.wbSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wbSearch_DoWork);
             // 
             // SyncToMobile
             // 
@@ -236,6 +260,7 @@
             this.tbSyncToMobileSearch.ResumeLayout(false);
             this.tbSyncToMobileSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvSyncToMobile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anWaiting)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -256,5 +281,7 @@
         private System.Windows.Forms.DataGridView gvSyncToMobile;
         private System.Windows.Forms.ProgressBar pbSyncToMobile;
         private System.ComponentModel.BackgroundWorker backgroundWorkerSyncToMobile;
+        private System.Windows.Forms.PictureBox anWaiting;
+        private System.ComponentModel.BackgroundWorker wbSearch;
     }
 }

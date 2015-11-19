@@ -208,11 +208,33 @@ namespace _ContactCheckupSync
                             tblPatientListSTS = clsSQLMain.Return("SELECT STS FROM tblPatientList WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';");
                             if (tblPatientListSTS != "R")
                             {
-                                if(clsSQLMain.Execute("UPDATE tblPatientList SET STS='R',SyncWhen=GETDATE() WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';"))
+                                if(clsSQLMain.Execute("UPDATE tblPatientList SET STS='R',SyncWhen=GETDATE() WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';UPDATE Patient SET SyncStatus='1',SyncWhen=GETDATE() WHERE rowguid='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';"))
                                 {
                                     countSuccess += 1;
                                     ListViewBuilder(lvDefault, Color.Green, 99,
                                         new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update tblPatientList.STS Complete." });
+                                    #region UpdateSyncStatus
+                                    if (clsSQLMobile.Update(
+                                        "patient",
+                                        new string[,]
+                                        {
+                                            {"SyncStatus","'1'" },
+                                            {"SyncWhen","SYSDATE()" }
+                                        },
+                                        new string[,] { { } },
+                                        "PatientGUID='" + dtMobile.Rows[i]["PatientGUID"].ToString() + "'",
+                                        out outSQL, true
+                                        ))
+                                    {
+                                        ListViewBuilder(lvDefault, Color.Green, 99,
+                                            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Complete." });
+                                    }
+                                    else
+                                    {
+                                        ListViewBuilder(lvDefault, Color.Red, 99,
+                                            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Fail." });
+                                    }
+                                    #endregion
                                 }
                                 else
                                 {
@@ -261,10 +283,13 @@ namespace _ContactCheckupSync
                                 }
                                 #endregion
                             }
+                        }
+                        else
+                        {
                             #region LogUpdate
-                            countDuplicate += 1;
-                            ListViewBuilder(lvDefault, Color.Blue, 99,
-                                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "NoChange", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() });
+                            //countDuplicate += 1;
+                            //ListViewBuilder(lvDefault, Color.Blue, 99,
+                            //            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "NoChange", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() });
                             #endregion
                         }
                         #region ProgressBar

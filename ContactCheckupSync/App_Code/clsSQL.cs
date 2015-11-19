@@ -82,7 +82,8 @@ public class clsSQL
                 using (var myDa_SQL = new SqlDataAdapter(QueryFilterByDatabaseType(strSQL), myConn_SQL))
                 {
                     if (myConn_SQL.IsConnected())
-                    { 
+                    {
+                        myDa_SQL.SelectCommand.CommandTimeout = 0;
                         myDa_SQL.Fill(dt);
                         myConn_SQL.Dispose();
                         myDa_SQL.Dispose();
@@ -132,6 +133,7 @@ public class clsSQL
                 {
                     if (myConn_MySQL.IsConnected())
                     {
+                        myDa_MySQL.SelectCommand.CommandTimeout = 0;
                         myDa_MySQL.Fill(dt);
                         myConn_MySQL.Dispose();
                         myDa_MySQL.Dispose();

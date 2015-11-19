@@ -78,16 +78,31 @@ namespace _ContactCheckupSync
         }
         private void btSearch_Click(object sender, EventArgs e)
         {
+            wbSearch.RunWorkerAsync();
+        }
+        private void btSync_Click(object sender, EventArgs e)
+        {
+            backgroundWorkerSyncToMobile.RunWorkerAsync();
+        }
+        private void Search()
+        {
             #region Variable
             var dt = new DataTable();
             var clsTempData = new clsTempData();
             #endregion
             #region Procedure
-            dt = clsTempData.getPatient(dtDOEFrom.Value, dtDOETo.Value, clsTempData.getDropDownListValue(ddlCompany, "Company"));
+            dt = clsTempData.getPatient(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
             if (dt != null && dt.Rows.Count > 0)
             {
-                clsGlobal.dtPatient = dt.Copy(); btSync.Enabled = true;
-                lblSyncToMobile.Text = "";
+                clsGlobal.dtPatient = dt.Copy();
+                if (btSync.InvokeRequired)
+                {
+                    btSync.Invoke(new MethodInvoker(delegate
+                    {
+                        btSync.Enabled = true;
+                    }));
+                }
+                //lblSyncToMobile.Text = "";
                 #region RemoveColumn
                 string[] columns = { "PatientGUID", "LabEpisode", "Address", "Tel", "Email", "Physician", "RegType", "Programid", "DIVI", "DEP", "SEC", "POS", "LAN", "NAT", "CNT_TRY", "LOC", "Payor", "Epi_Rowid", "ORD_STS", "STS", "DR_CDE", "NTE", "Job", "BusUnit", "BusDiv", "Line", "Shift", "Location", "GrpBook", "HISExist" };
                 for (int i = 0; i < columns.Length; i++)
@@ -96,19 +111,40 @@ namespace _ContactCheckupSync
                 }
                 dt.AcceptChanges();
                 #endregion
-                gvSyncToMobile.DataSource = dt;
-                lblSyncToMobile.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ", dt.Rows.Count.ToString());
+                if (gvSyncToMobile.InvokeRequired)
+                {
+                    gvSyncToMobile.Invoke(new MethodInvoker(delegate
+                    {
+                        gvSyncToMobile.DataSource = dt;
+                    }));
+                }
+                if (lblSyncToMobile.InvokeRequired)
+                {
+                    lblSyncToMobile.Invoke(new MethodInvoker(delegate
+                    {
+                        lblSyncToMobile.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ", dt.Rows.Count.ToString());
+                    }));
+                }
             }
             else
             {
-                clsGlobal.dtPatient = null; btSync.Enabled = false;
-                lblSyncToMobile.Text = "- ไม่พบข้อมูลที่ต้องการ -";
+                clsGlobal.dtPatient = null;
+                if (btSync.InvokeRequired)
+                {
+                    btSync.Invoke(new MethodInvoker(delegate
+                    {
+                        btSync.Enabled = false;
+                    }));
+                }
+                if (lblSyncToMobile.InvokeRequired)
+                {
+                    lblSyncToMobile.Invoke(new MethodInvoker(delegate
+                    {
+                        lblSyncToMobile.Text = "- ไม่พบข้อมูลที่ต้องการ -";
+                    }));
+                }
             }
             #endregion
-        }
-        private void btSync_Click(object sender, EventArgs e)
-        {
-            backgroundWorkerSyncToMobile.RunWorkerAsync();
         }
         public void setProgressBarSyncToMobile(int value, int maximumValue)
         {
@@ -320,6 +356,8 @@ namespace _ContactCheckupSync
                             {"Location","'"+dt.Rows[i]["Location"].ToString().SQLQueryFilter()+"'" },
                             {"GrpBook","'"+dt.Rows[i]["GrpBook"].ToString().SQLQueryFilter()+"'" },
                             {"HISExist","'"+dt.Rows[i]["HISExist"].ToString().SQLQueryFilter()+"'" },
+                            {"SyncStatus",(dt.Rows[i]["SyncStatus"]!=DBNull.Value?"'"+dt.Rows[i]["SyncStatus"].ToString()+"'":"'0'") },
+                            {"SyncWhen",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["SyncWhen"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
                             {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
                             {"StatusFlag","'A'" }
                                 },
@@ -414,6 +452,8 @@ namespace _ContactCheckupSync
                             {"ProStatus",dt.Rows[i]["ProStatus"].ToString() },
                             {"RegDate","NULL" },
                             {"ModifyDate","NULL" },
+                            {"SyncStatus",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'1'":"'0'") },
+                            {"SyncWhen",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["SyncWhen"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
                             {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
                             {"MWhen","NOW()" },
                             {"MUser","'"+clsGlobal.WindowsLogon()+"'" },
@@ -435,6 +475,87 @@ namespace _ContactCheckupSync
             }
             #endregion
             return result;
+        }
+        private string getDropDownListValue(ComboBox ddlName, String columnName)
+        {
+            #region Variable
+            var result = "";
+            #endregion
+            #region Procedure
+            try
+            {
+                if (ddlName.InvokeRequired)
+                {
+                    ddlName.Invoke(new MethodInvoker(delegate
+                    {
+                        var drv = (DataRowView)ddlName.SelectedItem;
+                        var dr = drv.Row;
+                        result = dr[columnName].ToString();
+                    }));
+                }
+                else
+                {
+                    var drv = (DataRowView)ddlName.SelectedItem;
+                    var dr = drv.Row;
+                    result = dr[columnName].ToString();
+                }
+            }
+            catch (Exception) { }
+            #endregion
+            return result;
+        }
+        private void wbSearch_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (btSearch.InvokeRequired)
+            {
+                btSearch.Invoke(new MethodInvoker(delegate
+                {
+                    btSearch.Enabled = false;
+                }));
+            }
+            if (btSync.InvokeRequired)
+            {
+                btSync.Invoke(new MethodInvoker(delegate
+                {
+                    btSync.Enabled = false;
+                }));
+            }
+            if (anWaiting.InvokeRequired)
+            {
+                anWaiting.Invoke(new MethodInvoker(delegate
+                {
+                    anWaiting.Visible = true;
+                }));
+            }
+            if (lblSyncToMobile.InvokeRequired)
+            {
+                lblSyncToMobile.Invoke(new MethodInvoker(delegate
+                {
+                    lblSyncToMobile.Text = "กำลังค้นหาข้อมูล...";
+                }));
+            }
+            Search();
+            if (btSearch.InvokeRequired)
+            {
+                btSearch.Invoke(new MethodInvoker(delegate
+                {
+                    btSearch.Enabled = true;
+                }));
+            }
+            if (btSync.InvokeRequired)
+            {
+                btSync.Invoke(new MethodInvoker(delegate
+                {
+                    btSync.Enabled = true;
+                }));
+            }
+            if (anWaiting.InvokeRequired)
+            {
+                anWaiting.Invoke(new MethodInvoker(delegate
+                {
+                    anWaiting.Visible = false;
+                }));
+            }
         }
     }
 }

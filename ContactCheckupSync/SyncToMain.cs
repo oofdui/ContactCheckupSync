@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ namespace _ContactCheckupSync
         int syncTimerSecond = int.Parse(System.Configuration.ConfigurationManager.AppSettings["syncTimerSecond"]);
         int syncTimerTryAgainSecond = int.Parse(System.Configuration.ConfigurationManager.AppSettings["syncTimerTryAgainSecond"]);
         int syncTimerSecondCount = 0;
+        string pathSync = System.Configuration.ConfigurationManager.AppSettings["pathSync"];
+        string pathSyncLocal=clsGlobal.ExecutePathBuilder()+@"Sync\";
         #endregion
         public SyncToMain()
         {
@@ -23,6 +26,8 @@ namespace _ContactCheckupSync
         private void SyncToMain_Load(object sender, EventArgs e)
         {
             lblDefault.Text = "";
+            tmDefault.Enabled = true;
+            tmDefault.Start();
         }
         private void btStart_Click(object sender, EventArgs e)
         {
@@ -154,10 +159,6 @@ namespace _ContactCheckupSync
                 }));
             }
             #endregion
-            StartSyncToMain();
-        }
-        private void StartSyncToMain()
-        {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             #region Variable
             var clsTempData = new clsTempData();
@@ -166,168 +167,301 @@ namespace _ContactCheckupSync
             var dtMobile = new DataTable();
             var dtMain = new DataTable();
             var tblPatientListSTS = "";
+            var tblPatientStatusOnMobile = "";
             var outSQL = "";
             var outMessage = "";
-            var countSuccess = 0;var countFail = 0;var countDuplicate = 0;
+            var countSuccess = 0; var countFail = 0; var countDuplicate = 0;
+            var clsInvoker = new clsInvoker();
             #endregion
             #region Procedure
             try
             {
                 countSuccess = 0; countFail = 0; countDuplicate = 0;
                 dtMobile = clsTempData.getPatientChecklistMobile();
+                clsInvoker.setListView(
+                    lvDefault,
+                    Color.Green,
+                    99,
+                    new string[] {
+                        DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Start", "", "เริ่มขั้นตอนการ Sync" }
+                );
                 if (dtMobile != null && dtMobile.Rows.Count > 0)
                 {
-                    #region ProgressBar
-                    if (pbDefault.InvokeRequired)
+                    clsInvoker.setListView(
+                        lvDefault,
+                        Color.Green,
+                        99,
+                        new string[] {
+                            DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Syncing", "", "เตรียมดำเนินการสร้างไฟล์ทั้งหมด "+dtMobile.Rows.Count.ToString()+" รายการ" }
+                    );
+                    DirectoryInfo di = new DirectoryInfo(pathSyncLocal);
+                    if (!di.Exists)
                     {
-                        pbDefault.Invoke(new MethodInvoker(delegate
-                        {
-                            pbDefault.Visible = true;
-                            pbDefault.Maximum = dtMobile.Rows.Count;
-                            pbDefault.Value = 0;
-                        }));
+                        clsInvoker.setListView(
+                                lvDefault,
+                                Color.Red,
+                                99,
+                                new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Folder's not exist. : "+di.FullName }
+                                );
+                        di.Create();
+                        clsInvoker.setListView(
+                                lvDefault,
+                                Color.Green,
+                                99,
+                                new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "สร้างโฟล์เดอร์เรียบร้อย : "+di.FullName }
+                                );
                     }
-                    #endregion
-                    for (int i = 0; i < dtMobile.Rows.Count; i++)
+                    FileInfo fi = new FileInfo(di.FullName + "Sync.xml");
+                    if (fi.Exists) { fi.Delete(); }
+                    if (XMLCreator(dtMobile, di.FullName + "Sync.xml"))
                     {
-                        if (bwDefault.CancellationPending)
+                        clsInvoker.setListView(
+                                lvDefault,
+                                Color.Green,
+                                99,
+                                new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Export File Success. : "+di.FullName + "Sync.xml" }
+                                );
+                        try
                         {
-                            ListViewBuilder(lvDefault, Color.Green, 99,
-                                new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Cancel", "", "Cancel by user." });
-                            return;
-                        }
-                        if (!clsSQLMain.IsConnected() || !clsSQLMobile.IsConnected())
-                        {
-                            ListViewBuilder(lvDefault, Color.Red, 99,
-                                new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect database." });
-                            continue;
-                        }
-                        #region Update tblPatientListSTS
-                        if (dtMobile.Rows[i]["WFID"].ToString().Trim() == "1" && float.Parse(dtMobile.Rows[i]["ProStatus"].ToString().Trim()) >= 2)
-                        {
-                            tblPatientListSTS = clsSQLMain.Return("SELECT STS FROM tblPatientList WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';");
-                            if (tblPatientListSTS != "R")
+                            FileInfo fiServer = new FileInfo(pathSync + @"Sync.xml");
+                            if (fiServer.Exists)
                             {
-                                if(clsSQLMain.Execute("UPDATE tblPatientList SET STS='R',SyncWhen=GETDATE() WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';UPDATE Patient SET SyncStatus='1',SyncWhen=GETDATE() WHERE rowguid='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';"))
+                                clsInvoker.setListView(
+                                    lvDefault,
+                                    Color.Orange,
+                                    99,
+                                    new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Exist", "", "File Exist : "+pathSync + @"Sync.xml" }
+                                    );
+                                try
                                 {
-                                    countSuccess += 1;
-                                    ListViewBuilder(lvDefault, Color.Green, 99,
-                                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update tblPatientList.STS Complete." });
-                                    #region UpdateSyncStatus
-                                    if (clsSQLMobile.Update(
-                                        "patient",
-                                        new string[,]
-                                        {
-                                            {"SyncStatus","'1'" },
-                                            {"SyncWhen","SYSDATE()" }
-                                        },
-                                        new string[,] { { } },
-                                        "PatientGUID='" + dtMobile.Rows[i]["PatientGUID"].ToString() + "'",
-                                        out outSQL, true
-                                        ))
-                                    {
-                                        ListViewBuilder(lvDefault, Color.Green, 99,
-                                            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Complete." });
-                                    }
-                                    else
-                                    {
-                                        ListViewBuilder(lvDefault, Color.Red, 99,
-                                            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Fail." });
-                                    }
-                                    #endregion
+                                    fiServer.Delete();
+                                    clsInvoker.setListView(
+                                        lvDefault,
+                                        Color.Green,
+                                        99,
+                                        new string[] {
+                                        DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Delete Exist" }
+                                        );
                                 }
-                                else
+                                catch(Exception exDelete)
                                 {
-                                    countFail += 1;
-                                    ListViewBuilder(lvDefault, Color.Red, 99,
-                                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), "Update tblPatientList.STS Fail." });
+                                    clsInvoker.setListView(
+                                        lvDefault,
+                                        Color.Red,
+                                        99,
+                                        new string[] {
+                                        DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Delete Exist : "+exDelete.Message }
+                                        );
                                 }
                             }
-                        }
-                        #endregion
-                        dtMain = clsTempData.getPatientChecklistMain(dtMobile.Rows[i]["RowID"].ToString());
-                        if (dtMain != null && dtMain.Rows.Count > 0)
-                        {
-                            if (dtMobile.Rows[i]["ProStatus"].ToString().Trim() != dtMain.Rows[0]["ProStatus"].ToString().Trim() ||
-                                dtMobile.Rows[i]["ProStatusRemark"].ToString().Trim() != dtMain.Rows[0]["ProStatusRemark"].ToString().Trim()/* ||
-                            dtMobile.Rows[i]["RegDate"].ToString().Trim() != dtMain.Rows[0]["RegDate"].ToString().Trim() ||
-                            dtMobile.Rows[i]["ModifyDate"].ToString().Trim() != dtMain.Rows[0]["ModifyDate"].ToString().Trim()*/)
+                            try
                             {
-                                #region Update
-                                if (!clsSQLMain.Update(
-                                    "tblCheckList",
-                                    new string[,]
-                                    {
-                                    {"ProStatus",dtMobile.Rows[i]["ProStatus"].ToString().Trim() },
-                                    {"ProStatusRemark","'"+dtMobile.Rows[i]["ProStatusRemark"].ToString().SQLQueryFilter()+"'" },
-                                    {"RegDate",(dtMobile.Rows[i]["RegDate"].ToString()!=""?"'"+DateTime.Parse(dtMobile.Rows[i]["RegDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss")+"'":"NULL") },
-                                    {"ModifyDate",(dtMobile.Rows[i]["ModifyDate"].ToString()!=""?"'"+DateTime.Parse(dtMobile.Rows[i]["ModifyDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss")+"'":"NULL") },
-                                    {"SyncWhen","GETDATE()"}
-                                    },
-                                    new string[,] { { } },
-                                    "RowID=" + dtMobile.Rows[i]["RowID"].ToString(), out outSQL, out outMessage, true))
-                                {
-                                    #region LogUpdate
-                                    countFail += 1;
-                                    ListViewBuilder(lvDefault, Color.Red, 99,
-                                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString()+" : "+ dtMobile.Rows[i]["ProStatus"].ToString().Trim()+"->"+ dtMain.Rows[0]["ProStatus"].ToString().Trim()+Environment.NewLine+outMessage });
-                                    #endregion
-                                }
-                                else
-                                {
-                                    #region LogUpdate
-                                    countSuccess += 1;
-                                    ListViewBuilder(lvDefault, Color.Green, 99,
-                                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim()});
-                                    #endregion
-                                }
-                                #endregion
+                                clsInvoker.setListView(
+                                        lvDefault,
+                                        Color.Orange,
+                                        99,
+                                        new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Processing...", "", "Copy file to server : "+pathSync + @"Sync.xml" }
+                                        );
+                                fi.CopyTo(pathSync + @"Sync.xml");
+                                clsInvoker.setListView(
+                                        lvDefault,
+                                        Color.Green,
+                                        99,
+                                        new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Copy file to server" }
+                                        );
+                            }
+                            catch(Exception exCopy)
+                            {
+                                clsInvoker.setListView(
+                                        lvDefault,
+                                        Color.Red,
+                                        99,
+                                        new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+exCopy.Message }
+                                        );
                             }
                         }
-                        else
+                        catch(Exception exCopyFile)
                         {
-                            #region LogUpdate
-                            //countDuplicate += 1;
-                            //ListViewBuilder(lvDefault, Color.Blue, 99,
-                            //            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "NoChange", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() });
-                            #endregion
+                            clsInvoker.setListView(
+                                    lvDefault,
+                                    Color.Red,
+                                    99,
+                                    new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+pathSync + @"Sync.xml : "+exCopyFile.Message }
+                                    );
                         }
-                        #region ProgressBar
-                        if (pbDefault.InvokeRequired)
-                        {
-                            pbDefault.Invoke(new MethodInvoker(delegate
-                            {
-                                pbDefault.Value += 1;
-                            }));
-                        }
-                        #endregion
                     }
-                    #region ProgressBar
-                    if (pbDefault.InvokeRequired)
+                    else
                     {
-                        pbDefault.Invoke(new MethodInvoker(delegate
-                        {
-                            pbDefault.Visible = false;
-                        }));
+                        clsInvoker.setListView(
+                                lvDefault,
+                                Color.Red,
+                                99,
+                                new string[] {
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Export File Fail. : "+di.FullName + "Sync.xml" }
+                                );
                     }
-                    #endregion
-                    #region LogUpdate
-                    ListViewBuilder(lvDefault, Color.Green, 99,
-                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Summary", "", "SyncSuccess : "+countSuccess.ToString()+" | Fail : "+countFail.ToString()+" | NoChange : "+countDuplicate.ToString()+" "});
-                    #endregion
+                    return;
+                    //clsInvoker.setProgressBar(pbDefault, dtMobile.Rows.Count, 0);
+                    //for (int i = 0; i < dtMobile.Rows.Count; i++)
+                    //{
+                    //    if (bwDefault.CancellationPending)
+                    //    {
+                    //        clsInvoker.setListView(
+                    //            lvDefault, 
+                    //            Color.Green, 
+                    //            99,
+                    //            new string[] {
+                    //                DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Cancel", "", "Cancel by user." }
+                    //            );
+                    //        e.Cancel = true;
+                    //        syncTimerSecondCount = 0;
+                    //        clsInvoker.setProgressBar(pbDefault, dtMobile.Rows.Count, 0);
+                    //        return;
+                    //    }
+                    //    if (!clsSQLMain.IsConnected() || !clsSQLMobile.IsConnected())
+                    //    {
+                    //        ListViewBuilder(lvDefault, Color.Red, 99,
+                    //            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect database." });
+                    //        continue;
+                    //    }
+                    //    #region Update tblPatientListSTS & tblPatientStatusOnMobile
+                    //    if (dtMobile.Rows[i]["WFID"].ToString().Trim() == "1" && float.Parse(dtMobile.Rows[i]["ProStatus"].ToString().Trim()) >= 2)
+                    //    {
+                    //        tblPatientListSTS = clsSQLMain.Return("SELECT STS FROM tblPatientList WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';");
+                    //        tblPatientStatusOnMobile = clsSQLMain.Return("SELECT StatusOnMobile FROM Patient WHERE rowguid='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';");
+                    //        if (tblPatientListSTS != "R" || tblPatientStatusOnMobile != "R")
+                    //        {
+                    //            if (clsSQLMain.Execute("UPDATE tblPatientList SET STS='R',SyncWhen=GETDATE() WHERE PatientUID='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';UPDATE Patient SET SyncStatus='1',SyncWhen=GETDATE(),StatusOnMobile='R' WHERE rowguid='" + dtMobile.Rows[i]["PatientGUID"].ToString().Trim() + "';"))
+                    //            {
+                    //                countSuccess += 1;
+                    //                ListViewBuilder(lvDefault, Color.Green, 99,
+                    //                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update tblPatientList.STS,Patient.StatusOnMobile Complete." });
+                    //                #region UpdateSyncStatus
+                    //                if (clsSQLMobile.Update(
+                    //                    "patient",
+                    //                    new string[,]
+                    //                    {
+                    //                        {"SyncStatus","'1'" },
+                    //                        {"SyncWhen","SYSDATE()" }
+                    //                    },
+                    //                    new string[,] { { } },
+                    //                    "PatientGUID='" + dtMobile.Rows[i]["PatientGUID"].ToString() + "'",
+                    //                    out outSQL, true
+                    //                    ))
+                    //                {
+                    //                    ListViewBuilder(lvDefault, Color.Green, 99,
+                    //                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Complete." });
+                    //                }
+                    //                else
+                    //                {
+                    //                    ListViewBuilder(lvDefault, Color.Red, 99,
+                    //                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), "Update SyncStatus Fail." });
+                    //                }
+                    //                #endregion
+                    //            }
+                    //            else
+                    //            {
+                    //                countFail += 1;
+                    //                ListViewBuilder(lvDefault, Color.Red, 99,
+                    //                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), "Update tblPatientList.STS Fail." });
+                    //            }
+                    //        }
+                    //    }
+                    //    #endregion
+                    //    dtMain = clsTempData.getPatientChecklistMain(dtMobile.Rows[i]["RowID"].ToString());
+                    //    if (dtMain != null && dtMain.Rows.Count > 0)
+                    //    {
+                    //        if (dtMobile.Rows[i]["ProStatus"].ToString().Trim() != dtMain.Rows[0]["ProStatus"].ToString().Trim() ||
+                    //            dtMobile.Rows[i]["ProStatusRemark"].ToString().Trim() != dtMain.Rows[0]["ProStatusRemark"].ToString().Trim()/* ||
+                    //        dtMobile.Rows[i]["RegDate"].ToString().Trim() != dtMain.Rows[0]["RegDate"].ToString().Trim() ||
+                    //        dtMobile.Rows[i]["ModifyDate"].ToString().Trim() != dtMain.Rows[0]["ModifyDate"].ToString().Trim()*/)
+                    //        {
+                    //            #region Update
+                    //            if (!clsSQLMain.Update(
+                    //                "tblCheckList",
+                    //                new string[,]
+                    //                {
+                    //                {"ProStatus",dtMobile.Rows[i]["ProStatus"].ToString().Trim() },
+                    //                {"ProStatusRemark","'"+dtMobile.Rows[i]["ProStatusRemark"].ToString().SQLQueryFilter()+"'" },
+                    //                {"RegDate",(dtMobile.Rows[i]["RegDate"].ToString()!=""?"'"+DateTime.Parse(dtMobile.Rows[i]["RegDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss")+"'":"NULL") },
+                    //                {"ModifyDate",(dtMobile.Rows[i]["ModifyDate"].ToString()!=""?"'"+DateTime.Parse(dtMobile.Rows[i]["ModifyDate"].ToString()).ToString("yyyy-MM-dd HH:mm:ss")+"'":"NULL") },
+                    //                {"SyncWhen","GETDATE()"}
+                    //                },
+                    //                new string[,] { { } },
+                    //                "RowID=" + dtMobile.Rows[i]["RowID"].ToString(), out outSQL, out outMessage, true))
+                    //            {
+                    //                #region LogUpdate
+                    //                countFail += 1;
+                    //                ListViewBuilder(lvDefault, Color.Red, 99,
+                    //                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() + Environment.NewLine + outMessage });
+                    //                #endregion
+                    //            }
+                    //            else
+                    //            {
+                    //                #region LogUpdate
+                    //                countSuccess += 1;
+                    //                ListViewBuilder(lvDefault, Color.Green, 99,
+                    //                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() });
+                    //                #endregion
+                    //            }
+                    //            #endregion
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        #region LogUpdate
+                    //        //countDuplicate += 1;
+                    //        //ListViewBuilder(lvDefault, Color.Blue, 99,
+                    //        //            new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "NoChange", dtMobile.Rows[i]["HN"].ToString(), dtMobile.Rows[i]["WorkFlow"].ToString() + " : " + dtMobile.Rows[i]["ProStatus"].ToString().Trim() + "->" + dtMain.Rows[0]["ProStatus"].ToString().Trim() });
+                    //        #endregion
+                    //    }
+                    //    #region ProgressBar
+                    //    if (pbDefault.InvokeRequired)
+                    //    {
+                    //        pbDefault.Invoke(new MethodInvoker(delegate
+                    //        {
+                    //            pbDefault.Value += 1;
+                    //        }));
+                    //    }
+                    //    #endregion
+                    //}
+                    //#region ProgressBar
+                    //if (pbDefault.InvokeRequired)
+                    //{
+                    //    pbDefault.Invoke(new MethodInvoker(delegate
+                    //    {
+                    //        pbDefault.Visible = false;
+                    //    }));
+                    //}
+                    //#endregion
+                    //#region LogUpdate
+                    //ListViewBuilder(lvDefault, Color.Green, 99,
+                    //    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Summary", "", "SyncSuccess : " + countSuccess.ToString() + " | Fail : " + countFail.ToString() + " | NoChange : " + countDuplicate.ToString() + " " });
+                    //#endregion
                 }
                 else
                 {
-                    #region LogUpdate
-                    ListViewBuilder(lvDefault, Color.Blue, 99,
-                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Warn", "ไม่พบข้อมูลในระบบ Mobile" });
-                    #endregion
+                    clsInvoker.setListView(
+                        lvDefault,
+                        Color.Orange,
+                        99,
+                        new string[] {
+                            DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Warn", "", "ไม่พบข้อมูลสำหรับการ Sync" }
+                    );
                 }
             }
-            catch(Exception exMain)
+            catch (Exception exMain)
             {
                 ListViewBuilder(lvDefault, Color.Red, 99,
-                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail","",exMain.Message });
+                    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", exMain.Message });
             }
             #endregion
         }
@@ -485,6 +619,29 @@ namespace _ContactCheckupSync
                 }));
             }
             #endregion
+        }
+        public bool XMLCreator(DataTable dt, string PathFile)
+        {
+            #region Variable
+            var result = false;
+            var ds = new DataSet();
+            #endregion
+            #region Procedure
+            try
+            {
+                if (!string.IsNullOrEmpty(PathFile))
+                {
+                    if (PathFile.Contains(".xml") || PathFile.Contains(".XML"))
+                    {
+                        ds.Tables.Add(dt);
+                        ds.WriteXml(PathFile);
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception) { }
+            #endregion
+            return result;
         }
     }
 }

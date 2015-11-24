@@ -701,7 +701,8 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("FROM ");
         strSQL.Append("patientchecklist ");
         strSQL.Append("WHERE ");
-        strSQL.Append("ProStatus>1;");
+        strSQL.Append("ProStatus>1 ");
+        strSQL.Append("AND MWhen>=DATE_ADD(NOW(),INTERVAL -3 HOUR);");
         #endregion
         result = clsSQL.Bind(strSQL.ToString());
         #endregion

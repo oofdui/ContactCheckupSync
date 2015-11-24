@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\clsGlobal.cs" />
+    <Compile Include="App_Code\clsInvoker.cs" />
     <Compile Include="App_Code\clsSQL.cs" />
     <Compile Include="App_Code\clsTempData.cs" />
     <Compile Include="Default.cs">

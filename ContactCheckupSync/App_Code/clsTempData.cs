@@ -690,6 +690,8 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
     public DataTable getPatientChecklistMobile()
     {
         #region Variable
+        //var hourAddSync = System.Configuration.ConfigurationManager.AppSettings["hourAddSync"];
+        var hourAddSync = clsGlobal.AddHours;
         var result = new DataTable();
         var strSQL = new StringBuilder();
         var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
@@ -697,12 +699,12 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         #region Procedure
         #region SQLQuery
         strSQL.Append("SELECT ");
-        strSQL.Append("RowID,PatientGUID,HN,WorkFlow,WFID,ProStatus,ProStatusRemark,RegDate,ModifyDate,MWhen,MUser ");
+        strSQL.Append("RowID,PatientGUID,HN,WorkFlow,WFID,ProStatus,IFNULL(ProStatusRemark,'')ProStatusRemark,RegDate,ModifyDate,MWhen,MUser ");
         strSQL.Append("FROM ");
         strSQL.Append("patientchecklist ");
         strSQL.Append("WHERE ");
         strSQL.Append("ProStatus>1 ");
-        strSQL.Append("AND MWhen>=DATE_ADD(NOW(),INTERVAL -3 HOUR);");
+        strSQL.Append("AND MWhen>=DATE_ADD(NOW(),INTERVAL "+ hourAddSync + " HOUR);");
         #endregion
         result = clsSQL.Bind(strSQL.ToString());
         #endregion

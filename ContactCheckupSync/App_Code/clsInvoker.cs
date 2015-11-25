@@ -60,6 +60,20 @@ class clsInvoker
             control.Enabled = enable;
         }
     }
+	private void setComboBox(ComboBox control, int index)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(new MethodInvoker(delegate
+                {
+                    control.SelectedIndex = index;
+                }));
+            }
+            else
+            {
+                control.SelectedIndex = index;
+            }
+        }
     public void setPictureBox(PictureBox control, bool visible)
     {
         if (control.InvokeRequired)

@@ -15,7 +15,29 @@ namespace ContactCheckupSyncConsole
         static void Main(string[] args)
         {
             setUsageLog();
-            Sync();
+            try
+            {
+                Sync();
+            }
+            catch(Exception ex)
+            {
+                wsDefault.ServiceSoapClient wsDefault = new wsDefault.ServiceSoapClient();
+                if (wsDefault.MailSend(
+                    System.Configuration.ConfigurationManager.AppSettings["mailTo"],
+                    System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync",
+                    "<h1>" + System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync" + "</h1><h3><span style='color:#red;'>Error</span></h3><hr/>" + ex.Message,
+                    "AutoSystem@glsict.com",
+                    System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName,
+                    "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder(), false))
+                {
+                    Console.WriteLine(string.Format("MailSend : {0}", "Success"));
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("MailSend : {0}", "Fail"));
+                }
+            }
+            
         }
         static private void Sync()
         {
@@ -73,7 +95,7 @@ namespace ContactCheckupSyncConsole
                         if (dtMain != null && dtMain.Rows.Count > 0)
                         {
                             if (dt.Rows[i]["ProStatus"].ToString().Trim() != dtMain.Rows[0]["ProStatus"].ToString().Trim() ||
-                                dt.Rows[i]["ProStatusRemark"].ToString().Trim() != dtMain.Rows[0]["ProStatusRemark"].ToString().Trim()/* ||
+                                dt.Rows[i]["ProStatusRemark"].ToString().Trim() != dtMain.Rows[0]["ProStatusRemark"].ToString().Trim()/*||
                             dtMobile.Rows[i]["RegDate"].ToString().Trim() != dtMain.Rows[0]["RegDate"].ToString().Trim() ||
                             dtMobile.Rows[i]["ModifyDate"].ToString().Trim() != dtMain.Rows[0]["ModifyDate"].ToString().Trim()*/)
                             {
@@ -105,6 +127,10 @@ namespace ContactCheckupSyncConsole
                                 #endregion
                             }
                         }
+                        else
+                        {
+                            mailMessage.Append("ไม่พบข้อมูลในไฟล์");
+                        }
                         #endregion
                     }
                     #endregion
@@ -132,18 +158,18 @@ namespace ContactCheckupSyncConsole
                     {
                         Console.WriteLine(string.Format("MailSend : {0}", "Fail : "+exMail.Message));
                     }
+                    try
+                    {
+                        fi.Delete();
+                    }
+                    catch (Exception exDelete)
+                    {
+                        Console.WriteLine(string.Format("Delete file : {0} ({1})", "Fail", exDelete.Message));
+                    }
                 }
                 else
                 {
                     Console.WriteLine(string.Format("Read DataTable : {0}", "No Data"));
-                }
-                try
-                {
-                    fi.Delete();
-                }
-                catch(Exception exDelete)
-                {
-                    Console.WriteLine(string.Format("Delete file : {0} ({1})", "Fail",exDelete.Message));
                 }
             }
             else

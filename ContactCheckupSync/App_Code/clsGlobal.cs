@@ -13,6 +13,12 @@ using System.Web;
 /// </example>
 public static class clsGlobal
 {
+    private static string _addHours;
+    public static string AddHours
+    {
+        get { return _addHours; }
+        set { _addHours = value; }
+    }
     private static string _applicationName="ContactCheckupSync";
     public static string ApplicationName
     {

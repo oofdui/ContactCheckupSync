@@ -25,6 +25,9 @@ namespace _ContactCheckupSync
         }
         private void SyncToMain_Load(object sender, EventArgs e)
         {
+            txtAddHours.Text = System.Configuration.ConfigurationManager.AppSettings["hourAddSync"];
+            lblSyncPathMobile.Text = pathSyncLocal;
+            lblSyncPathMain.Text = pathSync;
             lblDefault.Text = "";
             tmDefault.Enabled = true;
             tmDefault.Start();
@@ -52,7 +55,7 @@ namespace _ContactCheckupSync
                 return;
             }
             */
-            #endregion
+            #endregion            
             tmDefault.Enabled = true;
             tmDefault.Start();
         }
@@ -176,6 +179,7 @@ namespace _ContactCheckupSync
             #region Procedure
             try
             {
+                clsGlobal.AddHours = txtAddHours.Text.Trim();
                 countSuccess = 0; countFail = 0; countDuplicate = 0;
                 dtMobile = clsTempData.getPatientChecklistMobile();
                 clsInvoker.setListView(
@@ -222,7 +226,7 @@ namespace _ContactCheckupSync
                                 Color.Green,
                                 99,
                                 new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Export File Success. : "+di.FullName + "Sync.xml" }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Export File Success "+dtMobile.Rows.Count.ToString()+" records. : "+di.FullName + "Sync.xml" }
                                 );
                         try
                         {
@@ -642,6 +646,14 @@ namespace _ContactCheckupSync
             catch (Exception) { }
             #endregion
             return result;
+        }
+        private void btSyncPathMobile_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(lblSyncPathMobile.Text);
+        }
+        private void btSyncPathMain_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(lblSyncPathMain.Text);
         }
     }
 }

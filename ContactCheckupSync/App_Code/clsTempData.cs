@@ -156,7 +156,7 @@ public class clsTempData
         strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
-        strSQL.Append("SUM(ProStatus=3) CountChecklistComplete,");
+        strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");
         strSQL.Append("SUM(ProStatus=4) CountChecklistCancel,");
         //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus<>3) ProgramPending,");
         //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) ProgramCancel ");

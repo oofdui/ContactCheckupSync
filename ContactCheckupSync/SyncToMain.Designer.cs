@@ -289,6 +289,8 @@
             // 
             this.lblSyncPathMobile.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblSyncPathMobile.AutoSize = true;
+            this.lblSyncPathMobile.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.lblSyncPathMobile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.lblSyncPathMobile.Location = new System.Drawing.Point(104, 8);
             this.lblSyncPathMobile.Name = "lblSyncPathMobile";
             this.lblSyncPathMobile.Size = new System.Drawing.Size(10, 13);
@@ -300,6 +302,8 @@
             // 
             this.lblSyncPathMain.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblSyncPathMain.AutoSize = true;
+            this.lblSyncPathMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.lblSyncPathMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
             this.lblSyncPathMain.Location = new System.Drawing.Point(455, 8);
             this.lblSyncPathMain.Name = "lblSyncPathMain";
             this.lblSyncPathMain.Size = new System.Drawing.Size(10, 13);

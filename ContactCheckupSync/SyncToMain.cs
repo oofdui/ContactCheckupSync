@@ -175,6 +175,7 @@ namespace _ContactCheckupSync
             var outMessage = "";
             var countSuccess = 0; var countFail = 0; var countDuplicate = 0;
             var clsInvoker = new clsInvoker();
+            var fileName = "SYNC_"+DateTime.Now.ToString("yyyyMMddHHmmss")+".xml";
             #endregion
             #region Procedure
             try
@@ -217,20 +218,21 @@ namespace _ContactCheckupSync
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "สร้างโฟล์เดอร์เรียบร้อย : "+di.FullName }
                                 );
                     }
-                    FileInfo fi = new FileInfo(di.FullName + "Sync.xml");
+                    FileInfo fi = new FileInfo(string.Format("{0}{1}", di.FullName, fileName));
                     if (fi.Exists) { fi.Delete(); }
-                    if (XMLCreator(dtMobile, di.FullName + "Sync.xml"))
+                    if (XMLCreator(dtMobile, fi.FullName))
                     {
                         clsInvoker.setListView(
                                 lvDefault,
                                 Color.Green,
                                 99,
                                 new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Export File Success "+dtMobile.Rows.Count.ToString()+" records. : "+di.FullName + "Sync.xml" }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Export File Success "+dtMobile.Rows.Count.ToString()+" records. : "+fi.FullName }
                                 );
                         try
                         {
-                            FileInfo fiServer = new FileInfo(pathSync + @"Sync.xml");
+                            #region CopyToServer
+                            FileInfo fiServer = new FileInfo(string.Format("{0}{1}", pathSync, fileName));
                             if (fiServer.Exists)
                             {
                                 clsInvoker.setListView(
@@ -238,7 +240,7 @@ namespace _ContactCheckupSync
                                     Color.Orange,
                                     99,
                                     new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Exist", "", "File Exist : "+pathSync + @"Sync.xml" }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Exist", "", "File Exist : "+fiServer.FullName }
                                     );
                                 try
                                 {
@@ -251,7 +253,7 @@ namespace _ContactCheckupSync
                                         DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Delete Exist" }
                                         );
                                 }
-                                catch(Exception exDelete)
+                                catch (Exception exDelete)
                                 {
                                     clsInvoker.setListView(
                                         lvDefault,
@@ -269,9 +271,9 @@ namespace _ContactCheckupSync
                                         Color.Orange,
                                         99,
                                         new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Processing...", "", "Copy file to server : "+pathSync + @"Sync.xml" }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Processing...", "", "Copy file to server : "+fiServer.FullName }
                                         );
-                                fi.CopyTo(pathSync + @"Sync.xml");
+                                fi.CopyTo(fiServer.FullName);
                                 clsInvoker.setListView(
                                         lvDefault,
                                         Color.Green,
@@ -280,7 +282,7 @@ namespace _ContactCheckupSync
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Copy file to server" }
                                         );
                             }
-                            catch(Exception exCopy)
+                            catch (Exception exCopy)
                             {
                                 clsInvoker.setListView(
                                         lvDefault,
@@ -290,6 +292,7 @@ namespace _ContactCheckupSync
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+exCopy.Message }
                                         );
                             }
+                            #endregion
                         }
                         catch(Exception exCopyFile)
                         {
@@ -298,7 +301,7 @@ namespace _ContactCheckupSync
                                     Color.Red,
                                     99,
                                     new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+pathSync + @"Sync.xml : "+exCopyFile.Message }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+pathSync + fileName+" : "+exCopyFile.Message }
                                     );
                         }
                     }
@@ -309,7 +312,7 @@ namespace _ContactCheckupSync
                                 Color.Red,
                                 99,
                                 new string[] {
-                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Export File Fail. : "+di.FullName + "Sync.xml" }
+                                    DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Export File Fail. : "+fi.FullName }
                                 );
                     }
                     return;

@@ -17,7 +17,16 @@ namespace ContactCheckupSyncConsole
             setUsageLog();
             try
             {
-                Sync();
+                #region ListAllFile
+                var files = Directory.GetFiles(pathSync,"*.xml");
+                if (files.Length > 0)
+                {
+                    for(int i = 0; i < files.Length; i++)
+                    {
+                        Sync(files[i]);
+                    }
+                }
+                #endregion
             }
             catch(Exception ex)
             {
@@ -37,12 +46,11 @@ namespace ContactCheckupSyncConsole
                     Console.WriteLine(string.Format("MailSend : {0}", "Fail"));
                 }
             }
-            
         }
-        static private void Sync()
+        static private void Sync(string fileFullName)
         {
             #region Variable
-            var fi = new FileInfo(pathSync);
+            var fi = new FileInfo(fileFullName);
             var dt = new DataTable();
             var dtMain = new DataTable();
             var tblPatientStatusOnMobile = "";
@@ -142,7 +150,7 @@ namespace ContactCheckupSyncConsole
                         if (wsDefault.MailSend(
                             System.Configuration.ConfigurationManager.AppSettings["mailTo"],
                             System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync",
-                            "<h1>" + System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync" + "</h1><h3><span style='color:#238DBB;'>StatusUpdateSuccess : " + countSuccessMobileStatus.ToString() + "</span> , <span style='color:green;'>Success : " + countSuccess.ToString() + "</span> , <span style='color:red;'>Fail : " + countFail.ToString() + "</span></h3><hr/>" + mailMessage.ToString(),
+                            "<h1>" + System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync" + "</h1><h3><span style='color:#238DBB;'>StatusUpdateSuccess : " + countSuccessMobileStatus.ToString() + "</span> , <span style='color:green;'>Success : " + countSuccess.ToString() + "</span> , <span style='color:red;'>Fail : " + countFail.ToString() + "</span></h3><h4>FileName : "+fileFullName+"</h4><hr/>" + mailMessage.ToString(),
                             "AutoSystem@glsict.com",
                             System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName,
                             "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder(),false))

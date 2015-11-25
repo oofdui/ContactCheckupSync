@@ -281,6 +281,7 @@ namespace _ContactCheckupSync
                                         new string[] {
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Success", "", "Copy file to server" }
                                         );
+                                fi.Delete();
                             }
                             catch (Exception exCopy)
                             {
@@ -291,6 +292,7 @@ namespace _ContactCheckupSync
                                         new string[] {
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+exCopy.Message }
                                         );
+                                fi.Delete();
                             }
                             #endregion
                         }

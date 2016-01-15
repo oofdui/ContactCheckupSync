@@ -89,6 +89,7 @@ namespace _ContactCheckupSync
             #region Variable
             var dt = new DataTable();
             var clsTempData = new clsTempData();
+            var countNoChecklist = 0;
             #endregion
             #region Procedure
             dt = clsTempData.getPatient(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
@@ -115,14 +116,43 @@ namespace _ContactCheckupSync
                 {
                     gvSyncToMobile.Invoke(new MethodInvoker(delegate
                     {
-                        gvSyncToMobile.DataSource = dt;
+                        #region SortDatatable
+                        if(dt!=null && dt.Rows.Count > 0)
+                        {
+                            for(int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                if (int.Parse(dt.Rows[i]["ChecklistCount"].ToString()) > 0)
+                                {
+                                    dt.Rows[i]["ChecklistCount"] = 1;
+                                }
+                                else
+                                {
+                                    dt.Rows[i]["ChecklistCount"] = 0;
+                                }
+                            }
+                            dt.AcceptChanges();
+                        }
+                        var dv = dt.DefaultView;
+                        dv.Sort = "ChecklistCount,No";
+                        #endregion
+                        gvSyncToMobile.DataSource = dv.ToTable();
+                        for(int i = 0; i < gvSyncToMobile.Rows.Count; i++)
+                        {
+                            var checklistCount = (gvSyncToMobile.Rows[i].Cells["ChecklistCount"].Value!=null?gvSyncToMobile.Rows[i].Cells["ChecklistCount"].Value.ToString():"0");
+                            if (checklistCount == "0")
+                            {
+                                gvSyncToMobile.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#FF6262");
+                                countNoChecklist += 1;
+                            }
+                        }
+                        gvSyncToMobile.Columns["ChecklistCount"].Visible = false;
                     }));
                 }
                 if (lblSyncToMobile.InvokeRequired)
                 {
                     lblSyncToMobile.Invoke(new MethodInvoker(delegate
                     {
-                        lblSyncToMobile.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ", dt.Rows.Count.ToString());
+                        lblSyncToMobile.Text = string.Format("พบข้อมูลทั้งหมด {0} รายการ | ไม่มี Checklist {1} รายการ", dt.Rows.Count.ToString(), countNoChecklist.ToString());
                     }));
                 }
             }

@@ -200,6 +200,8 @@
             // 
             // gvSyncToMobile
             // 
+            this.gvSyncToMobile.AllowUserToAddRows = false;
+            this.gvSyncToMobile.AllowUserToDeleteRows = false;
             this.gvSyncToMobile.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.gvSyncToMobile.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gvSyncToMobile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;

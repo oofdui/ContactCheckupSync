@@ -40,8 +40,8 @@
             this.btSync = new System.Windows.Forms.Button();
             this.gvSyncToMobile = new System.Windows.Forms.DataGridView();
             this.pbSyncToMobile = new System.Windows.Forms.ProgressBar();
-            this.backgroundWorkerSyncToMobile = new System.ComponentModel.BackgroundWorker();
             this.anWaiting = new System.Windows.Forms.PictureBox();
+            this.backgroundWorkerSyncToMobile = new System.ComponentModel.BackgroundWorker();
             this.wbSearch = new System.ComponentModel.BackgroundWorker();
             this.tbSyncToMobile.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
@@ -221,10 +221,6 @@
             this.pbSyncToMobile.TabIndex = 3;
             this.pbSyncToMobile.Visible = false;
             // 
-            // backgroundWorkerSyncToMobile
-            // 
-            this.backgroundWorkerSyncToMobile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerSyncToMobile_DoWork);
-            // 
             // anWaiting
             // 
             this.anWaiting.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -238,6 +234,10 @@
             this.anWaiting.TabIndex = 4;
             this.anWaiting.TabStop = false;
             this.anWaiting.Visible = false;
+            // 
+            // backgroundWorkerSyncToMobile
+            // 
+            this.backgroundWorkerSyncToMobile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerSyncToMobile_DoWork);
             // 
             // wbSearch
             // 

@@ -61,6 +61,9 @@ namespace _ContactCheckupSync
         }
         private void btStop_Click(object sender, EventArgs e)
         {
+            ((Default)this.ParentForm).SyncToMainText = "SyncToMain";
+            ((Default)this.ParentForm).SyncToMainTextColor = "#000";
+
             bwDefault.CancelAsync();
             bwTimer.CancelAsync();
             tmDefault.Stop();
@@ -175,7 +178,7 @@ namespace _ContactCheckupSync
             var outMessage = "";
             var countSuccess = 0; var countFail = 0; var countDuplicate = 0;
             var clsInvoker = new clsInvoker();
-            var fileName = "SYNC_"+DateTime.Now.ToString("yyyyMMddHHmmss")+".xml";
+            var fileName = "SYNC_"+clsGlobal.ComputerName().Replace(".","")+"_"+DateTime.Now.ToString("yyyyMMddHHmmss")+".xml";
             #endregion
             #region Procedure
             try
@@ -292,7 +295,7 @@ namespace _ContactCheckupSync
                                         new string[] {
                                     DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Copy file to server : "+exCopy.Message }
                                         );
-                                fi.Delete();
+                                //fi.Delete();
                             }
                             #endregion
                         }
@@ -471,6 +474,8 @@ namespace _ContactCheckupSync
             {
                 ListViewBuilder(lvDefault, Color.Red, 99,
                     new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", exMain.Message });
+                ((Default)this.ParentForm).SyncToMainText = "SyncToMain (Syncing Fail)";
+                ((Default)this.ParentForm).SyncToMainTextColor = "#ED1C24";
             }
             #endregion
         }
@@ -562,6 +567,9 @@ namespace _ContactCheckupSync
             {
                 if(clsSQLMobile.IsConnected() && clsSQLMain.IsConnected())
                 {
+                    ((Default)this.ParentForm).SyncToMainText = "SyncToMain (Syncing)";
+                    ((Default)this.ParentForm).SyncToMainTextColor = "#FF7F27";
+
                     if (!bwDefault.IsBusy)
                     {
                         bwDefault.RunWorkerAsync();
@@ -570,6 +578,63 @@ namespace _ContactCheckupSync
                     {
                         syncTimerSecondCount = syncTimerSecond - syncTimerTryAgainSecond;
                     }
+                }
+                else if (!clsSQLMobile.IsConnected())
+                {
+                    if (btStart.InvokeRequired)
+                    {
+                        btStart.Invoke(new MethodInvoker(delegate
+                        {
+                            btStart.Enabled = false;
+                        }));
+                    }
+                    else
+                    {
+                        btStart.Enabled = false;
+                    }
+                    if (btStop.InvokeRequired)
+                    {
+                        btStop.Invoke(new MethodInvoker(delegate
+                        {
+                            btStop.Enabled = true;
+                        }));
+                    }
+                    else
+                    {
+                        btStop.Enabled = true;
+                    }
+                    if (anLoading.InvokeRequired)
+                    {
+                        anLoading.Invoke(new MethodInvoker(delegate
+                        {
+                            anLoading.Visible = true;
+                        }));
+                    }
+                    else
+                    {
+                        anLoading.Visible = true;
+                    }
+                    syncTimerSecondCount = syncTimerSecond - syncTimerTryAgainSecond;
+                    ListViewBuilder(lvDefault, Color.Red, 99,
+                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect local (Mobile) database." });
+                    ((Default)this.ParentForm).SyncToMainText = "SyncToMain (Syncing Fail)";
+                    ((Default)this.ParentForm).SyncToMainTextColor = "#ED1C24";
+                }
+                else if (!clsSQLMain.IsConnected())
+                {
+                    ((Default)this.ParentForm).SyncToMainText = "SyncToMain (Syncing)";
+                    ((Default)this.ParentForm).SyncToMainTextColor = "#FF7F27";
+
+                    if (!bwDefault.IsBusy)
+                    {
+                        bwDefault.RunWorkerAsync();
+                    }
+                    else
+                    {
+                        syncTimerSecondCount = syncTimerSecond - syncTimerTryAgainSecond;
+                    }
+                    ListViewBuilder(lvDefault, Color.Red, 99,
+                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect server (Main) database." });
                 }
                 else
                 {
@@ -609,6 +674,8 @@ namespace _ContactCheckupSync
                     syncTimerSecondCount = syncTimerSecond-syncTimerTryAgainSecond;
                     ListViewBuilder(lvDefault, Color.Red, 99,
                         new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "","Cannot connect database."});
+                    ((Default)this.ParentForm).SyncToMainText = "SyncToMain (Syncing Fail)";
+                    ((Default)this.ParentForm).SyncToMainTextColor = "#ED1C24";
                 }
             }
             syncTimerSecondCount += 1;

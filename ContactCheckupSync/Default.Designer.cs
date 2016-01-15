@@ -44,14 +44,14 @@
             this.tbFooter = new System.Windows.Forms.TableLayoutPanel();
             this.lblCredit = new System.Windows.Forms.Label();
             this.lblFooter = new System.Windows.Forms.Label();
+            this.pnHR = new System.Windows.Forms.Panel();
             this.tbMenuTop = new System.Windows.Forms.TableLayoutPanel();
             this.btClose = new System.Windows.Forms.Button();
             this.btMove = new System.Windows.Forms.Button();
             this.btMinimize = new System.Windows.Forms.Button();
             this.btMaximize = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pnHR = new System.Windows.Forms.Panel();
             this.pnDefault = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tbDefault.SuspendLayout();
             this.tbHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
@@ -178,15 +178,17 @@
             // 
             this.tbMenu.AutoSize = true;
             this.tbMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(162)))), ((int)(((byte)(232)))));
-            this.tbMenu.ColumnCount = 5;
+            this.tbMenu.ColumnCount = 7;
             this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tbMenu.Controls.Add(this.mnSyncToMain, 1, 0);
-            this.tbMenu.Controls.Add(this.mnSyncToMobile, 2, 0);
-            this.tbMenu.Controls.Add(this.mnReport, 3, 0);
+            this.tbMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tbMenu.Controls.Add(this.mnSyncToMobile, 1, 0);
+            this.tbMenu.Controls.Add(this.mnReport, 2, 0);
+            this.tbMenu.Controls.Add(this.mnSyncToMain, 5, 0);
             this.tbMenu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbMenu.Location = new System.Drawing.Point(0, 106);
             this.tbMenu.Margin = new System.Windows.Forms.Padding(0);
@@ -198,6 +200,7 @@
             // 
             // mnSyncToMain
             // 
+            this.mnSyncToMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.mnSyncToMain.AutoSize = true;
             this.mnSyncToMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
             this.mnSyncToMain.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -206,10 +209,10 @@
             this.mnSyncToMain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.mnSyncToMain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mnSyncToMain.ForeColor = System.Drawing.Color.Black;
-            this.mnSyncToMain.Location = new System.Drawing.Point(20, 0);
+            this.mnSyncToMain.Location = new System.Drawing.Point(705, 0);
             this.mnSyncToMain.Margin = new System.Windows.Forms.Padding(0);
             this.mnSyncToMain.Name = "mnSyncToMain";
-            this.mnSyncToMain.Size = new System.Drawing.Size(114, 23);
+            this.mnSyncToMain.Size = new System.Drawing.Size(118, 23);
             this.mnSyncToMain.TabIndex = 0;
             this.mnSyncToMain.Text = "SyncToMain";
             this.mnSyncToMain.UseVisualStyleBackColor = false;
@@ -225,7 +228,7 @@
             this.mnSyncToMobile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.mnSyncToMobile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mnSyncToMobile.ForeColor = System.Drawing.Color.Black;
-            this.mnSyncToMobile.Location = new System.Drawing.Point(134, 0);
+            this.mnSyncToMobile.Location = new System.Drawing.Point(20, 0);
             this.mnSyncToMobile.Margin = new System.Windows.Forms.Padding(0);
             this.mnSyncToMobile.Name = "mnSyncToMobile";
             this.mnSyncToMobile.Size = new System.Drawing.Size(101, 23);
@@ -244,7 +247,7 @@
             this.mnReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.mnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.mnReport.ForeColor = System.Drawing.Color.Black;
-            this.mnReport.Location = new System.Drawing.Point(235, 0);
+            this.mnReport.Location = new System.Drawing.Point(121, 0);
             this.mnReport.Margin = new System.Windows.Forms.Padding(0);
             this.mnReport.Name = "mnReport";
             this.mnReport.Size = new System.Drawing.Size(85, 23);
@@ -292,6 +295,16 @@
             this.lblFooter.Size = new System.Drawing.Size(47, 13);
             this.lblFooter.TabIndex = 1;
             this.lblFooter.Text = "lblFooter";
+            // 
+            // pnHR
+            // 
+            this.pnHR.BackColor = System.Drawing.Color.Silver;
+            this.pnHR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnHR.Location = new System.Drawing.Point(0, 482);
+            this.pnHR.Margin = new System.Windows.Forms.Padding(0);
+            this.pnHR.Name = "pnHR";
+            this.pnHR.Size = new System.Drawing.Size(843, 1);
+            this.pnHR.TabIndex = 4;
             // 
             // tbMenuTop
             // 
@@ -393,16 +406,6 @@
             this.btMaximize.TabIndex = 2;
             this.btMaximize.UseVisualStyleBackColor = false;
             this.btMaximize.Click += new System.EventHandler(this.btMaximize_Click);
-            // 
-            // pnHR
-            // 
-            this.pnHR.BackColor = System.Drawing.Color.Silver;
-            this.pnHR.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnHR.Location = new System.Drawing.Point(0, 482);
-            this.pnHR.Margin = new System.Windows.Forms.Padding(0);
-            this.pnHR.Name = "pnHR";
-            this.pnHR.Size = new System.Drawing.Size(843, 1);
-            this.pnHR.TabIndex = 4;
             // 
             // pnDefault
             // 

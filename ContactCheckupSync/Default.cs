@@ -13,6 +13,21 @@ namespace _ContactCheckupSync
     {
         #region GlobalVariable
         ToolTip tt = new ToolTip();
+        SyncToMain syncToMain = new SyncToMain();
+        #endregion
+        #region Property
+        private string _syncToMainText="SyncToMain";
+        public string SyncToMainText
+        {
+            get { return _syncToMainText; }
+            set { _syncToMainText = value;mnSyncToMain.Text = _syncToMainText; }
+        }
+        private string _syncToMainTextColor="#000000";
+        public string SyncToMainTextColor
+        {
+            get { return _syncToMainTextColor; }
+            set { _syncToMainTextColor = value;mnSyncToMain.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor); }
+        }
         #endregion
         public Default()
         {
@@ -219,7 +234,10 @@ namespace _ContactCheckupSync
         {
             foreach (Form frm in this.MdiChildren)
             {
-                frm.Close();
+                if (frm.Name != "SyncToMain")
+                {
+                    frm.Close();
+                }
             }
         }
         private Color getColorSoft(Color color, double amount)
@@ -249,12 +267,26 @@ namespace _ContactCheckupSync
                     if (mn.Name == Name)
                     {
                         mn.BackColor = ColorTranslator.FromHtml("#FFF");
-                        mn.ForeColor = ColorTranslator.FromHtml("#000");
+                        if (mn.Name == "mnSyncToMain")
+                        {
+                            mn.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor);
+                        }
+                        else
+                        {
+                            mn.ForeColor = ColorTranslator.FromHtml("#000");
+                        }
                     }
                     else
                     {
                         mn.BackColor = getColorSoft(ColorTranslator.FromHtml("#00A2E8"), 50);
-                        mn.ForeColor = ColorTranslator.FromHtml("#484848");
+                        if (mn.Name == "mnSyncToMain")
+                        {
+                            mn.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor);
+                        }
+                        else
+                        { 
+                            mn.ForeColor = ColorTranslator.FromHtml("#484848");
+                        }
                     }
                 }
             }
@@ -283,13 +315,13 @@ namespace _ContactCheckupSync
 
             DisposeAllButThis();
 
-            var childForm = new SyncToMain();
-            childForm.MdiParent = this;
-            childForm.Parent = this.pnDefault;
-            childForm.Text = "SyncToMain";
-            childForm.WindowState = FormWindowState.Maximized;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Show();
+            //var childForm = new SyncToMain();
+            syncToMain.MdiParent = this;
+            syncToMain.Parent = this.pnDefault;
+            syncToMain.Text = "SyncToMain";
+            syncToMain.WindowState = FormWindowState.Maximized;
+            syncToMain.FormBorderStyle = FormBorderStyle.None;
+            syncToMain.Show();
         }
         #endregion
         #region SyncToMobile

@@ -185,7 +185,8 @@ public class clsTempData
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {
-                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
+                    //dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
+                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
                 }
             }
             dt.AcceptChanges();
@@ -246,7 +247,6 @@ public class clsTempData
         #endregion
         #region Procedure
         #region SQLQuery
-        strSQL.Append("");
         strSQL.Append("SELECT ");
         strSQL.Append("RowID,");
         strSQL.Append("PatientUID PatientGUID,");
@@ -275,6 +275,14 @@ public class clsTempData
         }
         #endregion
         #endregion
+        //if(dt!=null && dt.Rows.Count > 0)
+        //{
+
+        //}
+        //else
+        //{
+        //    MessageBox.Show("Test");
+        //}
         return dt;
     }
     public DataTable RemoveDuplicateRows(DataTable dTable, string colName)
@@ -570,7 +578,8 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("SELECT ");
         strSQL.Append("P.HN,P.Episode,P.Forename,P.Surname,P.ProChkList,P.Company ");
         strSQL.Append("FROM patient P ");
-        strSQL.Append("WHERE(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID) = 0;");
+        //strSQL.Append("WHERE(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.PatientGUID) = 0;");
+        strSQL.Append("WHERE NOT P.PatientGUID IN (SELECT DISTINCT PatientGUID FROM patientchecklist);");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         if(dt!=null && dt.Rows.Count > 0)

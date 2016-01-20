@@ -70,7 +70,7 @@ public class clsTempData
         strSQL.Append("P.Physician,P.RegType,P.Programid,P.DIV DIVI, P.DEP,P.SEC,P.POS,P.LAN,P.NAT,P.CNT_TRY,P.LOC,");
         strSQL.Append("P.Payor,P.Epi_Rowid,P.ORD_STS,P.STS,P.DR_CDE,P.NTE,P.Job,P.BusUnit,P.BusDiv,P.Line,P.Shift,P.Location,");
         strSQL.Append("P.GrpBook,P.HISExist,");
-        strSQL.Append("P.SyncStatus,P.SyncWhen,");
+        strSQL.Append("P.SyncStatus,P.SyncWhen,PL.BookCreate,");
         strSQL.Append("(SELECT COUNT(RowID) FROM tblCheckList WITH(NOLOCK) WHERE PatientUID = P.rowguid) ChecklistCount ");
 
         strSQL.Append("FROM ");

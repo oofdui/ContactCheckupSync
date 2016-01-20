@@ -20,6 +20,8 @@ namespace _ContactCheckupSync
         {
             var clsSQLMain = new clsSQL(clsGlobal.dbTypeMain, clsGlobal.csMain);
             var clsSQLMobile = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+            dtDOEFrom.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+            dtDOETo.Value = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
             if (!clsSQLMain.IsConnected() && !clsSQLMobile.IsConnected())
             {
                 btSearch.Enabled = false; //btSync.Enabled = false;
@@ -199,9 +201,9 @@ namespace _ContactCheckupSync
             if (clsGlobal.dtPatient != null && clsGlobal.dtPatient.Rows.Count > 0)
             {
                 var countSuccess = 0; var countFail = 0; var countExist = 0;
-                var countChecklistSuccess = 0; var countChecklistFail = 0; var countChecklistExist = 0;
+                var countChecklistSuccess = 0; var countChecklistFail = 0; var countChecklistExist = 0;var countChecklistUpdate = 0;
                 var outMessage = "";
-                if (setPatientToMobile(clsGlobal.dtPatient, out countSuccess, out countFail, out countExist, out countChecklistSuccess, out countChecklistFail, out countChecklistExist, out outMessage))
+                if (setPatientToMobile(clsGlobal.dtPatient, out countSuccess, out countFail, out countExist, out countChecklistSuccess, out countChecklistFail, out countChecklistExist,out countChecklistUpdate, out outMessage))
                 {
                     if (lblSyncToMobile.InvokeRequired)
                     {
@@ -210,13 +212,14 @@ namespace _ContactCheckupSync
                             lblSyncToMobile.Text = string.Format(
                                 "Sync ข้อมูลสู่ระบบ Mobile เสร็จสิ้น" + Environment.NewLine + Environment.NewLine +
                                 "    @Patient Success : {0} , Exist : {1} , Fail : {2}" + Environment.NewLine +
-                                "    @Checklist Success: {3} , Exist : {4} , Fail : {5}",
+                                "    @Checklist Success: {3} , Exist : {4} , Fail : {5} , Update : {6}",
                                 countSuccess.ToString(),
                                 countExist.ToString(),
                                 countFail.ToString(),
                                 countChecklistSuccess.ToString(),
                                 countChecklistExist.ToString(),
-                                countChecklistFail.ToString()
+                                countChecklistFail.ToString(),
+                                countChecklistUpdate.ToString()
                                 );
                         }));
                     }
@@ -313,7 +316,7 @@ namespace _ContactCheckupSync
                 }));
             }
         }
-        public bool setPatientToMobile(DataTable dt, out int countSuccess, out int countFail, out int countExist, out int countChecklistSuccess, out int countChecklistFail, out int countChecklistExist, out string outMessage)
+        public bool setPatientToMobile(DataTable dt, out int countSuccess, out int countFail, out int countExist, out int countChecklistSuccess, out int countChecklistFail, out int countChecklistExist,out int countChecklistUpdate, out string outMessage)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             #region Variable
@@ -321,8 +324,8 @@ namespace _ContactCheckupSync
             var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
             var strSQL = "";
             countSuccess = 0; countFail = 0; countExist = 0;
-            countChecklistSuccess = 0; countChecklistFail = 0; countChecklistExist = 0;
-            outMessage = "";
+            countChecklistSuccess = 0; countChecklistFail = 0; countChecklistExist = 0; countChecklistUpdate = 0;
+             outMessage = "";
             #endregion
             #region Procedure
             try
@@ -385,6 +388,7 @@ namespace _ContactCheckupSync
                             {"Shift","'"+dt.Rows[i]["Shift"].ToString().SQLQueryFilter()+"'" },
                             {"Location","'"+dt.Rows[i]["Location"].ToString().SQLQueryFilter()+"'" },
                             {"GrpBook","'"+dt.Rows[i]["GrpBook"].ToString().SQLQueryFilter()+"'" },
+                            {"BookCreate","'"+dt.Rows[i]["BookCreate"].ToString().SQLQueryFilter()+"'" },
                             {"HISExist","'"+dt.Rows[i]["HISExist"].ToString().SQLQueryFilter()+"'" },
                             {"SyncStatus",(dt.Rows[i]["SyncStatus"]!=DBNull.Value?"'"+dt.Rows[i]["SyncStatus"].ToString()+"'":"'0'") },
                             {"SyncWhen",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["SyncWhen"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
@@ -413,14 +417,16 @@ namespace _ContactCheckupSync
                         var countChecklistSuccessTemp = 0;
                         var countChecklistExistTemp = 0;
                         var countChecklistFailTemp = 0;
+                        var countChecklistUpdateTemp = 0;
                         var setPatientChecklistToMobileStatus = setPatientChecklistToMobile(
                             dt.Rows[i]["PatientGUID"].ToString(),
                             dt.Rows[i]["Episode"].ToString(),
                             dt.Rows[i]["HN"].ToString(),
-                            out countChecklistSuccessTemp, out countChecklistExistTemp, out countChecklistFailTemp);
+                            out countChecklistSuccessTemp, out countChecklistExistTemp, out countChecklistFailTemp,out countChecklistUpdateTemp);
                         countChecklistSuccess += countChecklistSuccessTemp;
                         countChecklistExist += countChecklistExistTemp;
                         countChecklistFail += countChecklistFailTemp;
+                        countChecklistUpdate += countChecklistUpdateTemp;
                         #endregion
                     }
                 }
@@ -437,7 +443,7 @@ namespace _ContactCheckupSync
             #endregion
             return result;
         }
-        public string setPatientChecklistToMobile(string PatientGUID, string Episode, string HN, out int countChecklistSuccess, out int countChecklistExist, out int countChecklistFail)
+        public string setPatientChecklistToMobile(string PatientGUID, string Episode, string HN, out int countChecklistSuccess, out int countChecklistExist, out int countChecklistFail, out int countChecklistUpdate)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             #region Variable
@@ -448,7 +454,7 @@ namespace _ContactCheckupSync
             var clsSQLMobile = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
             var clsTempData = new clsTempData();
             var strSQL = "";
-            countChecklistSuccess = 0; countChecklistFail = 0; countChecklistExist = 0;
+            countChecklistSuccess = 0; countChecklistFail = 0; countChecklistExist = 0; countChecklistUpdate = 0;
             #endregion
             #region Procedure
             dt = clsTempData.getPatientChecklist(PatientGUID, Episode, HN);
@@ -456,37 +462,34 @@ namespace _ContactCheckupSync
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    strSQL = "SELECT COUNT(RowID) FROM patientchecklist WHERE RowID=" + dt.Rows[i]["RowID"].ToString() + ";";
-                    var count = clsSQLMobile.Return(strSQL);
-                    if (count != "0")
+                    var proStatusMobile = "";
+                    strSQL = "SELECT IFNULL(ProStatus,0)ProStatus FROM patientchecklist WHERE RowID=" + dt.Rows[i]["RowID"].ToString() + ";";
+                    proStatusMobile = clsSQLMobile.Return(strSQL);
+                    if (proStatusMobile == "")
                     {
-                        result = "E";
-                        countChecklistExist += 1;
-                    }
-                    else
-                    {
+                        #region Insert
                         if (!clsSQLMobile.Insert(
                             "patientchecklist",
                             new string[,]
                             {
-                            {"RowID",dt.Rows[i]["RowID"].ToString() },
-                            {"PatientGUID","'"+PatientGUID+"'" },
-                            {"HN","'"+HN+"'" },
-                            {"Episode","'"+Episode+"'" },
-                            {"CheckListID",dt.Rows[i]["CheckListID"].ToString() },
-                            {"ProChkList","'"+dt.Rows[i]["ProChkList"].ToString()+"'" },
-                            {"ProID",dt.Rows[i]["ProID"].ToString() },
-                            {"WorkFlow","'"+dt.Rows[i]["WorkFlow"].ToString()+"'" },
-                            {"WFID",dt.Rows[i]["WFID"].ToString() },
-                            {"WFSequen",dt.Rows[i]["WFSequen"].ToString() },
-                            {"ProStatus",dt.Rows[i]["ProStatus"].ToString() },
-                            {"RegDate","NULL" },
-                            {"ModifyDate","NULL" },
-                            {"SyncStatus",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'1'":"'0'") },
-                            {"SyncWhen",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["SyncWhen"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
-                            {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
-                            {"MWhen","NOW()" },
-                            {"MUser","'"+clsGlobal.WindowsLogon()+"'" },
+                                {"RowID",dt.Rows[i]["RowID"].ToString() },
+                                {"PatientGUID","'"+PatientGUID+"'" },
+                                {"HN","'"+HN+"'" },
+                                {"Episode","'"+Episode+"'" },
+                                {"CheckListID",dt.Rows[i]["CheckListID"].ToString() },
+                                {"ProChkList","'"+dt.Rows[i]["ProChkList"].ToString()+"'" },
+                                {"ProID",dt.Rows[i]["ProID"].ToString() },
+                                {"WorkFlow","'"+dt.Rows[i]["WorkFlow"].ToString()+"'" },
+                                {"WFID",dt.Rows[i]["WFID"].ToString() },
+                                {"WFSequen",dt.Rows[i]["WFSequen"].ToString() },
+                                {"ProStatus",dt.Rows[i]["ProStatus"].ToString() },
+                                {"RegDate","NULL" },
+                                {"ModifyDate","NULL" },
+                                {"SyncStatus",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'1'":"'0'") },
+                                {"SyncWhen",(dt.Rows[i]["SyncWhen"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["SyncWhen"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
+                                {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
+                                {"MWhen","NOW()" },
+                                {"MUser","'"+clsGlobal.WindowsLogon()+"'" },
                             },
                             new string[,] { { } },
                             out outSQL, true
@@ -500,6 +503,44 @@ namespace _ContactCheckupSync
                             result = "S";
                             countChecklistSuccess += 1;
                         }
+                        #endregion
+                    }
+                    else if (int.Parse(dt.Rows[i]["ProStatus"].ToString()) > int.Parse(proStatusMobile))
+                    {
+                        //Update : ProStatus changed from main
+                        #region Update
+                        if (!clsSQLMobile.Update(
+                            "patientchecklist",
+                            new string[,]
+                            {
+                                {"ProStatus",dt.Rows[i]["ProStatus"].ToString() },
+                                {"RegDate",(dt.Rows[i]["RegDate"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["RegDate"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
+                                {"ModifyDate",(dt.Rows[i]["ModifyDate"]!=DBNull.Value?"'"+DateTime.Parse(dt.Rows[i]["ModifyDate"].ToString()).ToString("yyyy-MM-dd HH:mm")+"'":"NULL") },
+                                {"SyncStatus","'0'" },
+                                {"SyncWhen","NOW()" },
+                                {"CUser","'"+clsGlobal.WindowsLogon()+"'" },
+                                {"MWhen","NOW()" },
+                                {"MUser","'"+clsGlobal.WindowsLogon()+"'" },
+                            },
+                            new string[,] { { } },
+                            "RowID="+ dt.Rows[i]["RowID"].ToString(),
+                            out outSQL, true
+                            ))
+                        {
+                            result = "F";
+                            countChecklistFail += 1;
+                        }
+                        else
+                        {
+                            result = "U";
+                            countChecklistUpdate += 1;
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        result = "E";
+                        countChecklistExist += 1;
                     }
                 }
             }

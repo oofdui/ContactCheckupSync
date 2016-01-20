@@ -20,13 +20,39 @@ namespace _ContactCheckupSync
         public string SyncToMainText
         {
             get { return _syncToMainText; }
-            set { _syncToMainText = value;mnSyncToMain.Text = _syncToMainText; }
+            set {
+                _syncToMainText = value;
+                if (mnSyncToMain.InvokeRequired)
+                {
+                    mnSyncToMain.Invoke(new MethodInvoker(delegate
+                    {
+                        mnSyncToMain.Text = _syncToMainText;
+                    }));
+                }
+                else
+                {
+                    mnSyncToMain.Text = _syncToMainText;
+                }
+            }
         }
         private string _syncToMainTextColor="#000000";
         public string SyncToMainTextColor
         {
             get { return _syncToMainTextColor; }
-            set { _syncToMainTextColor = value;mnSyncToMain.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor); }
+            set {
+                _syncToMainTextColor = value;
+                if (mnSyncToMain.InvokeRequired)
+                {
+                    mnSyncToMain.Invoke(new MethodInvoker(delegate
+                    {
+                        mnSyncToMain.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor);
+                    }));
+                }
+                else
+                {
+                    mnSyncToMain.ForeColor = ColorTranslator.FromHtml(_syncToMainTextColor);
+                }
+            }
         }
         #endregion
         public Default()
@@ -55,14 +81,21 @@ namespace _ContactCheckupSync
             #region Variable
             var strSQL = new string[]
             {
-                "CREATE TABLE patient (PatientGUID varchar(50) NOT NULL,HN varchar(12) NOT NULL,Episode varchar(13) default NULL,LabEpisode varchar(100) default NULL,DOB datetime default NULL,No int(11) default NULL,EmployeeID varchar(20) default NULL,DOE datetime default NULL,Company varchar(200) default NULL,ChildCompany varchar(200) default NULL,ProChkList varchar(50) default NULL,ProChkListDetail varchar(200) default NULL,Prename varchar(50) default NULL,Forename varchar(50) default NULL,Surname varchar(50) default NULL,Age varchar(50) default NULL,Sex varchar(50) default NULL,Address varchar(300) default NULL,Tel varchar(200) default NULL,Email varchar(50) default NULL,Physician varchar(50) default NULL,RegType varchar(10) default NULL,Programid int(4) default NULL,DIVI varchar(80) default NULL,DEP varchar(80) default NULL,SEC varchar(80) default NULL,POS varchar(99) default NULL,LAN int(11) default NULL,NAT int(11) default NULL,CNT_TRY int(11) default NULL,LOC varchar(50) default NULL,Payor varchar(100) default NULL,Epi_Rowid decimal(10,0) default NULL,ORD_STS varchar(1) default NULL,STS varchar(1) default NULL,DR_CDE varchar(15) default NULL,NTE varchar(200) default NULL,Job varchar(80) default NULL,BusUnit varchar(80) default NULL,BusDiv varchar(80) default NULL,Line varchar(80) default NULL,Shift varchar(300) default NULL,Location varchar(80) default NULL,GrpBook varchar(100) default NULL,HISExist char(1) default NULL,SyncStatus char(1) NOT NULL default '0',SyncWhen datetime default NULL,CWhen timestamp NOT NULL default CURRENT_TIMESTAMP,CUser varchar(10) NOT NULL default '',StatusFlag char(1) default NULL,PRIMARY KEY(PatientGUID));",
+                "CREATE TABLE patient (PatientGUID varchar(50) NOT NULL,HN varchar(12) NOT NULL,Episode varchar(13) default NULL,LabEpisode varchar(100) default NULL,DOB datetime default NULL,No int(11) default NULL,EmployeeID varchar(20) default NULL,DOE datetime default NULL,Company varchar(200) default NULL,ChildCompany varchar(200) default NULL,ProChkList varchar(50) default NULL,ProChkListDetail varchar(200) default NULL,Prename varchar(50) default NULL,Forename varchar(50) default NULL,Surname varchar(50) default NULL,Age varchar(50) default NULL,Sex varchar(50) default NULL,Address varchar(300) default NULL,Tel varchar(200) default NULL,Email varchar(50) default NULL,Physician varchar(50) default NULL,RegType varchar(10) default NULL,Programid int(4) default NULL,DIVI varchar(80) default NULL,DEP varchar(80) default NULL,SEC varchar(80) default NULL,POS varchar(99) default NULL,LAN int(11) default NULL,NAT int(11) default NULL,CNT_TRY int(11) default NULL,LOC varchar(50) default NULL,Payor varchar(100) default NULL,Epi_Rowid decimal(10,0) default NULL,ORD_STS varchar(1) default NULL,STS varchar(1) default NULL,DR_CDE varchar(15) default NULL,NTE varchar(200) default NULL,Job varchar(80) default NULL,BusUnit varchar(80) default NULL,BusDiv varchar(80) default NULL,Line varchar(80) default NULL,Shift varchar(300) default NULL,Location varchar(80) default NULL,GrpBook varchar(100) default NULL,BookCreate varchar(100) default NULL,HISExist char(1) default NULL,SyncStatus char(1) NOT NULL default '0',SyncWhen datetime default NULL,CWhen timestamp NOT NULL default CURRENT_TIMESTAMP,CUser varchar(10) NOT NULL default '',StatusFlag char(1) default NULL,PRIMARY KEY(PatientGUID));",
                 "CREATE TABLE patientchecklist (RowID int(11) NOT NULL,PatientGUID varchar(50) NOT NULL,HN varchar(12) default NULL,Episode varchar(13) default NULL,CheckListID int(11) default NULL,ProChkList varchar(200) default NULL,ProID int(11) default NULL,WorkFlow varchar(200) default NULL,WFID int(11) default NULL,WFSequen int(11) default NULL,ProStatus float default NULL,ProStatusRemark varchar(200) default NULL,RegDate datetime default NULL,ModifyDate datetime default NULL,SyncStatus char(1) NOT NULL default '0',SyncWhen datetime default NULL,CWhen timestamp NOT NULL default CURRENT_TIMESTAMP,CUser varchar(10) default '',MWhen datetime default NULL,MUser varchar(10) default '',PRIMARY KEY(RowID));",
                 "CREATE TABLE ProStatusDetail(Code FLOAT NOT NULL,Detail VARCHAR(100) NOT NULL,PRIMARY KEY(Code));",
                 "INSERT INTO ProStatusDetail(Code,Detail)VALUES('1','ปริ้นเอกสารแล้ว (สถานะเริ่มต้น)');",
                 "INSERT INTO ProStatusDetail(Code,Detail)VALUES('2','ลงทะเบียนรับเอกสารแล้ว');",
                 "INSERT INTO ProStatusDetail(Code,Detail)VALUES('3','ดำเนินการแล้ว');",
                 "INSERT INTO ProStatusDetail(Code,Detail)VALUES('4','ยกเลิกการตรวจ');",
-                "CREATE TABLE PatientLab(LabEpisode VARCHAR(100) NOT NULL,WFID INT(11) NOT NULL,CWhen DATETIME NOT NULL,StatusFlag CHAR(1) NOT NULL DEFAULT 'A',PRIMARY KEY(LabEpisode,WFID));"
+                "CREATE TABLE PatientLab(LabEpisode VARCHAR(100) NOT NULL,WFID INT(11) NOT NULL,CWhen DATETIME NOT NULL,StatusFlag CHAR(1) NOT NULL DEFAULT 'A',PRIMARY KEY(LabEpisode,WFID));",
+                "CREATE TABLE Checklist(ChecklistID INT NOT NULL,Code VARCHAR(20) NOT NULL,Detail VARCHAR(100),PRIMARY KEY(ChecklistID));",
+                "CREATE TABLE ChecklistDetail(ChecklistID INT NOT NULL,ProID INT,WFID INT,WFSequen INT,WorkFlow VARCHAR(200),PRIMARY KEY(ChecklistID,WFID));",
+                "CREATE TABLE staff(user_id int(11) NOT NULL AUTO_INCREMENT,emp_id varchar(10) DEFAULT NULL,username varchar(30) DEFAULT NULL,password varchar(40) DEFAULT NULL,cre_by int(11) DEFAULT NULL,cre_date datetime DEFAULT NULL,upd_by int(11) DEFAULT NULL,upd_date datetime DEFAULT NULL,role_id int(11) DEFAULT NULL,nickname varchar(100) DEFAULT NULL,flag_active enum('D','N','A') DEFAULT 'A',PRIMARY KEY (user_id));",
+                "INSERT INTO staff VALUES ('1', 'nopjorn', 'nopjorn', '15f7030f2cc0ff18b0214bae41a114f70f75770b', null, NOW(), '1', NOW(), '1', 'เจได', 'A');",
+                "INSERT INTO staff VALUES ('2', 'checkup', 'checkup', '24f8ef8cc03898266027761bd58882ed8910378e', '1', NOW(), '2', NOW(), '1', 'checkup', 'A');",
+                "INSERT INTO staff VALUES('3', 'dear', 'dear', '7c4a8d09ca3762af61e59520943dc26494f8941b', '1', NOW(), '1', NOW(), '2', 'เดียร์', 'A');",
+                "CREATE TABLE log_print (PatientGUID varchar(50) DEFAULT NULL,cre_by_ip varchar(15) DEFAULT NULL,cre_date datetime DEFAULT NULL,com_name varchar(100) DEFAULT NULL,cre_by int(11) DEFAULT NULL,print_type enum('C','S') DEFAULT NULL COMMENT 'Checklist, Sticker');"
             };
             var outMessage = "";
             var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);

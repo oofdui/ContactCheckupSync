@@ -90,7 +90,7 @@ namespace _ContactCheckupSync
                 "INSERT INTO ProStatusDetail(Code,Detail)VALUES('4','ยกเลิกการตรวจ');",
                 "CREATE TABLE PatientLab(LabEpisode VARCHAR(100) NOT NULL,WFID INT(11) NOT NULL,CWhen DATETIME NOT NULL,StatusFlag CHAR(1) NOT NULL DEFAULT 'A',PRIMARY KEY(LabEpisode,WFID));",
                 "CREATE TABLE Checklist(ChecklistID INT NOT NULL,Code VARCHAR(20) NOT NULL,Detail VARCHAR(100),PRIMARY KEY(ChecklistID));",
-                "CREATE TABLE ChecklistDetail(ChecklistID INT NOT NULL,ProID INT,WFID INT,WFSequen INT,WorkFlow VARCHAR(200),PRIMARY KEY(ChecklistID,WFID));",
+                "CREATE TABLE ChecklistDetail(ChecklistID INT NOT NULL,ProID INT,WFID INT,WFSequen INT,WorkFlow VARCHAR(200),PRIMARY KEY(ChecklistID,WFID),FOREIGN KEY(ChecklistID) REFERENCES Checklist(ChecklistID) ON UPDATE CASCADE ON DELETE CASCADE);",
                 "CREATE TABLE staff(user_id int(11) NOT NULL AUTO_INCREMENT,emp_id varchar(10) DEFAULT NULL,username varchar(30) DEFAULT NULL,password varchar(40) DEFAULT NULL,cre_by int(11) DEFAULT NULL,cre_date datetime DEFAULT NULL,upd_by int(11) DEFAULT NULL,upd_date datetime DEFAULT NULL,role_id int(11) DEFAULT NULL,nickname varchar(100) DEFAULT NULL,flag_active enum('D','N','A') DEFAULT 'A',PRIMARY KEY (user_id));",
                 "INSERT INTO staff VALUES ('1', 'nopjorn', 'nopjorn', '15f7030f2cc0ff18b0214bae41a114f70f75770b', null, NOW(), '1', NOW(), '1', 'เจได', 'A');",
                 "INSERT INTO staff VALUES ('2', 'checkup', 'checkup', '24f8ef8cc03898266027761bd58882ed8910378e', '1', NOW(), '2', NOW(), '1', 'checkup', 'A');",

@@ -7,6 +7,7 @@
 	* เพิ่มเทเบิ้ล staff,log_print ในตัวช่วยสร้างตาราง
 	* ซิงค์ BookCreate มาด้วย
 	* ปรับขั้นตอนการ SyncToMobile ใหม่ โดยให้เช็คสถานะ Checklist ด้วย ถ้ามีการอัพเดทฝั่ง Main ให้วนมาอัพเดทที่ Mobile ด้วย (ProStatus@Main > ProStatus@Mobile)
+	* เพิ่มการซิงค์ Checklist และ ChecklistDetail ในการ SyncToMobile โดยทำการลบข้อมูลเดิมฝั่ง Mobile ก่อนแล้วซิงค์เข้าไปใหม่ เพื่อกันการอัพเดทฝั่งโรงพยาบาล
 * v.1.15
 	* โมดูล SyncToMobile หลังจากกดค้นหา ระบบจะไฮไลท์คนไข้ที่ยังไม่มี Checklist ด้วยสีแดง และ แสดงจำนวนด้านบน
 * v.1.14

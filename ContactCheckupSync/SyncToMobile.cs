@@ -200,6 +200,8 @@ namespace _ContactCheckupSync
         {
             if (clsGlobal.dtPatient != null && clsGlobal.dtPatient.Rows.Count > 0)
             {
+                setChecklistToMobile(clsGlobal.dtPatient);
+
                 var countSuccess = 0; var countFail = 0; var countExist = 0;
                 var countChecklistSuccess = 0; var countChecklistFail = 0; var countChecklistExist = 0;var countChecklistUpdate = 0;
                 var outMessage = "";
@@ -447,7 +449,7 @@ namespace _ContactCheckupSync
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             #region Variable
-            var result = "F";//F=False , S=Success , E=Exist
+            var result = "F";//F=False , S=Success , E=Exist , U=Update
             var dt = new DataTable();
             var outSQL = "";
             var clsSQLMain = new clsSQL(clsGlobal.dbTypeMain, clsGlobal.csMain);
@@ -507,7 +509,6 @@ namespace _ContactCheckupSync
                     }
                     else if (int.Parse(dt.Rows[i]["ProStatus"].ToString()) > int.Parse(proStatusMobile))
                     {
-                        //Update : ProStatus changed from main
                         #region Update
                         if (!clsSQLMobile.Update(
                             "patientchecklist",
@@ -542,6 +543,90 @@ namespace _ContactCheckupSync
                         result = "E";
                         countChecklistExist += 1;
                     }
+                }
+            }
+            #endregion
+            return result;
+        }
+        public bool setChecklistToMobile(DataTable dt)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            #region Variable
+            var result = true;
+            var clsSQL = new clsSQL(clsGlobal.dbTypeMain, clsGlobal.csMain);
+            var clsSQLMobile = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+            var dv = dt.DefaultView;
+            var dtProChkList = new DataTable();
+            var strSQL = "";
+            #endregion
+            #region Procedure
+            dtProChkList = dv.ToTable(true, "ProChkList");
+            if(dtProChkList!=null && dtProChkList.Rows.Count > 0)
+            {
+                for(int i = 0; i < dtProChkList.Rows.Count; i++)
+                {
+                    var checklistID = "";
+                    strSQL = "DELETE FROM Checklist WHERE Code='"+ dtProChkList.Rows[i][0].ToString().Trim() + "';";
+                    clsSQLMobile.Execute(strSQL);
+                    #region Checklist
+                    strSQL = "SELECT TOP 1 id ChecklistID,Checklist Code,CheckListDesc Detail FROM Checklist WHERE Checklist='" + dtProChkList.Rows[i][0].ToString().Trim() + "';";
+                    var dtChecklist = new DataTable();
+                    dtChecklist = clsSQL.Bind(strSQL);
+                    if (dtChecklist != null && dtChecklist.Rows.Count > 0)
+                    {
+                        checklistID = dtChecklist.Rows[0]["ChecklistID"].ToString();
+                        #region Insert
+                        if (!clsSQLMobile.Insert(
+                            "checklist",
+                            new string[,]
+                            {
+                                {"ChecklistID", dtChecklist.Rows[0]["ChecklistID"].ToString() },
+                                {"Code", "'"+dtChecklist.Rows[0]["Code"].ToString().Trim().SQLQueryFilter()+"'" },
+                                {"Detail", "'"+dtChecklist.Rows[0]["Detail"].ToString().SQLQueryFilter()+"'" }
+                            },
+                            new string[,] { { } },
+                            out strSQL))
+                        {
+                            //If error, what you want to do?
+                            result = false;
+                            MessageBox.Show("Checklist Insert : " + strSQL, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        #endregion
+                    }
+                    #endregion
+                    #region ChecklistDetail
+                    if (checklistID != "")
+                    {
+                        strSQL = "SELECT TOP 100 rowid ProID,WFID,WFSequen,WorkFlow FROM Process WHERE CheckListid="+ checklistID + ";";
+                        var dtChecklistDetail = new DataTable();
+                        dtChecklistDetail = clsSQL.Bind(strSQL);
+                        if (dtChecklistDetail != null && dtChecklistDetail.Rows.Count > 0)
+                        {
+                            for(int j = 0; j < dtChecklistDetail.Rows.Count; j++)
+                            {
+                                #region Insert
+                                if (!clsSQLMobile.Insert(
+                                    "checklistdetail",
+                                    new string[,]
+                                    {
+                                        {"ChecklistID", checklistID },
+                                        {"ProID", dtChecklistDetail.Rows[j]["ProID"].ToString().Trim() },
+                                        {"WFID", dtChecklistDetail.Rows[j]["WFID"].ToString() },
+                                        {"WFSequen", dtChecklistDetail.Rows[j]["WFSequen"].ToString() },
+                                        {"WorkFlow", "'"+dtChecklistDetail.Rows[j]["WorkFlow"].ToString().SQLQueryFilter()+"'" }
+                                    },
+                                    new string[,] { { } },
+                                    out strSQL))
+                                {
+                                    result = false;
+                                    //If error, what you want to do?
+                                    MessageBox.Show("ChecklistDetail Insert : " + strSQL, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                #endregion
+                            }
+                        }
+                    }
+                    #endregion
                 }
             }
             #endregion

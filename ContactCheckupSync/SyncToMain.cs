@@ -29,8 +29,13 @@ namespace _ContactCheckupSync
             lblSyncPathMobile.Text = pathSyncLocal;
             lblSyncPathMain.Text = pathSync;
             lblDefault.Text = "";
-            tmDefault.Enabled = true;
-            tmDefault.Start();
+
+            var autoStartSync = System.Configuration.ConfigurationManager.AppSettings["autoStartSync"].Trim().ToLower();
+            if (autoStartSync == "true" || autoStartSync=="")
+            {
+                tmDefault.Enabled = true;
+                tmDefault.Start();
+            }
         }
         private void btStart_Click(object sender, EventArgs e)
         {

@@ -26,14 +26,17 @@ namespace _ContactCheckupSync
                 dtDOEFrom.Enabled = false;dtDOETo.Enabled = false;btSearch.Enabled = false;btExport.Enabled = false;ddlCompany.Enabled = false;
                 return;
             }
+            setType();
         }
         private void dtDOEFrom_ValueChanged(object sender, EventArgs e)
         {
-            setCompany();
+            //setCompany();
+            setDropDownList();
         }
         private void dtDOETo_ValueChanged(object sender, EventArgs e)
         {
-            setCompany();
+            //setCompany();
+            setDropDownList();
         }
         private void btSearch_Click(object sender, EventArgs e)
         {
@@ -55,11 +58,41 @@ namespace _ContactCheckupSync
             #endregion
             #region Procedure
             dt = clsTempData.getCompanyMobile(dtDOEFrom.Value, dtDOETo.Value);
+            
             if (dt != null && dt.Rows.Count > 0)
             {
+                var dr = dt.NewRow();
+                dr[0] = "- ทั้งหมด -";
+                dt.Rows.InsertAt(dr, 0);
+
                 ddlCompany.DataSource = dt;
                 ddlCompany.DisplayMember = "Company";
                 ddlCompany.ValueMember = "Company";
+            }
+            else
+            {
+                ddlCompany.DataSource = null;
+            }
+            #endregion
+        }
+        private void setBookCreate()
+        {
+            #region Variable
+            var dt = new DataTable();
+            var clsTempData = new clsTempData();
+            #endregion
+            #region Procedure
+            dt = clsTempData.getBookCreateMobile(dtDOEFrom.Value, dtDOETo.Value);
+            
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                var dr = dt.NewRow();
+                dr[0] = "- ทั้งหมด -";
+                dt.Rows.InsertAt(dr, 0);
+
+                ddlCompany.DataSource = dt;
+                ddlCompany.DisplayMember = "BookCreate";
+                ddlCompany.ValueMember = "BookCreate";
             }
             else
             {
@@ -80,7 +113,33 @@ namespace _ContactCheckupSync
                     }));
                 }
                 var clsTempData = new clsTempData();
-                var FileName = clsGlobal.ExecutePathBuilder() + @"Export\" + getDropDownListValue(ddlCompany, "Company") + "_" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm") + ".xlsx";
+                var reportType = "";
+                #region ReportType
+                var type = getDropDownListValue(ddlType, "Name");
+                switch (type)
+                {
+                    case "All":
+                        reportType = "ALL";
+                        break;
+                    case "Payor":
+                        reportType = "PAYOR";
+                        if(getDropDownListValue(ddlCompany, "Payor")!="- ทั้งหมด -")
+                        {
+                            reportType += " - " + getDropDownListValue(ddlCompany, "Payor");
+                        }
+                        break;
+                    case "Book":
+                        reportType = "BOOK";
+                        if (getDropDownListValue(ddlCompany, "BookCreate") != "- ทั้งหมด -")
+                        {
+                            reportType += " - " + getDropDownListValue(ddlCompany, "BookCreate");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                #endregion
+                var FileName = clsGlobal.ExecutePathBuilder() + @"Export\" + reportType + "_" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm") + ".xlsx";
                 var dt = new DataTable();
                 dt = clsGlobal.dtPatient;
                 FileInfo newFile = new FileInfo(FileName);
@@ -332,39 +391,99 @@ namespace _ContactCheckupSync
                     #region Detail
                     try
                     {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Detail");
-                        rows = 1;
-                        #region HeaderBuilder
-                        for (int c = 0; c <= dt.Columns.Count - 1; c++)
+                        #region CreateGroupSheet
+                        var dtDetailHeader = new DataTable();
+                        if (type == "All")
                         {
-                            worksheet.Cells[rows, c + 1].Value = dt.Columns[c].ColumnName;
-
-                            worksheet.Cells[rows, c + 1].Style.Font.Bold = true;
-                            worksheet.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
-                            worksheet.Cells[rows, c + 1].Style.Font.Size = 12;
-                            worksheet.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            worksheet.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
-                            worksheet.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
-                            worksheet.Cells[rows, c + 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                            worksheet.Cells[rows, c + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                            dtDetailHeader.Columns.Add("All");
+                            dtDetailHeader.Rows.Add("All");
+                        }
+                        else if (type == "Payor")
+                        {
+                            dtDetailHeader = dt.DefaultView.ToTable(true, "Payor");
+                        }
+                        else if (type == "Book")
+                        {
+                            dtDetailHeader = dt.DefaultView.ToTable(true, "BookCreate");
                         }
                         #endregion
-                        #region RowsBuilder
-                        for (int r = 0; r < dt.Rows.Count; r++)
+                        #region CreateSheetDetail
+                        for (int i = 0; i < dtDetailHeader.Rows.Count; i++)
                         {
-                            for (int c = 0; c < dt.Columns.Count; c++)
+                            #region DataFilter
+                            var sheetName = "";
+                            var dtDetailDetail = new DataTable();
+                            var dvDetailDetail = new DataView(dt);
+                            if (type == "All")
                             {
-                                worksheet.Cells[rows + r + 1, c + 1].Value = dt.Rows[r][c].ToString();
-                                worksheet.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                worksheet.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                dtDetailDetail = dt;
+                                sheetName = "Detail - All";
                             }
-                        }
+                            else if (type == "Payor")
+                            {
+                                sheetName = "Detail - " + dtDetailHeader.Rows[i][0].ToString();
+                                dvDetailDetail.RowFilter = "Payor='" + dtDetailHeader.Rows[i][0].ToString() + "'";
+                                dtDetailDetail = dvDetailDetail.ToTable();
+                            }
+                            else if (type == "Book")
+                            {
+                                sheetName = "Detail - " + dtDetailHeader.Rows[i][0].ToString();
+                                dvDetailDetail.RowFilter = "BookCreate='" + dtDetailHeader.Rows[i][0].ToString() + "'";
+                                dtDetailDetail = dvDetailDetail.ToTable();
+                            }
+                            #endregion
+                            ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(sheetName);
 
-                        #endregion
-                        #region ResizeColumn
-                        for (int c = 0; c < dt.Columns.Count; c++)
-                        {
-                            worksheet.Column(c + 1).AutoFit();
+                            rows = 1;
+                            #region HeaderBuilder
+                            for (int c = 0; c <= dtDetailDetail.Columns.Count - 1; c++)
+                            {
+                                worksheet.Cells[rows, c + 1].Value = dtDetailDetail.Columns[c].ColumnName;
+
+                                worksheet.Cells[rows, c + 1].Style.Font.Bold = true;
+                                worksheet.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
+                                worksheet.Cells[rows, c + 1].Style.Font.Size = 12;
+                                worksheet.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                worksheet.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
+                                worksheet.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
+                                worksheet.Cells[rows, c + 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                                worksheet.Cells[rows, c + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                            }
+                            #endregion
+                            #region RowsBuilder
+                            for (int r = 0; r < dtDetailDetail.Rows.Count; r++)
+                            {
+                                for (int c = 0; c < dtDetailDetail.Columns.Count; c++)
+                                {
+                                    //กรณีฟิลด์เป็นข้อมูลวันที่ ให้คงรูปแบบไว้เพื่อง่ายในการฟิลด์เตอร์
+                                    if (dtDetailDetail.Columns[c].ColumnName.Contains("Date") && dtDetailDetail.Rows[r][c].ToString()!="" && dtDetailDetail.Rows[r][c]!=DBNull.Value)
+                                    {
+                                        try
+                                        {
+                                            worksheet.Cells[rows + r + 1, c + 1].Value = DateTime.Parse(dtDetailDetail.Rows[r][c].ToString());
+                                            worksheet.Cells[rows + r + 1, c + 1].Style.Numberformat.Format = "dd/MM/yyyy HH:mm";
+                                        }
+                                        catch (Exception)
+                                        {
+                                            worksheet.Cells[rows + r + 1, c + 1].Value = dtDetailDetail.Rows[r][c].ToString();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[rows + r + 1, c + 1].Value = dtDetailDetail.Rows[r][c].ToString();
+                                    }
+                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
+                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                }
+                            }
+
+                            #endregion
+                            #region ResizeColumn
+                            for (int c = 0; c < dtDetailDetail.Columns.Count; c++)
+                            {
+                                worksheet.Column(c + 1).AutoFit();
+                            }
+                            #endregion
                         }
                         #endregion
                     }
@@ -718,7 +837,21 @@ namespace _ContactCheckupSync
             var SyncStatus = "";
             #endregion
             #region Procedure
-            dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
+            var type = getDropDownListValue(ddlType, "Name");
+            switch (type)
+            {
+                case "All":
+                    dt = clsTempData.getPatientMobileByAll(dtDOEFrom.Value, dtDOETo.Value);
+                    break;
+                case "Payor":
+                    dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "Company")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "Company"):""));
+                    break;
+                case "Book":
+                    dt = clsTempData.getPatientMobileByBookCreate(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "BookCreate")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "BookCreate"):""));
+                    break;
+                default:
+                    break;
+            }
             if (dt != null && dt.Rows.Count > 0)
             {
                 dt.Columns.Remove("PatientGUID");
@@ -814,6 +947,13 @@ namespace _ContactCheckupSync
             else
             {
                 clsGlobal.dtPatient = null;
+                if (gvDefault.InvokeRequired)
+                {
+                    gvDefault.Invoke(new MethodInvoker(delegate
+                    {
+                        gvDefault.DataSource = null;
+                    }));
+                }
                 if (btExport.InvokeRequired)
                 {
                     btExport.Invoke(new MethodInvoker(delegate
@@ -843,16 +983,44 @@ namespace _ContactCheckupSync
                 {
                     ddlName.Invoke(new MethodInvoker(delegate
                     {
-                        var drv = (DataRowView)ddlName.SelectedItem;
-                        var dr = drv.Row;
-                        result = dr[columnName].ToString();
+                        try
+                        {
+                            var drv = (DataRowView)ddlName.SelectedItem;
+                            var dr = drv.Row;
+                            try
+                            {
+                                result = dr[columnName].ToString();
+                            }
+                            catch (Exception)
+                            {
+                                result = dr[0].ToString();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            result = "";
+                        }
                     }));
                 }
                 else
                 {
-                    var drv = (DataRowView)ddlName.SelectedItem;
-                    var dr = drv.Row;
-                    result = dr[columnName].ToString();
+                    try
+                    {
+                        var drv = (DataRowView)ddlName.SelectedItem;
+                        var dr = drv.Row;
+                        try
+                        {
+                            result = dr[columnName].ToString();
+                        }
+                        catch (Exception)
+                        {
+                            result = dr[0].ToString();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        result = "";
+                    }
                 }
             }
             catch (Exception) { }
@@ -891,7 +1059,26 @@ namespace _ContactCheckupSync
                 }));
             }
         }
+        private void setType()
+        {
+            #region Variable
+            var clsTempData = new clsTempData();
+            var dt = new DataTable();
+            #endregion
+            #region Procedure
+            dt = clsTempData.getReportType();
+            if(dt!=null && dt.Rows.Count > 0)
+            {
+                ddlType.DataSource = dt;
+                ddlType.DisplayMember = "Name";
+                ddlType.ValueMember = "UID";
 
+                ddlType.SelectedIndex = 0;
+
+                ddlCompany.Enabled = false;
+            }
+            #endregion
+        }
         private void wsSearch_DoWork(object sender, DoWorkEventArgs e)
         {
             if (btSearch.InvokeRequired)
@@ -957,6 +1144,30 @@ namespace _ContactCheckupSync
                 {
                     btLabExport.Enabled = true;
                 }));
+            }
+        }
+        private void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setDropDownList();
+        }
+        private void setDropDownList()
+        {
+            var type = getDropDownListValue(ddlType, "Name");
+            switch (type)
+            {
+                case "All":
+                    ddlCompany.Enabled = false;
+                    break;
+                case "Payor":
+                    ddlCompany.Enabled = true;
+                    setCompany();
+                    break;
+                case "Book":
+                    ddlCompany.Enabled = true;
+                    setBookCreate();
+                    break;
+                default:
+                    break;
             }
         }
     }

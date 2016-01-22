@@ -263,6 +263,39 @@ public class clsTempData
         #endregion
         return dt;
     }
+    public int getMaxDateRegis(DateTime DOEFrom,DateTime DOETo)
+    {
+        #region Variable
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        var result = 0;
+        #endregion
+        #region Procedure
+        strSQL.Append("SELECT COUNT(A.Result) ");
+        strSQL.Append("FROM(");
+        strSQL.Append("SELECT patient.Payor, DATE(patientchecklist.MWhen) Result ");
+        strSQL.Append("FROM patient ");
+        strSQL.Append("INNER JOIN patientchecklist ON patient.PatientGUID = patientchecklist.PatientGUID AND patientchecklist.WFID = 1 AND patientchecklist.ProStatus = 3 ");
+        strSQL.Append("WHERE ");
+        strSQL.Append("patient.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "' ");
+        strSQL.Append("GROUP BY patient.Payor, DATE(patientchecklist.MWhen) ");
+        strSQL.Append(") A ");
+        strSQL.Append("GROUP BY A.Payor ");
+        strSQL.Append("ORDER BY COUNT(A.Result) DESC ");
+        strSQL.Append("LIMIT 0, 1;");
+
+        try
+        {
+            var resultTemp = clsSQL.Return(strSQL.ToString());
+            if (resultTemp != "")
+            {
+                result = int.Parse(resultTemp);
+            }
+        }
+        catch (Exception) { }
+        #endregion
+        return result;
+    }
     public DataTable getPatientMobileByBookCreate(DateTime DOEFrom, DateTime DOETo, string BookCreate)
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -621,7 +654,7 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("AND Company = '" + CompanyName + "';");
         */
         strSQL.Append("SELECT ");
-        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,");
+        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,P.Payor,P.BookCreate,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 6 LIMIT 0, 1) AcceptDateBlood,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 7 LIMIT 0,1) AcceptDateUrine,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 8 LIMIT 0,1) AcceptDateStool,");
@@ -639,11 +672,98 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
 
         strSQL.Append("WHERE ");
         strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
-        strSQL.Append("AND Company = '" + CompanyName + "' ");
-        strSQL.Append("GROUP BY P.PatientGUID;");
+        if (CompanyName != "" && CompanyName != "- ทั้งหมด -")
+        {
+            strSQL.Append("AND Company = '" + CompanyName + "' ");
+        }
+        strSQL.Append("GROUP BY P.PatientGUID ORDER BY P.Payor,P.No;");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         if(dt!=null && dt.Rows.Count > 0)
+        {
+            dt.Columns.Remove("PatientGUID");
+            dt.AcceptChanges();
+        }
+        #endregion
+        return dt;
+    }
+    public DataTable getLabDetailByBook(DateTime DOEFrom, DateTime DOETo, string BookCreate)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var dt = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,P.Payor,P.BookCreate,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 6 LIMIT 0, 1) AcceptDateBlood,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 7 LIMIT 0,1) AcceptDateUrine,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 8 LIMIT 0,1) AcceptDateStool,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 9 LIMIT 0,1) AcceptDateHeavyMetal,");
+        strSQL.Append("(SUM(WFID = 6 OR WFID = 7 OR WFID = 8 OR WFID = 9) - (SELECT COUNT(LabEpisode) FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID IN(6, 7, 8, 9))) CountLabPending,");
+        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 1 LIMIT 0,1) RegisterDate,");
+        strSQL.Append("SUM(WFID = 6) CountChecklistBlood,");
+        strSQL.Append("SUM(WFID = 7) CountChecklistUrine,");
+        strSQL.Append("SUM(WFID = 8) CountChecklistStool,");
+        strSQL.Append("SUM(WFID = 9) CountChecklistHeavyMetal ");
+
+        strSQL.Append("FROM ");
+        strSQL.Append("Patient P ");
+        strSQL.Append("INNER JOIN patientchecklist PL ON P.PatientGUID = PL.PatientGUID ");
+
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        if (BookCreate != "" && BookCreate != "- ทั้งหมด -")
+        {
+            strSQL.Append("AND BookCreate = '" + BookCreate + "' ");
+        }
+        strSQL.Append("GROUP BY P.PatientGUID ORDER BY P.BookCreate,P.No;");
+        #endregion
+        dt = clsSQL.Bind(strSQL.ToString());
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            dt.Columns.Remove("PatientGUID");
+            dt.AcceptChanges();
+        }
+        #endregion
+        return dt;
+    }
+    public DataTable getLabDetailByAll(DateTime DOEFrom, DateTime DOETo)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var dt = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,P.Payor,P.BookCreate,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 6 LIMIT 0, 1) AcceptDateBlood,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 7 LIMIT 0,1) AcceptDateUrine,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 8 LIMIT 0,1) AcceptDateStool,");
+        strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 9 LIMIT 0,1) AcceptDateHeavyMetal,");
+        strSQL.Append("(SUM(WFID = 6 OR WFID = 7 OR WFID = 8 OR WFID = 9) - (SELECT COUNT(LabEpisode) FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID IN(6, 7, 8, 9))) CountLabPending,");
+        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID = P.PatientGUID AND WFID = 1 LIMIT 0,1) RegisterDate,");
+        strSQL.Append("SUM(WFID = 6) CountChecklistBlood,");
+        strSQL.Append("SUM(WFID = 7) CountChecklistUrine,");
+        strSQL.Append("SUM(WFID = 8) CountChecklistStool,");
+        strSQL.Append("SUM(WFID = 9) CountChecklistHeavyMetal ");
+
+        strSQL.Append("FROM ");
+        strSQL.Append("Patient P ");
+        strSQL.Append("INNER JOIN patientchecklist PL ON P.PatientGUID = PL.PatientGUID ");
+
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        strSQL.Append("GROUP BY P.PatientGUID ORDER BY P.Payor,P.No;");
+        #endregion
+        dt = clsSQL.Bind(strSQL.ToString());
+        if (dt != null && dt.Rows.Count > 0)
         {
             dt.Columns.Remove("PatientGUID");
             dt.AcceptChanges();
@@ -703,6 +823,7 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("P.Shift,");
         strSQL.Append("P.Location Site,");
         strSQL.Append("P.Payor,");
+        strSQL.Append("P.BookCreate,");
         strSQL.Append("PLBlood.CWhen Blood,");
         strSQL.Append("PLUrine.CWhen Urine,");
         strSQL.Append("PLStool.CWhen Stool,");
@@ -717,9 +838,8 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         strSQL.Append("LEFT JOIN PatientLab PLHeavyMetal ON P.LabEpisode = PLHeavyMetal.LabEpisode AND PLHeavyMetal.StatusFlag = 'A' AND PLHeavyMetal.WFID = 9 ");
 
         strSQL.Append("WHERE ");
-        strSQL.Append("(P.DOE >= '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND P.DOE <= '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "')");
-
-
+        strSQL.Append("(P.DOE >= '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND P.DOE <= '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        strSQL.Append("ORDER BY P.Payor,P.NO;");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         #endregion

@@ -2,14 +2,15 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
-* ?
+* v.1.16
 	* เพิ่มฟิลด์ BookCreate ในตัวช่วยสร้างตาราง
 	* เพิ่มเทเบิ้ล staff,log_print ในตัวช่วยสร้างตาราง
 	* ซิงค์ BookCreate มาด้วย
 	* ปรับขั้นตอนการ SyncToMobile ใหม่ โดยให้เช็คสถานะ Checklist ด้วย ถ้ามีการอัพเดทฝั่ง Main ให้วนมาอัพเดทที่ Mobile ด้วย (ProStatus@Main > ProStatus@Mobile)
 	* เพิ่มการซิงค์ Checklist และ ChecklistDetail ในการ SyncToMobile โดยทำการลบข้อมูลเดิมฝั่ง Mobile ก่อนแล้วซิงค์เข้าไปใหม่ เพื่อกันการอัพเดทฝั่งโรงพยาบาล
 	* คอลัมภ์ในไฟล์ที่ Export ออกมา กรณีเป็นวันที่ ในไฟล์ต้องเป็นวันที่ด้วย เพื่อให้สามารถใช้ฟังชันกรองของ Excel ได้แบบแยกวัน เดือน ปี
-	* แยก Sheet ไฟล์ที่ Export ได้แล้ว ทั้งแบบเลือก All , Payor , Book โดยแยกได้ที่ Sheet Detail
+	* แยก Sheet ไฟล์ที่ Export ได้แล้ว ทั้งแบบเลือก All , Payor , Book โดยแยกได้ที่ Sheet Detail , Sheet Lab
+	* เพิ่ม Sheet Summary
 * v.1.15
 	* โมดูล SyncToMobile หลังจากกดค้นหา ระบบจะไฮไลท์คนไข้ที่ยังไม่มี Checklist ด้วยสีแดง และ แสดงจำนวนด้านบน
 * v.1.14

@@ -320,234 +320,6 @@ namespace _ContactCheckupSync
                         }
                         #endregion
                     }
-                    /*
-                    try
-                    {
-                        ExcelWorksheet worksheetSummary = package.Workbook.Worksheets.Add("Summary");
-                        #region HeaderBuilder
-                        var headers = new string[] { "", "จำนวน", "%" };
-                        var iHeader = 0;
-                        for (iHeader = 0; iHeader < headers.Length; iHeader++)
-                        {
-                            worksheetSummary.Cells[rows, iHeader + 1].Value = headers[iHeader];
-
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Bold = true;
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Name = "Tahoma";
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Size = 12;
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Color.SetColor(Color.White);
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        }
-                        var dtRegisterDate = new DataTable();
-                        dtRegisterDate = clsTempData.getPatientChecklistGroupByRegisterDate(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
-                        if (dtRegisterDate != null && dtRegisterDate.Rows.Count > 0)
-                        {
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                iHeader += 1;
-                                worksheetSummary.Cells[rows, iHeader].Value = DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("dd/MM/yyyy");
-
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Bold = true;
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma";
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 12;
-                                worksheetSummary.Cells[rows, iHeader].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Color.SetColor(Color.White);
-                                worksheetSummary.Cells[rows, iHeader].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
-                                worksheetSummary.Cells[rows, iHeader].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            }
-                        }
-                        #endregion
-                        #region RowsBuilder
-                        rows += 1;
-                        #region Summary
-                        iHeader = 1;
-                        worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                        worksheetSummary.Cells[rows, iHeader].Value = "จำนวนพนักงานทั้งหมด"; iHeader += 1;
-                        worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        worksheetSummary.Cells[rows, iHeader].Value = clsTempData.getPatientCountAll(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company")); iHeader += 1;
-                        worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        worksheetSummary.Cells[rows, iHeader].Value = "100";
-                        #endregion
-                        #region Detail
-                        if (dtRegisterDate != null && dtRegisterDate.Rows.Count > 0)
-                        {
-                            var countSummary = 0;
-                            #region เข้ารับการตรวจ
-                            iHeader = 1; rows += 1;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = "เข้ารับการตรวจ";
-                            iHeader += 3;
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                var dtRegisterDateDetail = new DataTable();
-                                var count = 0;
-                                dtRegisterDateDetail = clsTempData.getPatientChecklistCountByProStatus(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"), DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("yyyy-MM-dd"));
-                                if (dtRegisterDateDetail != null && dtRegisterDateDetail.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < dtRegisterDateDetail.Rows.Count; j++)
-                                    {
-                                        if (dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != "0")
-                                        {
-                                            count += 1;
-                                        }
-                                    }
-                                }
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Value = count;
-                                countSummary += count;
-                                iHeader += 1;
-                            }
-                            worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, 2].Style.Font.Size = 11; worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, 2].Value = countSummary;
-                            #endregion
-                            #region ตรวจครบทุกรายการ
-                            iHeader = 1; rows += 1; countSummary = 0;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = " - ตรวจครบทุกรายการ";
-                            iHeader += 3;
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                var dtRegisterDateDetail = new DataTable();
-                                var count = 0;
-                                dtRegisterDateDetail = clsTempData.getPatientChecklistCountByProStatus(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"), DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("yyyy-MM-dd"));
-                                if (dtRegisterDateDetail != null && dtRegisterDateDetail.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < dtRegisterDateDetail.Rows.Count; j++)
-                                    {
-                                        if (dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != "0" && dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() == dtRegisterDateDetail.Rows[j]["CountChecklistComplete"].ToString())
-                                        {
-                                            count += 1;
-                                        }
-                                    }
-                                }
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Value = count;
-                                countSummary += count;
-                                iHeader += 1;
-                            }
-                            worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, 2].Style.Font.Size = 11; worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, 2].Value = countSummary;
-                            #endregion
-                            #region ค้างตรวจ
-                            iHeader = 1; rows += 1; countSummary = 0;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = " - ค้างตรวจ";
-                            iHeader += 3;
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                var dtRegisterDateDetail = new DataTable();
-                                var count = 0;
-                                dtRegisterDateDetail = clsTempData.getPatientChecklistCountByProStatus(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"), DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("yyyy-MM-dd"));
-                                if (dtRegisterDateDetail != null && dtRegisterDateDetail.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < dtRegisterDateDetail.Rows.Count; j++)
-                                    {
-                                        if (dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != "0" && dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != dtRegisterDateDetail.Rows[j]["CountChecklistComplete"].ToString())
-                                        {
-                                            count += 1;
-                                        }
-                                    }
-                                }
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Value = count;
-                                countSummary += count;
-                                iHeader += 1;
-                            }
-                            worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, 2].Style.Font.Size = 11; worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, 2].Value = countSummary;
-                            #endregion
-                            #region ค้างคืนเอกสาร
-                            iHeader = 1; rows += 1; countSummary = 0;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = " - ค้างคืนเอกสาร";
-                            iHeader += 3;
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                var dtRegisterDateDetail = new DataTable();
-                                var count = 0;
-                                dtRegisterDateDetail = clsTempData.getPatientChecklistCountByProStatus(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"), DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("yyyy-MM-dd"));
-                                if (dtRegisterDateDetail != null && dtRegisterDateDetail.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < dtRegisterDateDetail.Rows.Count; j++)
-                                    {
-                                        if (dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != "0" && dtRegisterDateDetail.Rows[j]["CountChecklistDocumentPending"].ToString() != "0")
-                                        {
-                                            count += 1;
-                                        }
-                                    }
-                                }
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Value = count;
-                                countSummary += count;
-                                iHeader += 1;
-                            }
-                            worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, 2].Style.Font.Size = 11; worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, 2].Value = countSummary;
-                            #endregion
-                            #region งดการตรวจ
-                            iHeader = 1; rows += 1; countSummary = 0;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = " - งดการตรวจ";
-                            iHeader += 3;
-                            for (int i = 0; i < dtRegisterDate.Rows.Count; i++)
-                            {
-                                var dtRegisterDateDetail = new DataTable();
-                                var count = 0;
-                                dtRegisterDateDetail = clsTempData.getPatientChecklistCountByProStatus(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"), DateTime.Parse(dtRegisterDate.Rows[i]["RegisterDate"].ToString()).ToString("yyyy-MM-dd"));
-                                if (dtRegisterDateDetail != null && dtRegisterDateDetail.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < dtRegisterDateDetail.Rows.Count; j++)
-                                    {
-                                        if (dtRegisterDateDetail.Rows[j]["CountChecklistAll"].ToString() != "0" && dtRegisterDateDetail.Rows[j]["CountChecklistCancel"].ToString() != "0")
-                                        {
-                                            count += 1;
-                                        }
-                                    }
-                                }
-                                worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                                worksheetSummary.Cells[rows, iHeader].Value = count;
-                                countSummary += count;
-                                iHeader += 1;
-                            }
-                            worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, 2].Style.Font.Size = 11; worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, 2].Value = countSummary;
-                            #endregion
-                            #region ยังไม่ได้เข้ารับการตรวจ
-                            iHeader = 1; rows += 1; countSummary = 0;
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                            worksheetSummary.Cells[rows, iHeader].Value = "ยังไม่ได้เข้ารับการตรวจ";
-                            iHeader += 1;
-                            var countNotRegister = clsTempData.getPatientCountPending(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "Company"));
-
-                            worksheetSummary.Cells[rows, iHeader].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                            worksheetSummary.Cells[rows, iHeader].Value = countNotRegister;
-                            #endregion
-                        }
-                        #endregion
-                        #endregion
-                        #region คำนวนเปอร์เซ็นต์
-                        //เข้ารับการตรวจ
-                        worksheetSummary.Cells[3, 3].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        worksheetSummary.Cells[3, 3].Value = 100 * (double.Parse(worksheetSummary.Cells[3, 2].Value.ToString()) / double.Parse(worksheetSummary.Cells[2, 2].Value.ToString()));
-                        //ยังไม่ได้เข้ารับการตรวจ
-                        worksheetSummary.Cells[8, 3].Style.Font.Name = "Tahoma"; worksheetSummary.Cells[rows, iHeader].Style.Font.Size = 11; worksheetSummary.Cells[rows, iHeader].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                        worksheetSummary.Cells[8, 3].Value = 100 * (double.Parse(worksheetSummary.Cells[8, 2].Value.ToString()) / double.Parse(worksheetSummary.Cells[2, 2].Value.ToString()));
-                        #endregion
-                        #region ResizeColumn
-                        for (int i = 0; i < worksheetSummary.Dimension.End.Column; i++)
-                        {
-                            worksheetSummary.Column(i + 1).AutoFit();
-                        }
-                        #endregion
-                    }
-                    catch (Exception exDetail)
-                    {
-                        MessageBox.Show(exDetail.Message, "Summary", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    */
                     #endregion
                     rows = 1;
                     if (pbDefault.InvokeRequired)
@@ -725,12 +497,23 @@ namespace _ContactCheckupSync
                             }
                             #endregion
                             #region ResizeColumn
-                            for (int c = 0; c < dtDetailDetail.Columns.Count; c++)
+                            //for (int c = 0; c < dtDetailDetail.Columns.Count; c++)
+                            //{
+                            //    if (!dtDetailDetail.Columns[c+1].ColumnName.ToLower().Trim().Contains("remark"))
+                            //    {
+                            //        worksheet.Column(c + 1).AutoFit();
+                            //    }
+                            //}
+                            for(int c=1;c< 200; c++)
                             {
-                                //if (!dtDetailDetail.Columns[c+1].ColumnName.ToLower().Trim().Contains("remark"))
-                                //{
-                                    worksheet.Column(c + 1).AutoFit();
-                                //}
+                                if(worksheet.Cells[1, c].Value!= null)
+                                {
+                                    if (!worksheet.Cells[1, c].Value.ToString().Trim().ToLower().Contains("remark") &&
+                                        worksheet.Cells[1, c].Value.ToString().Trim() != "")
+                                    {
+                                        worksheet.Column(c).AutoFit();
+                                    }
+                                }
                             }
                             #endregion
                         }

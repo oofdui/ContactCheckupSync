@@ -372,6 +372,7 @@ public class clsTempData
             {
                 result = int.Parse(resultTemp);
             }
+            else { result = 0; }
         }
         catch (Exception) { }
         #endregion

@@ -2,6 +2,8 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
+* v.1.18
+	* แก้รีพอร์ต Excel ให้เพิ่มตัวเลือกว่าจะ เอา/ไม่เอา Checklist ที่เป็นโลหะหนัก
 * v.1.16
 	* เพิ่มฟิลด์ BookCreate ในตัวช่วยสร้างตาราง
 	* เพิ่มเทเบิ้ล staff,log_print ในตัวช่วยสร้างตาราง

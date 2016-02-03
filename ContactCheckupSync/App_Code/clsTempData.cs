@@ -129,7 +129,7 @@ public class clsTempData
         #endregion
         return dt;
     }
-    public DataTable getPatientMobile(DateTime DOEFrom, DateTime DOETo, string CompanyName)
+    public DataTable getPatientMobile(DateTime DOEFrom, DateTime DOETo, string CompanyName,bool withHeavyMetal=true)
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         #region Variable
@@ -168,6 +168,10 @@ public class clsTempData
         strSQL.Append("FROM ");
         strSQL.Append("Patient P ");
         strSQL.Append("INNER JOIN patientchecklist PC ON P.PatientGUID=PC.PatientGUID ");
+        if (!withHeavyMetal)
+        {
+            strSQL.Append("AND PC.WorkFlow NOT LIKE '%โลหะหนัก%' ");
+        }
 
         strSQL.Append("WHERE ");
         strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
@@ -185,12 +189,12 @@ public class clsTempData
             {
                 if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
                 {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3");
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+(!withHeavyMetal? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {
                     //dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
-                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
+                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
             }
             dt.AcceptChanges();
@@ -198,7 +202,7 @@ public class clsTempData
         #endregion
         return dt;
     }
-    public DataTable getPatientMobileByAll(DateTime DOEFrom, DateTime DOETo)
+    public DataTable getPatientMobileByAll(DateTime DOEFrom, DateTime DOETo, bool withHeavyMetal = true)
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         #region Variable
@@ -237,6 +241,10 @@ public class clsTempData
         strSQL.Append("FROM ");
         strSQL.Append("Patient P ");
         strSQL.Append("INNER JOIN patientchecklist PC ON P.PatientGUID=PC.PatientGUID ");
+        if (!withHeavyMetal)
+        {
+            strSQL.Append("AND PC.WorkFlow NOT LIKE '%โลหะหนัก%' ");
+        }
 
         strSQL.Append("WHERE ");
         strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
@@ -250,12 +258,85 @@ public class clsTempData
             {
                 if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
                 {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3");
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {
                     //dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
-                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
+                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
+                }
+            }
+            dt.AcceptChanges();
+        }
+        #endregion
+        return dt;
+    }
+    public DataTable getPatientMobileByBookCreate(DateTime DOEFrom, DateTime DOETo, string BookCreate, bool withHeavyMetal = true)
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        #region Variable
+        var dt = new DataTable();
+        var strSQL = new StringBuilder();
+        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
+        #endregion
+        #region Procedure
+        #region SQLQuery
+        strSQL.Append("SELECT ");
+        strSQL.Append("P.PatientGUID,");
+        strSQL.Append("P.No OrderNo,");
+        strSQL.Append("P.HN,");
+        strSQL.Append("P.EmployeeID,");
+        strSQL.Append("CONCAT(P.Forename,' ',P.Surname) Name,");
+        strSQL.Append("P.POS Position,");
+        strSQL.Append("P.DEP Department,");
+        strSQL.Append("P.DIVI Division,");
+        strSQL.Append("P.SEC Section,");
+        strSQL.Append("P.Line,");
+        strSQL.Append("P.Shift,");
+        strSQL.Append("P.Location Site,");
+        strSQL.Append("P.Payor,");
+        strSQL.Append("P.BookCreate,");
+        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
+        strSQL.Append("ProChkListDetail ProgramDetail,");
+        strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
+        strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");
+        strSQL.Append("SUM(ProStatus=4) CountChecklistCancel,");
+        //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus<>3) ProgramPending,");
+        //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) ProgramCancel ");
+        strSQL.Append("'' ProgramPending,");
+        strSQL.Append("'' ProgramCancel,");
+        strSQL.Append("P.SyncStatus,P.SyncWhen ");
+
+        strSQL.Append("FROM ");
+        strSQL.Append("Patient P ");
+        strSQL.Append("INNER JOIN patientchecklist PC ON P.PatientGUID=PC.PatientGUID ");
+        if (!withHeavyMetal)
+        {
+            strSQL.Append("AND PC.WorkFlow NOT LIKE '%โลหะหนัก%' ");
+        }
+
+        strSQL.Append("WHERE ");
+        strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
+        if (BookCreate != "")
+        {
+            strSQL.Append("AND BookCreate = '" + BookCreate + "' ");
+        }
+        strSQL.Append("GROUP BY P.PatientGUID ");
+        strSQL.Append("ORDER BY P.BookCreate,P.No;");
+        #endregion
+        dt = clsSQL.Bind(strSQL.ToString());
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
+                {
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
+                }
+                if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
+                {
+                    //dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
+                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
             }
             dt.AcceptChanges();
@@ -295,75 +376,6 @@ public class clsTempData
         catch (Exception) { }
         #endregion
         return result;
-    }
-    public DataTable getPatientMobileByBookCreate(DateTime DOEFrom, DateTime DOETo, string BookCreate)
-    {
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-        #region Variable
-        var dt = new DataTable();
-        var strSQL = new StringBuilder();
-        var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);
-        #endregion
-        #region Procedure
-        #region SQLQuery
-        strSQL.Append("SELECT ");
-        strSQL.Append("P.PatientGUID,");
-        strSQL.Append("P.No OrderNo,");
-        strSQL.Append("P.HN,");
-        strSQL.Append("P.EmployeeID,");
-        strSQL.Append("CONCAT(P.Forename,' ',P.Surname) Name,");
-        strSQL.Append("P.POS Position,");
-        strSQL.Append("P.DEP Department,");
-        strSQL.Append("P.DIVI Division,");
-        strSQL.Append("P.SEC Section,");
-        strSQL.Append("P.Line,");
-        strSQL.Append("P.Shift,");
-        strSQL.Append("P.Location Site,");
-        strSQL.Append("P.Payor,");
-        strSQL.Append("P.BookCreate,");
-        strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
-        strSQL.Append("ProChkListDetail ProgramDetail,");
-        strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
-        strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");
-        strSQL.Append("SUM(ProStatus=4) CountChecklistCancel,");
-        //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus<>3) ProgramPending,");
-        //strSQL.Append("(SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND ProStatus=4) ProgramCancel ");
-        strSQL.Append("'' ProgramPending,");
-        strSQL.Append("'' ProgramCancel,");
-        strSQL.Append("P.SyncStatus,P.SyncWhen ");
-
-        strSQL.Append("FROM ");
-        strSQL.Append("Patient P ");
-        strSQL.Append("INNER JOIN patientchecklist PC ON P.PatientGUID=PC.PatientGUID ");
-
-        strSQL.Append("WHERE ");
-        strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
-        if (BookCreate != "")
-        {
-            strSQL.Append("AND BookCreate = '" + BookCreate + "' ");
-        }
-        strSQL.Append("GROUP BY P.PatientGUID ");
-        strSQL.Append("ORDER BY P.BookCreate,P.No;");
-        #endregion
-        dt = clsSQL.Bind(strSQL.ToString());
-        if (dt != null && dt.Rows.Count > 0)
-        {
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
-                {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3");
-                }
-                if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
-                {
-                    //dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
-                    dt.Rows[i]["ProgramCancel"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(ProStatusRemark SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus=4");
-                }
-            }
-            dt.AcceptChanges();
-        }
-        #endregion
-        return dt;
     }
     public DataTable getCompany(DateTime DOEFrom,DateTime DOETo)
     {

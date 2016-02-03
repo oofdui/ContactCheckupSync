@@ -727,7 +727,10 @@ namespace _ContactCheckupSync
                             #region ResizeColumn
                             for (int c = 0; c < dtDetailDetail.Columns.Count; c++)
                             {
-                                worksheet.Column(c + 1).AutoFit();
+                                //if (!dtDetailDetail.Columns[c+1].ColumnName.ToLower().Trim().Contains("remark"))
+                                //{
+                                    worksheet.Column(c + 1).AutoFit();
+                                //}
                             }
                             #endregion
                         }
@@ -894,7 +897,10 @@ namespace _ContactCheckupSync
                                 #region ResizeColumn
                                 for (c = 0; c < dtLabDetail.Columns.Count; c++)
                                 {
-                                    worksheetLabDetail.Column(c + 1).AutoFit();
+                                    //if (!dtLabDetail.Columns[c + 1].ColumnName.ToLower().Trim().Contains("remark"))
+                                    //{
+                                        worksheetLabDetail.Column(c + 1).AutoFit();
+                                    //}
                                 }
                                 #endregion
                                 #region HiddenColumn
@@ -1131,13 +1137,13 @@ namespace _ContactCheckupSync
             switch (type)
             {
                 case "All":
-                    dt = clsTempData.getPatientMobileByAll(dtDOEFrom.Value, dtDOETo.Value);
+                    dt = clsTempData.getPatientMobileByAll(dtDOEFrom.Value, dtDOETo.Value,(cbHeavyMetal.Checked? false : true));
                     break;
                 case "Payor":
-                    dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "Company")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "Company"):""));
+                    dt = clsTempData.getPatientMobile(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "Company")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "Company"):""), (cbHeavyMetal.Checked ? false : true));
                     break;
                 case "Book":
-                    dt = clsTempData.getPatientMobileByBookCreate(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "BookCreate")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "BookCreate"):""));
+                    dt = clsTempData.getPatientMobileByBookCreate(dtDOEFrom.Value, dtDOETo.Value, (getDropDownListValue(ddlCompany, "BookCreate")!="- ทั้งหมด -"? getDropDownListValue(ddlCompany, "BookCreate"):""), (cbHeavyMetal.Checked ? false : true));
                     break;
                 default:
                     break;

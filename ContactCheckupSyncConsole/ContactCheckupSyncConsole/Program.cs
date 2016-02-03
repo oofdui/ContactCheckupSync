@@ -78,6 +78,10 @@ namespace ContactCheckupSyncConsole
                         #region UpdateToDatabase
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
+                            if (dt.Rows[i]["PatientGUID"].ToString().Trim().ToLower().Contains("new-regis"))
+                            {
+                                continue;
+                            }
                             #region Update tblPatientListSTS & tblPatientStatusOnMobile
                             if (dt.Rows[i]["WFID"].ToString().Trim() == "1" && float.Parse(dt.Rows[i]["ProStatus"].ToString().Trim()) >= 2)
                             {

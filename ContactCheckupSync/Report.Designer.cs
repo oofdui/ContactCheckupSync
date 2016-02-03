@@ -46,6 +46,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.wbSearch = new System.ComponentModel.BackgroundWorker();
+            this.cbHeavyMetal = new System.Windows.Forms.CheckBox();
             this.tbReport.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).BeginInit();
@@ -98,7 +99,7 @@
             // 
             this.tbSyncToMobileSearch.AutoSize = true;
             this.tbSyncToMobileSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tbSyncToMobileSearch.ColumnCount = 9;
+            this.tbSyncToMobileSearch.ColumnCount = 10;
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -108,15 +109,17 @@
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tbSyncToMobileSearch.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tbSyncToMobileSearch.Controls.Add(this.label1, 0, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.dtDOEFrom, 1, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.label2, 2, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.dtDOETo, 3, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.ddlCompany, 5, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btSearch, 6, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btExport, 7, 0);
-            this.tbSyncToMobileSearch.Controls.Add(this.btLabExport, 8, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.btSearch, 7, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.btExport, 8, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.btLabExport, 9, 0);
             this.tbSyncToMobileSearch.Controls.Add(this.ddlType, 4, 0);
+            this.tbSyncToMobileSearch.Controls.Add(this.cbHeavyMetal, 6, 0);
             this.tbSyncToMobileSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbSyncToMobileSearch.Location = new System.Drawing.Point(0, 0);
             this.tbSyncToMobileSearch.Margin = new System.Windows.Forms.Padding(0);
@@ -177,7 +180,7 @@
             this.ddlCompany.FormattingEnabled = true;
             this.ddlCompany.Location = new System.Drawing.Point(393, 3);
             this.ddlCompany.Name = "ddlCompany";
-            this.ddlCompany.Size = new System.Drawing.Size(243, 21);
+            this.ddlCompany.Size = new System.Drawing.Size(144, 21);
             this.ddlCompany.TabIndex = 2;
             // 
             // btSearch
@@ -284,6 +287,17 @@
             // 
             this.wbSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wsSearch_DoWork);
             // 
+            // cbHeavyMetal
+            // 
+            this.cbHeavyMetal.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbHeavyMetal.AutoSize = true;
+            this.cbHeavyMetal.Location = new System.Drawing.Point(543, 6);
+            this.cbHeavyMetal.Name = "cbHeavyMetal";
+            this.cbHeavyMetal.Size = new System.Drawing.Size(93, 17);
+            this.cbHeavyMetal.TabIndex = 5;
+            this.cbHeavyMetal.Text = "ไม่นับสารหนัก";
+            this.cbHeavyMetal.UseVisualStyleBackColor = true;
+            // 
             // Report
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,5 +340,6 @@
         private System.ComponentModel.BackgroundWorker wbSearch;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox ddlType;
+        private System.Windows.Forms.CheckBox cbHeavyMetal;
     }
 }

@@ -33,32 +33,32 @@
             this.tbDefault = new System.Windows.Forms.TableLayoutPanel();
             this.tbHeader = new System.Windows.Forms.TableLayoutPanel();
             this.lblHeader = new System.Windows.Forms.Label();
-            this.pbDefault = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btCreateTable = new System.Windows.Forms.Button();
             this.btClearData = new System.Windows.Forms.Button();
             this.tbMenu = new System.Windows.Forms.TableLayoutPanel();
-            this.mnSyncToMain = new System.Windows.Forms.Button();
             this.mnSyncToMobile = new System.Windows.Forms.Button();
             this.mnReport = new System.Windows.Forms.Button();
+            this.mnSyncToMain = new System.Windows.Forms.Button();
             this.tbFooter = new System.Windows.Forms.TableLayoutPanel();
             this.lblCredit = new System.Windows.Forms.Label();
             this.lblFooter = new System.Windows.Forms.Label();
             this.pnHR = new System.Windows.Forms.Panel();
             this.tbMenuTop = new System.Windows.Forms.TableLayoutPanel();
+            this.pnDefault = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pbDefault = new System.Windows.Forms.PictureBox();
             this.btClose = new System.Windows.Forms.Button();
             this.btMove = new System.Windows.Forms.Button();
             this.btMinimize = new System.Windows.Forms.Button();
             this.btMaximize = new System.Windows.Forms.Button();
-            this.pnDefault = new System.Windows.Forms.Panel();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tbDefault.SuspendLayout();
             this.tbHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tbMenu.SuspendLayout();
             this.tbFooter.SuspendLayout();
             this.tbMenuTop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
             this.SuspendLayout();
             // 
             // tbDefault
@@ -120,21 +120,6 @@
             this.lblHeader.TabIndex = 0;
             this.lblHeader.Text = "ContactCheckupSync";
             this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pbDefault
-            // 
-            this.pbDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbDefault.BackColor = System.Drawing.Color.Transparent;
-            this.pbDefault.Image = global::_ContactCheckupSync.Properties.Resources.icDefault1;
-            this.pbDefault.Location = new System.Drawing.Point(5, 3);
-            this.pbDefault.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.pbDefault.Name = "pbDefault";
-            this.pbDefault.Size = new System.Drawing.Size(80, 80);
-            this.pbDefault.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbDefault.TabIndex = 1;
-            this.pbDefault.TabStop = false;
             // 
             // tableLayoutPanel1
             // 
@@ -198,26 +183,6 @@
             this.tbMenu.Size = new System.Drawing.Size(843, 23);
             this.tbMenu.TabIndex = 2;
             // 
-            // mnSyncToMain
-            // 
-            this.mnSyncToMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mnSyncToMain.AutoSize = true;
-            this.mnSyncToMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
-            this.mnSyncToMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mnSyncToMain.FlatAppearance.BorderSize = 0;
-            this.mnSyncToMain.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
-            this.mnSyncToMain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.mnSyncToMain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.mnSyncToMain.ForeColor = System.Drawing.Color.Black;
-            this.mnSyncToMain.Location = new System.Drawing.Point(705, 0);
-            this.mnSyncToMain.Margin = new System.Windows.Forms.Padding(0);
-            this.mnSyncToMain.Name = "mnSyncToMain";
-            this.mnSyncToMain.Size = new System.Drawing.Size(118, 23);
-            this.mnSyncToMain.TabIndex = 0;
-            this.mnSyncToMain.Text = "SyncToMain";
-            this.mnSyncToMain.UseVisualStyleBackColor = false;
-            this.mnSyncToMain.Click += new System.EventHandler(this.mnToMain_Click);
-            // 
             // mnSyncToMobile
             // 
             this.mnSyncToMobile.AutoSize = true;
@@ -255,6 +220,26 @@
             this.mnReport.Text = "Report";
             this.mnReport.UseVisualStyleBackColor = false;
             this.mnReport.Click += new System.EventHandler(this.mnReport_Click);
+            // 
+            // mnSyncToMain
+            // 
+            this.mnSyncToMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.mnSyncToMain.AutoSize = true;
+            this.mnSyncToMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
+            this.mnSyncToMain.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mnSyncToMain.FlatAppearance.BorderSize = 0;
+            this.mnSyncToMain.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(206)))), ((int)(((byte)(238)))));
+            this.mnSyncToMain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.mnSyncToMain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.mnSyncToMain.ForeColor = System.Drawing.Color.Black;
+            this.mnSyncToMain.Location = new System.Drawing.Point(705, 0);
+            this.mnSyncToMain.Margin = new System.Windows.Forms.Padding(0);
+            this.mnSyncToMain.Name = "mnSyncToMain";
+            this.mnSyncToMain.Size = new System.Drawing.Size(118, 23);
+            this.mnSyncToMain.TabIndex = 0;
+            this.mnSyncToMain.Text = "SyncToMain";
+            this.mnSyncToMain.UseVisualStyleBackColor = false;
+            this.mnSyncToMain.Click += new System.EventHandler(this.mnToMain_Click);
             // 
             // tbFooter
             // 
@@ -333,6 +318,31 @@
             this.tbMenuTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tbMenuTop_MouseMove);
             this.tbMenuTop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbMenuTop_MouseUp);
             // 
+            // pnDefault
+            // 
+            this.pnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnDefault.Location = new System.Drawing.Point(3, 132);
+            this.pnDefault.Name = "pnDefault";
+            this.pnDefault.Size = new System.Drawing.Size(837, 347);
+            this.pnDefault.TabIndex = 6;
+            // 
+            // pbDefault
+            // 
+            this.pbDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbDefault.BackColor = System.Drawing.Color.Transparent;
+            this.pbDefault.Image = global::_ContactCheckupSync.Properties.Resources.icDefault2;
+            this.pbDefault.Location = new System.Drawing.Point(5, 3);
+            this.pbDefault.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.pbDefault.Name = "pbDefault";
+            this.pbDefault.Size = new System.Drawing.Size(80, 80);
+            this.pbDefault.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbDefault.TabIndex = 1;
+            this.pbDefault.TabStop = false;
+            // 
             // btClose
             // 
             this.btClose.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -407,16 +417,6 @@
             this.btMaximize.UseVisualStyleBackColor = false;
             this.btMaximize.Click += new System.EventHandler(this.btMaximize_Click);
             // 
-            // pnDefault
-            // 
-            this.pnDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnDefault.Location = new System.Drawing.Point(3, 132);
-            this.pnDefault.Name = "pnDefault";
-            this.pnDefault.Size = new System.Drawing.Size(837, 347);
-            this.pnDefault.TabIndex = 6;
-            // 
             // Default
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -436,13 +436,13 @@
             this.tbDefault.PerformLayout();
             this.tbHeader.ResumeLayout(false);
             this.tbHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tbMenu.ResumeLayout(false);
             this.tbMenu.PerformLayout();
             this.tbFooter.ResumeLayout(false);
             this.tbFooter.PerformLayout();
             this.tbMenuTop.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

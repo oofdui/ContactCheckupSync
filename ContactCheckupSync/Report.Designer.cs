@@ -40,13 +40,13 @@
             this.btExport = new System.Windows.Forms.Button();
             this.btLabExport = new System.Windows.Forms.Button();
             this.ddlType = new System.Windows.Forms.ComboBox();
+            this.cbHeavyMetal = new System.Windows.Forms.CheckBox();
             this.gvDefault = new System.Windows.Forms.DataGridView();
             this.pbDefault = new System.Windows.Forms.ProgressBar();
             this.anWaiting = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.wbSearch = new System.ComponentModel.BackgroundWorker();
-            this.cbHeavyMetal = new System.Windows.Forms.CheckBox();
             this.tbReport.SuspendLayout();
             this.tbSyncToMobileSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDefault)).BeginInit();
@@ -228,6 +228,17 @@
             this.ddlType.TabIndex = 2;
             this.ddlType.SelectedIndexChanged += new System.EventHandler(this.ddlType_SelectedIndexChanged);
             // 
+            // cbHeavyMetal
+            // 
+            this.cbHeavyMetal.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbHeavyMetal.AutoSize = true;
+            this.cbHeavyMetal.Location = new System.Drawing.Point(543, 6);
+            this.cbHeavyMetal.Name = "cbHeavyMetal";
+            this.cbHeavyMetal.Size = new System.Drawing.Size(93, 17);
+            this.cbHeavyMetal.TabIndex = 5;
+            this.cbHeavyMetal.Text = "ไม่นับสารหนัก";
+            this.cbHeavyMetal.UseVisualStyleBackColor = true;
+            // 
             // gvDefault
             // 
             this.gvDefault.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -286,17 +297,6 @@
             // wbSearch
             // 
             this.wbSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wsSearch_DoWork);
-            // 
-            // cbHeavyMetal
-            // 
-            this.cbHeavyMetal.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbHeavyMetal.AutoSize = true;
-            this.cbHeavyMetal.Location = new System.Drawing.Point(543, 6);
-            this.cbHeavyMetal.Name = "cbHeavyMetal";
-            this.cbHeavyMetal.Size = new System.Drawing.Size(93, 17);
-            this.cbHeavyMetal.TabIndex = 5;
-            this.cbHeavyMetal.Text = "ไม่นับสารหนัก";
-            this.cbHeavyMetal.UseVisualStyleBackColor = true;
             // 
             // Report
             // 

@@ -2,6 +2,8 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
+* v.1.19
+	* แก้ปัญหาชื่อ BookCreate เป็น Null ทำให้ตอน Export ไฟล์ Excel โปรแกรมฟ้องว่าสร้าง Sheet ชื่อซ้ำกัน
 * v.1.18
 	* แก้รีพอร์ต Excel ให้เพิ่มตัวเลือกว่าจะ เอา/ไม่เอา Checklist ที่เป็นโลหะหนัก
 * v.1.16

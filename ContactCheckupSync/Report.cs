@@ -186,8 +186,8 @@ namespace _ContactCheckupSync
                             worksheetSummary.Cells[rows, iHeader + 1].Value = headers[iHeader];
 
                             worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Bold = true;
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Name = "Tahoma";
-                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Size = 12;
+                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Name = "Angsana New";
+                            worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Size = 14;
                             worksheetSummary.Cells[rows, iHeader + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             worksheetSummary.Cells[rows, iHeader + 1].Style.Font.Color.SetColor(Color.White);
                             worksheetSummary.Cells[rows, iHeader + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -198,8 +198,8 @@ namespace _ContactCheckupSync
                         worksheetSummary.Cells[rows, columnSummaryComplete].Value = "รวมตรวจเสร็จ";
 
                         worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Bold = true;
-                        worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Name = "Tahoma";
-                        worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Size = 12;
+                        worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Name = "Angsana New";
+                        worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Size = 14;
                         worksheetSummary.Cells[rows, columnSummaryComplete].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Color.SetColor(Color.White);
                         worksheetSummary.Cells[rows, columnSummaryComplete].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -209,8 +209,8 @@ namespace _ContactCheckupSync
                         worksheetSummary.Cells[rows, columnSummaryInComplete].Value = "รวมค้างตรวจ";
 
                         worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Bold = true;
-                        worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Name = "Tahoma";
-                        worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Size = 12;
+                        worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Name = "Angsana New";
+                        worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Size = 14;
                         worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Color.SetColor(Color.White);
                         worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -233,13 +233,13 @@ namespace _ContactCheckupSync
                                 rows += 1;
                                 #region Payor
                                 worksheetSummary.Cells[rows, 1].Value = dtSummaryPayor.Rows[i]["Payor"].ToString();
-                                worksheetSummary.Cells[rows, 1].Style.Font.Name = "Tahoma";
-                                worksheetSummary.Cells[rows, 1].Style.Font.Size = 11;
+                                worksheetSummary.Cells[rows, 1].Style.Font.Name = "Angsana New";
+                                worksheetSummary.Cells[rows, 1].Style.Font.Size = 14;
                                 #endregion
                                 #region CountAll
                                 worksheetSummary.Cells[rows, 2].Value = dtSummaryPayorDetail.Rows.Count;
-                                worksheetSummary.Cells[rows, 2].Style.Font.Name = "Tahoma";
-                                worksheetSummary.Cells[rows, 2].Style.Font.Size = 11;
+                                worksheetSummary.Cells[rows, 2].Style.Font.Name = "Angsana New";
+                                worksheetSummary.Cells[rows, 2].Style.Font.Size = 14;
                                 worksheetSummary.Cells[rows, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 #endregion
                                 #region DistinctDateRegis
@@ -273,8 +273,8 @@ namespace _ContactCheckupSync
                                             worksheetSummary.Cells[1, columnTemp].Value = "Day "+(r).ToString();
 
                                             worksheetSummary.Cells[1, columnTemp].Style.Font.Bold = true;
-                                            worksheetSummary.Cells[1, columnTemp].Style.Font.Name = "Tahoma";
-                                            worksheetSummary.Cells[1, columnTemp].Style.Font.Size = 12;
+                                            worksheetSummary.Cells[1, columnTemp].Style.Font.Name = "Angsana New";
+                                            worksheetSummary.Cells[1, columnTemp].Style.Font.Size = 14;
                                             worksheetSummary.Cells[1, columnTemp].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                             worksheetSummary.Cells[1, columnTemp].Style.Font.Color.SetColor(Color.White);
                                             worksheetSummary.Cells[1, columnTemp].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#66C2DC"));
@@ -285,8 +285,8 @@ namespace _ContactCheckupSync
                                             summaryComplete += sumByDay;
                                             worksheetSummary.Cells[rows, columnTemp].Value = sumByDay;
                                             worksheetSummary.Cells[rows, columnTemp].AddComment(DateTime.Parse(dtSummaryDateRegis.Rows[r]["DateRegis"].ToString()).ToString("dd/MM/yyyy HH:mm"), "วันที่");
-                                            worksheetSummary.Cells[rows, columnTemp].Style.Font.Name = "Tahoma";
-                                            worksheetSummary.Cells[rows, columnTemp].Style.Font.Size = 11;
+                                            worksheetSummary.Cells[rows, columnTemp].Style.Font.Name = "Angsana New";
+                                            worksheetSummary.Cells[rows, columnTemp].Style.Font.Size = 14;
                                             worksheetSummary.Cells[rows, columnTemp].Style.WrapText = true;
                                             worksheetSummary.Cells[rows, columnTemp].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                             columnTemp += 1;
@@ -297,15 +297,15 @@ namespace _ContactCheckupSync
                                 }
                                 #region SummaryComplete
                                 worksheetSummary.Cells[rows, columnSummaryComplete].Value = summaryComplete;
-                                worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Name = "Tahoma";
-                                worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Size = 11;
+                                worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Name = "Angsana New";
+                                worksheetSummary.Cells[rows, columnSummaryComplete].Style.Font.Size = 14;
                                 worksheetSummary.Cells[rows, columnSummaryComplete].Style.WrapText = true;
                                 worksheetSummary.Cells[rows, columnSummaryComplete].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 #endregion
                                 #region SummaryInComplete
                                 worksheetSummary.Cells[rows, columnSummaryInComplete].Value = dtSummaryPayorDetail.Rows.Count-summaryComplete;
-                                worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Name = "Tahoma";
-                                worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Size = 11;
+                                worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Name = "Angsana New";
+                                worksheetSummary.Cells[rows, columnSummaryInComplete].Style.Font.Size = 14;
                                 worksheetSummary.Cells[rows, columnSummaryInComplete].Style.WrapText = true;
                                 worksheetSummary.Cells[rows, columnSummaryInComplete].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 #endregion
@@ -347,8 +347,8 @@ namespace _ContactCheckupSync
                             for (int c = 0; c < 6; c++)
                             {
                                 worksheetLabSummary.Cells[rows, c + 1].Style.Font.Bold = true;
-                                worksheetLabSummary.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows, c + 1].Style.Font.Size = 12;
+                                worksheetLabSummary.Cells[rows, c + 1].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows, c + 1].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                 worksheetLabSummary.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
                                 worksheetLabSummary.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -360,27 +360,27 @@ namespace _ContactCheckupSync
                             for (int r = 0; r < dtLabSummary.Rows.Count; r++)
                             {
                                 worksheetLabSummary.Cells[rows + r + 1, 1].Value = dtLabSummary.Rows[r]["Company"].ToString();
-                                worksheetLabSummary.Cells[rows + r + 1, 1].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 1].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 1].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 1].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 2].Value = DateTime.Parse(dtLabSummary.Rows[r]["DateAccept"].ToString()).ToString("dd/MM/yyyy");
-                                worksheetLabSummary.Cells[rows + r + 1, 2].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 2].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 2].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 2].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 worksheetLabSummary.Cells[rows + r + 1, 3].Value = dtLabSummary.Rows[r]["CountBloodComplete"].ToString() + " of " + dtLabSummary.Rows[r]["CountBloodAll"].ToString();
-                                worksheetLabSummary.Cells[rows + r + 1, 3].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 3].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 3].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 3].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 worksheetLabSummary.Cells[rows + r + 1, 4].Value = dtLabSummary.Rows[r]["CountUrineComplete"].ToString() + " of " + dtLabSummary.Rows[r]["CountUrineAll"].ToString();
-                                worksheetLabSummary.Cells[rows + r + 1, 4].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 4].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 4].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 4].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 worksheetLabSummary.Cells[rows + r + 1, 5].Value = dtLabSummary.Rows[r]["CountStoolComplete"].ToString() + " of " + dtLabSummary.Rows[r]["CountStoolAll"].ToString();
-                                worksheetLabSummary.Cells[rows + r + 1, 5].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 5].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 5].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 5].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                                 worksheetLabSummary.Cells[rows + r + 1, 6].Value = dtLabSummary.Rows[r]["CountHeavyMetalComplete"].ToString() + " of " + dtLabSummary.Rows[r]["CountHeavyMetalAll"].ToString();
-                                worksheetLabSummary.Cells[rows + r + 1, 6].Style.Font.Name = "Tahoma";
-                                worksheetLabSummary.Cells[rows + r + 1, 6].Style.Font.Size = 11;
+                                worksheetLabSummary.Cells[rows + r + 1, 6].Style.Font.Name = "Angsana New";
+                                worksheetLabSummary.Cells[rows + r + 1, 6].Style.Font.Size = 14;
                                 worksheetLabSummary.Cells[rows + r + 1, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                             }
                             #endregion
@@ -420,6 +420,13 @@ namespace _ContactCheckupSync
                         }
                         else if (type == "Book")
                         {
+                            #region TrimValue
+                            //for(int t = 0; t < dt.Rows.Count; t++)
+                            //{
+                            //    dt.Rows[t]["BookCreate"] = dt.Rows[t]["BookCreate"].ToString().Trim();
+                            //}
+                            //dt.AcceptChanges();
+                            #endregion
                             dtDetailHeader = dt.DefaultView.ToTable(true, "BookCreate");
                         }
                         #endregion
@@ -448,7 +455,15 @@ namespace _ContactCheckupSync
                                 dtDetailDetail = dvDetailDetail.ToTable();
                             }
                             #endregion
-                            ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(sheetName);
+                            ExcelWorksheet worksheet=null;
+                            try
+                            {
+                                worksheet = package.Workbook.Worksheets.Add(sheetName);
+                            }
+                            catch (Exception)
+                            {
+                                worksheet = package.Workbook.Worksheets.Add(sheetName+" ("+i.ToString()+")");
+                            }
                             worksheet.TabColor = ColorTranslator.FromHtml("#FFC90E");
                             //worksheet.Cells["A1"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             //worksheet.Cells["A1"].Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFC90E"));
@@ -460,8 +475,8 @@ namespace _ContactCheckupSync
                                 worksheet.Cells[rows, c + 1].Value = dtDetailDetail.Columns[c].ColumnName;
 
                                 worksheet.Cells[rows, c + 1].Style.Font.Bold = true;
-                                worksheet.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
-                                worksheet.Cells[rows, c + 1].Style.Font.Size = 12;
+                                worksheet.Cells[rows, c + 1].Style.Font.Name = "Angsana New";
+                                worksheet.Cells[rows, c + 1].Style.Font.Size = 14;
                                 worksheet.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                 worksheet.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
                                 worksheet.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -491,8 +506,8 @@ namespace _ContactCheckupSync
                                     {
                                         worksheet.Cells[rows + r + 1, c + 1].Value = dtDetailDetail.Rows[r][c].ToString();
                                     }
-                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Name = "Angsana New";
+                                    worksheet.Cells[rows + r + 1, c + 1].Style.Font.Size = 14;
                                 }
                             }
                             #endregion
@@ -509,6 +524,7 @@ namespace _ContactCheckupSync
                                 if(worksheet.Cells[1, c].Value!= null)
                                 {
                                     if (!worksheet.Cells[1, c].Value.ToString().Trim().ToLower().Contains("remark") &&
+                                        !worksheet.Cells[1, c].Value.ToString().Trim().ToLower().Contains("programdetail") &&
                                         worksheet.Cells[1, c].Value.ToString().Trim() != "")
                                     {
                                         worksheet.Column(c).AutoFit();
@@ -551,6 +567,13 @@ namespace _ContactCheckupSync
                         else if (type == "Book")
                         {
                             dt = clsTempData.getLabDetailByBook(dtDOEFrom.Value, dtDOETo.Value, getDropDownListValue(ddlCompany, "BookCreate"));
+                            #region TrimValue
+                            //for (int t = 0; t < dt.Rows.Count; t++)
+                            //{
+                            //    dt.Rows[t]["BookCreate"] = dt.Rows[t]["BookCreate"].ToString().Trim();
+                            //}
+                            //dt.AcceptChanges();
+                            #endregion
                             dtLabHeader = dt.DefaultView.ToTable(true, "BookCreate");
                         }
                         #endregion
@@ -602,8 +625,8 @@ namespace _ContactCheckupSync
                                         worksheetLabDetail.Cells[rows, c + 1].Value = dtLabDetail.Columns[c].ColumnName;
                                     }
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Font.Bold = true;
-                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
-                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Size = 12;
+                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Name = "Angsana New";
+                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Size = 14;
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -637,8 +660,8 @@ namespace _ContactCheckupSync
                                             {
                                                 worksheetLabDetail.Cells[rows + r + 1, c + 1].Value = (dtLabDetail.Rows[r][c].ToString() == "" ? (dtLabDetail.Rows[r]["CountChecklistHeavyMetal"].ToString() == "0" ? "" : "ยังไม่เก็บ Specimen") : dtLabDetail.Rows[r][c].ToString());
                                             }
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Angsana New";
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 14;
                                         }
                                         else if (dtLabDetail.Columns[c].ColumnName == "CountLabPending")
                                         {
@@ -665,14 +688,14 @@ namespace _ContactCheckupSync
                                             }
 
                                             worksheetLabDetail.Cells[rows + r + 1, c + 1].Value = remark;
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Angsana New";
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 14;
                                         }
                                         else
                                         {
                                             worksheetLabDetail.Cells[rows + r + 1, c + 1].Value = dtLabDetail.Rows[r][c].ToString();
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Angsana New";
+                                            worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 14;
                                         }
                                     }
                                 }
@@ -852,8 +875,8 @@ namespace _ContactCheckupSync
                                 {
                                     worksheetLabDetail.Cells[rows, c + 1].Value = dtDetail.Columns[c].ColumnName;
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Font.Bold = true;
-                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Name = "Tahoma";
-                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Size = 12;
+                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Name = "Angsana New";
+                                    worksheetLabDetail.Cells[rows, c + 1].Style.Font.Size = 14;
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Font.Color.SetColor(Color.White);
                                     worksheetLabDetail.Cells[rows, c + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#31b0d3"));
@@ -872,8 +895,8 @@ namespace _ContactCheckupSync
                                             worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Numberformat.Format = "dd/MM/yyyy HH:mm";
                                         }
                                         worksheetLabDetail.Cells[rows + r + 1, c + 1].Value = dtDetail.Rows[r][c];
-                                        worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Tahoma";
-                                        worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 11;
+                                        worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Name = "Angsana New";
+                                        worksheetLabDetail.Cells[rows + r + 1, c + 1].Style.Font.Size = 14;
                                     }
                                 }
                                 #endregion

@@ -153,7 +153,7 @@ public class clsTempData
         strSQL.Append("P.Shift,");
         strSQL.Append("P.Location Site,");
         strSQL.Append("P.Payor,");
-        strSQL.Append("P.BookCreate,");
+        strSQL.Append("IFNULL(P.BookCreate,'') BookCreate,");
         strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
@@ -226,7 +226,7 @@ public class clsTempData
         strSQL.Append("P.Shift,");
         strSQL.Append("P.Location Site,");
         strSQL.Append("P.Payor,");
-        strSQL.Append("P.BookCreate,");
+        strSQL.Append("IFNULL(P.BookCreate,'') BookCreate,");
         strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
@@ -295,7 +295,7 @@ public class clsTempData
         strSQL.Append("P.Shift,");
         strSQL.Append("P.Location Site,");
         strSQL.Append("P.Payor,");
-        strSQL.Append("P.BookCreate,");
+        strSQL.Append("IFNULL(P.BookCreate,'') BookCreate,");
         strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
@@ -711,7 +711,7 @@ strSQL.Append("(SELECT COUNT(RowID) FROM patientchecklist WHERE PatientGUID = P.
         #region Procedure
         #region SQLQuery
         strSQL.Append("SELECT ");
-        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,P.Payor,P.BookCreate,");
+        strSQL.Append("P.PatientGUID,P.No OrderNo, P.HN,P.EmployeeID,P.LabEpisode,CONCAT(P.Forename, ' ', P.Surname) Name,P.POS Position, P.DEP Department, P.DIVI Division, P.SEC Section, P.Line,P.Shift,P.Location Site,P.Payor,IFNULL(P.BookCreate,'') BookCreate,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 6 LIMIT 0, 1) AcceptDateBlood,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 7 LIMIT 0,1) AcceptDateUrine,");
         strSQL.Append("(SELECT CWhen FROM patientlab WHERE LabEpisode = P.LabEpisode AND WFID = 8 LIMIT 0,1) AcceptDateStool,");

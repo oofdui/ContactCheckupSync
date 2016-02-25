@@ -108,8 +108,8 @@ namespace _ContactCheckupSync
                 {
                     pbDefault.Invoke(new MethodInvoker(delegate
                     {
-                        pbDefault.Maximum = 5;
-                        pbDefault.Value = 0;
+                        pbDefault.Maximum = 6;
+                        pbDefault.Value = 1;
                     }));
                 }
                 var clsTempData = new clsTempData();
@@ -326,7 +326,7 @@ namespace _ContactCheckupSync
                     {
                         pbDefault.Invoke(new MethodInvoker(delegate
                         {
-                            pbDefault.Value = 1;
+                            pbDefault.Value += 1;
                         }));
                     }
                     #region LabSummary
@@ -401,7 +401,7 @@ namespace _ContactCheckupSync
                     {
                         pbDefault.Invoke(new MethodInvoker(delegate
                         {
-                            pbDefault.Value = 2;
+                            pbDefault.Value += 1;
                         }));
                     }
                     #region Detail
@@ -544,7 +544,7 @@ namespace _ContactCheckupSync
                     {
                         pbDefault.Invoke(new MethodInvoker(delegate
                         {
-                            pbDefault.Value = 3;
+                            pbDefault.Value += 1;
                         }));
                     }
                     #region LabDetail
@@ -749,7 +749,7 @@ namespace _ContactCheckupSync
                     {
                         pbDefault.Invoke(new MethodInvoker(delegate
                         {
-                            pbDefault.Value = 4;
+                            pbDefault.Value += 1;
                         }));
                     }
                     package.Save();
@@ -757,7 +757,7 @@ namespace _ContactCheckupSync
                     {
                         pbDefault.Invoke(new MethodInvoker(delegate
                         {
-                            pbDefault.Value = 5;
+                            pbDefault.Value += 1;
                         }));
                     }
                     DialogResult dr = MessageBox.Show("Export Seccessful!" + Environment.NewLine + Environment.NewLine + FileName + Environment.NewLine + Environment.NewLine + "ต้องการดูไฟล์คลิก Yes", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -986,8 +986,16 @@ namespace _ContactCheckupSync
                     }
                     else if (dt.Rows[i]["CountChecklistComplete"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() != dt.Rows[i]["CountChecklistComplete"].ToString())
                     {
-                        dt.Rows[i]["Summary"] = "ตรวจแล้ว-มีค้างตรวจ";
-                        dt.Rows[i]["Remark"] = dt.Rows[i]["ProgramPending"];
+                        if (dt.Rows[i]["DateRegis"] != DBNull.Value)
+                        {
+                            dt.Rows[i]["Summary"] = "ค้างคืนเอกสาร";
+                            dt.Rows[i]["Remark"] = "";
+                        }
+                        else
+                        {
+                            dt.Rows[i]["Summary"] = "ตรวจแล้ว-มีค้างตรวจ";
+                            dt.Rows[i]["Remark"] = dt.Rows[i]["ProgramPending"];
+                        }
                     }
                     else if (dt.Rows[i]["CountChecklistComplete"].ToString() == "0" && dt.Rows[i]["CountChecklistAll"].ToString() != "0")
                     {

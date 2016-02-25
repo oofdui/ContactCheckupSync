@@ -2,6 +2,9 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
+* v.1.20
+	* ปรับฟิลด์ดึง RegisterDate จาก MWhen เป็น RegDate
+	* เพิ่มตัวกรอง กรณีมีวันที่ลงทะเบียนแต่ยังตรวจไม่ครบเป็น "ค้างคืนเอกสาร"
 * v.1.19
 	* แก้ปัญหาชื่อ BookCreate เป็น Null ทำให้ตอน Export ไฟล์ Excel โปรแกรมฟ้องว่าสร้าง Sheet ชื่อซ้ำกัน
 * v.1.18

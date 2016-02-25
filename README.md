@@ -2,6 +2,8 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
+* v.1.21
+	* แก้ปัญหาการแสดงข้อความค้างคืนเอกสารด้วยเงื่อนไขใหม่
 * v.1.20
 	* ปรับฟิลด์ดึง RegisterDate จาก MWhen เป็น RegDate
 	* เพิ่มตัวกรอง กรณีมีวันที่ลงทะเบียนแต่ยังตรวจไม่ครบเป็น "ค้างคืนเอกสาร"

@@ -986,7 +986,12 @@ namespace _ContactCheckupSync
                     }
                     else if (dt.Rows[i]["CountChecklistComplete"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() != dt.Rows[i]["CountChecklistComplete"].ToString())
                     {
-                        if (dt.Rows[i]["DateRegis"] != DBNull.Value)
+                        if(dt.Rows[i]["RegisStatus"].ToString()!="0")
+                        {
+                            dt.Rows[i]["Summary"] = "ตรวจแล้ว-มีค้างตรวจ";
+                            dt.Rows[i]["Remark"] = dt.Rows[i]["ProgramPending"];
+                        }
+                        else if (dt.Rows[i]["DateRegis"] != DBNull.Value)
                         {
                             dt.Rows[i]["Summary"] = "ค้างคืนเอกสาร";
                             dt.Rows[i]["Remark"] = "";
@@ -1015,7 +1020,7 @@ namespace _ContactCheckupSync
                 dt.AcceptChanges();
                 #endregion
                 #region RemoveColumn
-                string[] columns = { "CountChecklistAll", "CountChecklistComplete", "CountChecklistCancel", "ProgramPending", "ProgramCancel" };
+                string[] columns = { "CountChecklistAll", "CountChecklistComplete", "CountChecklistCancel", "ProgramPending", "ProgramCancel", "RegisStatus" };
                 for (int i = 0; i < columns.Length; i++)
                 {
                     dt.Columns.Remove(columns[i]);

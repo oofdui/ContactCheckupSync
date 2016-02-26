@@ -191,7 +191,7 @@ public class clsTempData
             {
                 if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
                 {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+(!withHeavyMetal? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3 AND ProStatus<>4" + (!withHeavyMetal? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {
@@ -262,7 +262,7 @@ public class clsTempData
             {
                 if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
                 {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3 AND ProStatus<>4"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {
@@ -337,7 +337,7 @@ public class clsTempData
             {
                 if (dt.Rows[i]["CountChecklistAll"].ToString().Trim() != dt.Rows[i]["CountChecklistComplete"].ToString())
                 {
-                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3"+ (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
+                    dt.Rows[i]["ProgramPending"] = clsSQL.Return("SELECT CONVERT(GROUP_CONCAT(WorkFlow SEPARATOR ',') USING 'UTF8') FROM patientchecklist WHERE PatientGUID='" + dt.Rows[i]["PatientGUID"].ToString() + "' AND ProStatus<>3 AND ProStatus<>4" + (!withHeavyMetal ? " AND WorkFlow NOT LIKE '%โลหะหนัก%'" : ""));
                 }
                 if (dt.Rows[i]["CountChecklistCancel"].ToString().Trim() != "0")
                 {

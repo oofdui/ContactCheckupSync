@@ -956,6 +956,11 @@ namespace _ContactCheckupSync
             }
             if (dt != null && dt.Rows.Count > 0)
             {
+                #region DebugZone
+                //var dv = new DataView(dt);
+                //dv.RowFilter = "hn='15-12-010101' OR hn='15-07-015322'";
+                //dt = dv.ToTable();
+                #endregion
                 dt.Columns.Remove("PatientGUID");
                 if (btExport.InvokeRequired)
                 {
@@ -1004,8 +1009,17 @@ namespace _ContactCheckupSync
                     }
                     else if (dt.Rows[i]["CountChecklistComplete"].ToString() == "0" && dt.Rows[i]["CountChecklistAll"].ToString() != "0")
                     {
-                        dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
-                        dt.Rows[i]["Remark"] = "";
+                        //มี DateRegis และ WFID1 = 2 ค้างคืนเอกสาร
+                        if (dt.Rows[i]["DateRegis"] != DBNull.Value && dt.Rows[i]["RegisProStatus2"].ToString()!="0")
+                        {
+                            dt.Rows[i]["Summary"] = "ค้างคืนเอกสาร";
+                            dt.Rows[i]["Remark"] = "";
+                        }
+                        else
+                        {
+                            dt.Rows[i]["Summary"] = "ยังไม่ได้เข้ารับการตรวจ";
+                            dt.Rows[i]["Remark"] = "";
+                        }
                     }
                     else
                     {
@@ -1020,7 +1034,7 @@ namespace _ContactCheckupSync
                 dt.AcceptChanges();
                 #endregion
                 #region RemoveColumn
-                string[] columns = { "CountChecklistAll", "CountChecklistComplete", "CountChecklistCancel", "ProgramPending", "ProgramCancel", "RegisStatus" };
+                string[] columns = { "RegisProStatus2", "CountChecklistAll", "CountChecklistComplete", "CountChecklistCancel", "ProgramPending", "ProgramCancel", "RegisStatus" };
                 for (int i = 0; i < columns.Length; i++)
                 {
                     dt.Columns.Remove(columns[i]);

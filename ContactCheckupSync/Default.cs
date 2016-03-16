@@ -130,7 +130,9 @@ namespace _ContactCheckupSync
             {
                 "DELETE FROM patient;",
                 "DELETE FROM patientchecklist;",
-                "DELETE FROM patientlab;"
+                "DELETE FROM patientlab;",
+                "DELETE FROM checklistdetail;",
+                "DELETE FROM checklist"
             };
             var outMessage = "";
             var clsSQL = new clsSQL(clsGlobal.dbType, clsGlobal.cs);

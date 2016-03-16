@@ -2,6 +2,9 @@
 ### โปรแกรมซิงค์ข้อมูลระหว่างระบบ ContactCheckup และ การออกหน่วยแบบ Mobile
 ![alt tag](https://github.com/oofdui/ContactCheckupSync/blob/master/SS.png)
 
+* v.1.23
+	* หน้ารีพอร์ต เพิ่มตัวดักคนค้างคืนเอกสารอีก 1 ตัว คือ มีวันที่ลงทะเบียน แต่สถานะ WFID=2 และ ไม่มี Checklist ไหนมีสถานะ =3 เลย
+	* หน้าเคลียร์ข้อมูล ให้เพิ่มตัวลบ Checklist , ChecklistDetail ด้วย
 * v.1.22
 	* แก้หน้ารีพอร์ต ส่วนการแสดงรายการตรวจที่ยกเลิก
 * v.1.21

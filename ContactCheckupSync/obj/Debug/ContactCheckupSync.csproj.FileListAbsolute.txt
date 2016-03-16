@@ -18,3 +18,4 @@ C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\Contact
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\obj\Debug\ContactCheckupSync.pdb
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\bin\Debug\ContactCheckupSync.pdb
 C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\obj\Debug\ContactCheckupSync.csprojResolveAssemblyReference.cache
+C:\Users\Oofdui\Dropbox\MyProject\GLS\CarryOn\Checkup\ContactCheckupSync\ContactCheckupSync\ContactCheckupSync\bin\Debug\MySql.Data.dll

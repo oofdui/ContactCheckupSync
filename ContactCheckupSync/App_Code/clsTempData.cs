@@ -157,6 +157,7 @@ public class clsTempData
         //strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SELECT RegDate FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=3)) RegisStatus,");
+        strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=2)) RegisProStatus2,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
         strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");
@@ -232,6 +233,7 @@ public class clsTempData
         //strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SELECT RegDate FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=3)) RegisStatus,");
+        strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=2)) RegisProStatus2,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
         strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");
@@ -303,6 +305,7 @@ public class clsTempData
         //strSQL.Append("(SELECT MWhen FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 AND ProStatus=3 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SELECT RegDate FROM patientchecklist WHERE PatientGUID=P.PatientGUID AND WFID=1 LIMIT 0,1) DateRegis,");
         strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=3)) RegisStatus,");
+        strSQL.Append("(SUM(PC.WFID=1 AND PC.ProStatus=2)) RegisProStatus2,");
         strSQL.Append("ProChkListDetail ProgramDetail,");
         strSQL.Append("COUNT(PC.RowID) CountChecklistAll,");
         strSQL.Append("SUM(ProStatus>=3) CountChecklistComplete,");

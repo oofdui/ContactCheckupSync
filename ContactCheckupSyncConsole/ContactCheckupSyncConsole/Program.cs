@@ -23,13 +23,24 @@ namespace ContactCheckupSyncConsole
                 {
                     for(int i = 0; i < files.Length; i++)
                     {
-                        Sync(files[i]);
+                        try
+                        {
+                            Sync(files[i]);
+                        }
+                        catch(Exception exSync)
+                        {
+                            Console.WriteLine("Error on Sync : " + exSync.Message);
+                            System.Threading.Thread.Sleep(5000);
+                        }
                     }
                 }
                 #endregion
             }
             catch(Exception ex)
             {
+                Console.WriteLine("Error on ListAllFile : " + ex.Message);
+                System.Threading.Thread.Sleep(5000);
+                return;
                 wsDefault.ServiceSoapClient wsDefault = new wsDefault.ServiceSoapClient();
                 if (wsDefault.MailSend(
                     System.Configuration.ConfigurationManager.AppSettings["mailTo"],
@@ -37,13 +48,14 @@ namespace ContactCheckupSyncConsole
                     "<h1>" + System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync" + "</h1><h3><span style='color:#red;'>Error</span></h3><hr/>" + ex.Message,
                     "AutoSystem@glsict.com",
                     System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName,
-                    "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder(), false))
+                    "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder() + "<br/><b>Application Version</b> : "+clsGlobal.ApplicationVersion(), false))
                 {
                     Console.WriteLine(string.Format("MailSend : {0}", "Success"));
                 }
                 else
                 {
                     Console.WriteLine(string.Format("MailSend : {0}", "Fail"));
+                    System.Threading.Thread.Sleep(5000);
                 }
             }
         }
@@ -162,7 +174,7 @@ namespace ContactCheckupSyncConsole
                                     "<h1>" + System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName + " Console Sync" + "</h1><h3><span style='color:#238DBB;'>StatusUpdateSuccess : " + countSuccessMobileStatus.ToString() + "</span> , <span style='color:green;'>Success : " + countSuccess.ToString() + "</span> , <span style='color:red;'>Fail : " + countFail.ToString() + "</span></h3><h4>FileName : " + fileFullName + "</h4><hr/>" + mailMessage.ToString(),
                                     "AutoSystem@glsict.com",
                                     System.Configuration.ConfigurationManager.AppSettings["site"] + " : " + clsGlobal.ApplicationName,
-                                    "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder(), false))
+                                    "", "", "<b>ServerIP</b> : " + clsGlobal.IPAddress() + "<br/><b>ExecutePath</b> : " + clsGlobal.ExecutePathBuilder() + "<br/><b>Application Version</b> : " + clsGlobal.ApplicationVersion(), false))
                                 {
                                     Console.WriteLine(string.Format("MailSend : {0}", "Success"));
                                 }

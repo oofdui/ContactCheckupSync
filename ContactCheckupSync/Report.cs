@@ -1299,5 +1299,28 @@ namespace _ContactCheckupSync
                     break;
             }
         }
+
+        private void ddlCompany_DropDown(object sender, EventArgs e)
+        {
+            ComboBox senderComboBox = (ComboBox)sender;
+            int width = senderComboBox.DropDownWidth;
+            Graphics g = senderComboBox.CreateGraphics();
+            Font font = senderComboBox.Font;
+            int vertScrollBarWidth =
+                (senderComboBox.Items.Count > senderComboBox.MaxDropDownItems)
+                ? SystemInformation.VerticalScrollBarWidth : 0;
+
+            int newWidth;
+            foreach (object s in ((ComboBox)sender).Items)
+            {
+                newWidth = (int)g.MeasureString(s.ToString(), font).Width
+                    + vertScrollBarWidth + 10;
+                if (width < newWidth)
+                {
+                    width = newWidth;
+                }
+            }
+            senderComboBox.DropDownWidth = width;
+        }
     }
 }

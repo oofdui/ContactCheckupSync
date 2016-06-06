@@ -176,12 +176,12 @@
             // ddlCompany
             // 
             this.ddlCompany.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ddlCompany.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlCompany.FormattingEnabled = true;
             this.ddlCompany.Location = new System.Drawing.Point(393, 3);
             this.ddlCompany.Name = "ddlCompany";
             this.ddlCompany.Size = new System.Drawing.Size(144, 21);
             this.ddlCompany.TabIndex = 2;
+            this.ddlCompany.DropDown += new System.EventHandler(this.ddlCompany_DropDown);
             // 
             // btSearch
             // 

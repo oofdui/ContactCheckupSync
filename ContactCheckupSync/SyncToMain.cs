@@ -638,8 +638,8 @@ namespace _ContactCheckupSync
                     {
                         syncTimerSecondCount = syncTimerSecond - syncTimerTryAgainSecond;
                     }
-                    ListViewBuilder(lvDefault, Color.Red, 99,
-                        new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect server (Main) database." });
+                    //ListViewBuilder(lvDefault, Color.Red, 99,
+                    //    new string[] { DateTime.Now.ToString("dd/MM/yyyy HH:mm"), "Fail", "", "Cannot connect server (Main) database." });
                 }
                 else
                 {

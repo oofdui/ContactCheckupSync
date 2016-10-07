@@ -158,11 +158,11 @@ namespace _ContactCheckupSync
                     List<int> summaryInCompletes = new List<int>();
                     #region FindSummaryColumn
                     columnSummaryComplete = clsTempData.getMaxDateRegis(dtDOEFrom.Value, dtDOETo.Value);
-                    if (columnSummaryComplete > 0)
-                    {
+                    //if (columnSummaryComplete > 0)
+                    //{
                         columnSummaryComplete += 3;
                         columnSummaryInComplete = columnSummaryComplete + 1;
-                    }
+                    //}
                     #endregion
                     var dtSummary = clsTempData.getPatientMobileByAll(dtDOEFrom.Value, dtDOETo.Value);
                     if(dtSummary!=null && dtSummary.Rows.Count > 0)
@@ -984,10 +984,15 @@ namespace _ContactCheckupSync
                 #region FillData
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (dt.Rows[i]["CountChecklistAll"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() == dt.Rows[i]["CountChecklistComplete"].ToString())
+                    if (dt.Rows[i]["CountChecklistAll"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() == dt.Rows[i]["CountChecklistComplete"].ToString() && dt.Rows[i]["CountChecklistAll"].ToString() != dt.Rows[i]["CountChecklistCancel"].ToString())
                     {
                         dt.Rows[i]["Summary"] = "ตรวจแล้ว";
                         dt.Rows[i]["Remark"] = "ตรวจครบทุกรายการ";
+                    }
+                    else if (dt.Rows[i]["CountChecklistAll"].ToString() == dt.Rows[i]["CountChecklistCancel"].ToString())
+                    {
+                        dt.Rows[i]["Summary"] = "ยกเลิกตรวจ";
+                        dt.Rows[i]["Remark"] = "";
                     }
                     else if (dt.Rows[i]["CountChecklistComplete"].ToString() != "0" && dt.Rows[i]["CountChecklistAll"].ToString() != dt.Rows[i]["CountChecklistComplete"].ToString())
                     {

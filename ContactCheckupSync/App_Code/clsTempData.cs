@@ -196,7 +196,7 @@ public class clsTempData
             strSQL.Append("AND Company = '" + CompanyName + "' ");
         }
         strSQL.Append("GROUP BY P.PatientGUID ");
-        strSQL.Append("ORDER BY P.Payor,P.No;");
+        strSQL.Append("ORDER BY P.Payor,P.No,P.CWhen DESC;");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         if(dt!=null && dt.Rows.Count > 0)
@@ -288,7 +288,7 @@ public class clsTempData
         strSQL.Append("WHERE ");
         strSQL.Append("(P.DOE BETWEEN '" + DOEFrom.ToString("yyyy-MM-dd HH:mm") + "' AND '" + DOETo.ToString("yyyy-MM-dd HH:mm") + "') ");
         strSQL.Append("GROUP BY P.PatientGUID ");
-        strSQL.Append("ORDER BY P.Payor,P.No;");
+        strSQL.Append("ORDER BY P.Payor,P.No,P.CWhen DESC;");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         if (dt != null && dt.Rows.Count > 0)
@@ -377,7 +377,7 @@ public class clsTempData
             strSQL.Append("AND BookCreate = '" + BookCreate + "' ");
         }
         strSQL.Append("GROUP BY P.PatientGUID ");
-        strSQL.Append("ORDER BY P.BookCreate,P.No;");
+        strSQL.Append("ORDER BY P.BookCreate,P.No,P.CWhen DESC;");
         #endregion
         dt = clsSQL.Bind(strSQL.ToString());
         if (dt != null && dt.Rows.Count > 0)
